@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/i18next@23.11.5/i18next.min.js"></script>
 <style>
 :root {
   --navy-950:#07101E;--navy-900:#0D1B2E;--navy-800:#112240;--navy-700:#1A3356;
@@ -385,8 +386,12 @@ body{
 
 /* LANG TOGGLE */
 .lang-toggle{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:3px;}
-.lang-btn{padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--grey-400);font-family:var(--font-body);transition:var(--transition);}
+.lang-btn{padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--grey-400);font-family:var(--font-body);transition:var(--transition);white-space:nowrap;}
 .lang-btn.active{background:var(--terra-500);color:var(--white);}
+/* Button text resilience for VN/EN length difference */
+.toggle-btn{flex:1;min-width:0;word-break:keep-all;hyphens:auto;}
+.btn-primary,.btn-gold,.btn-secondary{white-space:normal;text-align:center;padding:13px 16px;}
+.form-label{min-height:1.4em;}
 
 /* ── BILL UPLOAD FLOW ─────────────────────────────────────── */
 .verify-states { margin-top: 16px; }
@@ -536,15 +541,15 @@ body{
       <button class="lang-btn active" id="btn-vi" onclick="setLang('vi')">🇻🇳 VN</button>
       <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
     </div>
-    <a href="/" class="nav-back" id="nav-back-link">← Về trang chủ</a>
+    <a href="/" class="nav-back" id="nav-back-link" data-i18n="nav.back">← Về trang chủ</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">Định Giá Bất Động Sản</div>
-  <h1 class="hero-title">Ước tính giá trị BĐS<br><em>chuẩn TĐGVN</em> trong 3 phút</h1>
-  <p class="hero-subtitle">Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận. Hỗ trợ trích xuất thông tin Sổ đỏ qua AI Vision.</p>
+  <div class="hero-eyebrow" data-i18n="hero.eyebrow">Định Giá Bất Động Sản</div>
+  <h1 class="hero-title" data-i18n="[html]hero.title">Ước tính giá trị BĐS<br><em>chuẩn TĐGVN</em> trong 3 phút</h1>
+  <p class="hero-subtitle" data-i18n="hero.subtitle">Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận. Hỗ trợ trích xuất thông tin Sổ đỏ qua AI Vision.</p>
   <div class="hero-tags">
     <span class="htag a">So sánh trực tiếp</span>
     <span class="htag a">Thu nhập (Income)</span>
@@ -570,77 +575,77 @@ body{
      SCREEN 1: CHỌN LOẠI HÌNH
      ══════════════════════════════════════ -->
 <div class="screen active" id="screen-1">
-  <div class="screen-step">Bước 1 / 3</div>
-  <h2 class="screen-title">Chọn loại hình bất động sản</h2>
-  <p class="screen-desc">Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.</p>
+  <div class="screen-step" data-i18n="step1.step">Bước 1 / 3</div>
+  <h2 class="screen-title" data-i18n="step1.title">Chọn loại hình bất động sản</h2>
+  <p class="screen-desc" data-i18n="step1.desc">Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.</p>
 
-  <div class="type-group-label">🏡 Nhà ở & Đầu tư cá nhân</div>
+  <div class="type-group-label" data-i18n="group.residential">🏡 Nhà ở & Đầu tư cá nhân</div>
   <div class="type-grid">
     <div class="type-card" onclick="selectType('apartment')" id="type-apartment">
       <div class="type-icon">🏢</div>
       <div class="type-info">
-        <div class="type-name">Chung cư / Căn hộ</div>
-        <div class="type-desc">Căn hộ trong dự án có chủ đầu tư, condotel</div>
+        <div class="type-name" data-i18n="type.apartment.name">Chung cư / Căn hộ</div>
+        <div class="type-desc" data-i18n="type.apartment.desc">Căn hộ trong dự án có chủ đầu tư, condotel</div>
         <span class="type-method">So sánh · Chi phí</span>
       </div>
     </div>
     <div class="type-card" onclick="selectType('penthouse')" id="type-penthouse">
       <div class="type-icon">👑</div>
       <div class="type-info">
-        <div class="type-name">Penthouse</div>
-        <div class="type-desc">Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh</div>
+        <div class="type-name" data-i18n="type.penthouse.name">Penthouse</div>
+        <div class="type-desc" data-i18n="type.penthouse.desc">Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh</div>
         <span class="type-method">So sánh · Premium</span>
       </div>
     </div>
     <div class="type-card" onclick="selectType('landed')" id="type-landed">
       <div class="type-icon">🏠</div>
       <div class="type-info">
-        <div class="type-name">Nhà phố / Nhà liền kề</div>
-        <div class="type-desc">Nhà phố, nhà liền kề, số tầng xác định</div>
+        <div class="type-name" data-i18n="type.landed.name">Nhà phố / Nhà liền kề</div>
+        <div class="type-desc" data-i18n="type.landed.desc">Nhà phố, nhà liền kề, số tầng xác định</div>
         <span class="type-method">So sánh · Chi phí</span>
       </div>
     </div>
     <div class="type-card" onclick="selectType('villa')" id="type-villa">
       <div class="type-icon">🌿</div>
       <div class="type-info">
-        <div class="type-name">Biệt thự / Villa</div>
-        <div class="type-desc">Biệt thự đơn lập, song lập, liền kề cao cấp</div>
+        <div class="type-name" data-i18n="type.villa.name">Biệt thự / Villa</div>
+        <div class="type-desc" data-i18n="type.villa.desc">Biệt thự đơn lập, song lập, liền kề cao cấp</div>
         <span class="type-method">So sánh · Chi phí</span>
       </div>
     </div>
     <div class="type-card" onclick="selectType('landplot')" id="type-landplot">
       <div class="type-icon">🏡</div>
       <div class="type-info">
-        <div class="type-name">Đất nền</div>
-        <div class="type-desc">Đất thổ cư, đất nền dự án, đất vườn</div>
+        <div class="type-name" data-i18n="type.landplot.name">Đất nền</div>
+        <div class="type-desc" data-i18n="type.landplot.desc">Đất thổ cư, đất nền dự án, đất vườn</div>
         <span class="type-method">So sánh · Thặng dư</span>
       </div>
     </div>
   </div>
 
-  <div class="type-group-label">🏪 Thương mại & Đầu tư</div>
+  <div class="type-group-label" data-i18n="group.commercial">🏪 Thương mại & Đầu tư</div>
   <div class="type-grid">
     <div class="type-card" onclick="selectType('shophouse')" id="type-shophouse">
       <div class="type-icon">🏪</div>
       <div class="type-info">
-        <div class="type-name">Shophouse chân đế</div>
-        <div class="type-desc">Tầng 1–3 tòa nhà, mặt tiền kinh doanh</div>
+        <div class="type-name" data-i18n="type.shophouse.name">Shophouse chân đế</div>
+        <div class="type-desc" data-i18n="type.shophouse.desc">Tầng 1–3 tòa nhà, mặt tiền kinh doanh</div>
         <span class="type-method">So sánh · Thu nhập</span>
       </div>
     </div>
     <div class="type-card" onclick="selectType('income')" id="type-income">
       <div class="type-icon">💼</div>
       <div class="type-info">
-        <div class="type-name">BĐS Dòng tiền</div>
-        <div class="type-desc">Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini</div>
+        <div class="type-name" data-i18n="type.income.name">BĐS Dòng tiền</div>
+        <div class="type-desc" data-i18n="type.income.desc">Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini</div>
         <span class="type-method">Thu nhập · Gordon</span>
       </div>
     </div>
     <div class="type-card" onclick="selectType('building')" id="type-building">
       <div class="type-icon">🏗️</div>
       <div class="type-info">
-        <div class="type-name">Cả tòa nhà</div>
-        <div class="type-desc">Tòa nhà văn phòng, căn hộ dịch vụ, mix-use</div>
+        <div class="type-name" data-i18n="type.building.name">Cả tòa nhà</div>
+        <div class="type-desc" data-i18n="type.building.desc">Tòa nhà văn phòng, căn hộ dịch vụ, mix-use</div>
         <span class="type-method">Thu nhập · Chi phí</span>
       </div>
     </div>
@@ -650,7 +655,7 @@ body{
      SCREEN 2A: CHUNG CƯ / CĂN HỘ
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-apartment">
-  <div class="screen-step">Bước 2 / 3 · 🏢 Chung cư / Căn hộ</div>
+  <div class="screen-step" data-i18n="step.apt">Bước 2 / 3 · 🏢 Chung cư / Căn hộ</div>
   <h2 class="screen-title">Thông số căn hộ</h2>
   <p class="screen-desc">Nhập thông tin hoặc tải ảnh Sổ hồng để AI trích xuất tự động.</p>
   <div class="form-group">
@@ -664,30 +669,30 @@ body{
   </div>
   <div class="divider">hoặc nhập thủ công</div>
   <div class="form-section">
-    <div class="form-section-title">Thông tin dự án & vị trí</div>
-    <div class="form-group"><label class="form-label">Tên dự án / Chủ đầu tư</label><input type="text" class="form-input" id="apt-project" placeholder="VD: Vinhomes Central Park"></div>
+    <div class="form-section-title" data-i18n="section.project">Thông tin dự án & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.project">Tên dự án / Chủ đầu tư</label><input type="text" class="form-input" id="apt-project" placeholder="VD: Vinhomes Central Park"></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="apt-province" onchange="updateDistricts('apt')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="apt-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="apt-province" onchange="updateDistricts('apt')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="apt-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số căn hộ</div>
+    <div class="form-section-title" data-i18n="section.apt">Thông số căn hộ</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích thông thủy (m²)</label><input type="number" class="form-input" id="apt-area" placeholder="VD: 75"></div>
       <div class="form-group"><label class="form-label">Tầng</label><input type="number" class="form-input" id="apt-floor" placeholder="VD: 12"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Số phòng ngủ</label><select class="form-select" id="apt-bed"><option value="0">Studio</option><option value="1">1 PN</option><option value="2" selected>2 PN</option><option value="3">3 PN</option><option value="4">4+ PN</option></select></div>
-      <div class="form-group"><label class="form-label">Hướng ban công</label><select class="form-select" id="apt-direction">DIRECTION_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.bedrooms">Số phòng ngủ</label><select class="form-select" id="apt-bed"><option value="0">Studio</option><option value="1">1 PN</option><option value="2" selected>2 PN</option><option value="3">3 PN</option><option value="4">4+ PN</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.direction">Hướng ban công</label><select class="form-select" id="apt-direction">DIRECTION_OPTIONS</select></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích ban công (m²)</label><input type="number" class="form-input" id="apt-balcony" placeholder="VD: 8" step="0.5"></div>
-      <div class="form-group"><label class="form-label">Năm bàn giao</label><input type="number" class="form-input" id="apt-year" placeholder="VD: 2019" min="1980" max="2030"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.year">Năm bàn giao</label><input type="number" class="form-input" id="apt-year" placeholder="VD: 2019" min="1980" max="2030"></div>
     </div>
-    <div class="form-group"><label class="form-label">Tình trạng nội thất</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.interior">Tình trạng nội thất</label>
       <div class="toggle-group" id="apt-interior"><button class="toggle-btn active" onclick="setToggle('apt-interior',this,'tho')">Thô (chưa hoàn thiện)</button><button class="toggle-btn" onclick="setToggle('apt-interior',this,'co-ban')">Cơ bản</button><button class="toggle-btn" onclick="setToggle('apt-interior',this,'full')">Full nội thất cao cấp</button></div></div>
-    <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
       <div class="toggle-group" id="apt-legal"><button class="toggle-btn active" onclick="setToggle('apt-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('apt-legal',this,'so-do')">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('apt-legal',this,'hop-dong')">HĐMB</button><button class="toggle-btn" onclick="setToggle('apt-legal',this,'chua-co')">Chưa có sổ</button></div></div>
     <div class="form-group"><label class="form-label">Phí quản lý (nghìn đồng/m²/tháng) <span>(nếu biết)</span></label><input type="number" class="form-input" id="apt-mgmt-fee" placeholder="VD: 18" step="0.5"><div class="form-hint">Phí quản lý cao ảnh hưởng đến giá trị cho thuê và thanh khoản</div></div>
   </div>
@@ -701,34 +706,34 @@ body{
      SCREEN 2B: PENTHOUSE
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-penthouse">
-  <div class="screen-step">Bước 2 / 3 · 👑 Penthouse</div>
+  <div class="screen-step" data-i18n="step.pth">Bước 2 / 3 · 👑 Penthouse</div>
   <h2 class="screen-title">Thông số Penthouse</h2>
   <p class="screen-desc">Penthouse được định giá với premium đặc biệt theo view, diện tích sân thượng và vị trí tầng đỉnh.</p>
   <div class="form-section">
-    <div class="form-section-title">Thông tin dự án & vị trí</div>
-    <div class="form-group"><label class="form-label">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="pth-project" placeholder="VD: Landmark 81, The Metropole..."></div>
+    <div class="form-section-title" data-i18n="section.project">Thông tin dự án & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.building">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="pth-project" placeholder="VD: Landmark 81, The Metropole..."></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="pth-province" onchange="updateDistricts('pth')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="pth-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="pth-province" onchange="updateDistricts('pth')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="pth-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số Penthouse</div>
+    <div class="form-section-title" data-i18n="section.pth">Thông số Penthouse</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích sàn trong nhà (m²)</label><input type="number" class="form-input" id="pth-area" placeholder="VD: 200"></div>
       <div class="form-group"><label class="form-label">Diện tích sân thượng riêng (m²)</label><input type="number" class="form-input" id="pth-rooftop" placeholder="VD: 80"><div class="form-hint">Sân thượng riêng tính 40–60% giá sàn</div></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Tầng (tầng đỉnh tòa)</label><input type="number" class="form-input" id="pth-floor" placeholder="VD: 75"></div>
-      <div class="form-group"><label class="form-label">Tổng số tầng tòa nhà</label><input type="number" class="form-input" id="pth-total-floors" placeholder="VD: 81"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.total_floors">Tổng số tầng tòa nhà</label><input type="number" class="form-input" id="pth-total-floors" placeholder="VD: 81"></div>
     </div>
     <div class="form-group"><label class="form-label">Cấu trúc</label>
       <div class="toggle-group" id="pth-type"><button class="toggle-btn active" onclick="setToggle('pth-type',this,'simplex')">Simplex (1 tầng)</button><button class="toggle-btn" onclick="setToggle('pth-type',this,'duplex')">Duplex (2 tầng)</button><button class="toggle-btn" onclick="setToggle('pth-type',this,'triplex')">Triplex (3 tầng)</button></div></div>
-    <div class="form-group"><label class="form-label">View chủ đạo</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.view">View chủ đạo</label>
       <div class="toggle-group" id="pth-view"><button class="toggle-btn active" onclick="setToggle('pth-view',this,'song')">Sông / Biển</button><button class="toggle-btn" onclick="setToggle('pth-view',this,'thanh-pho')">Thành phố</button><button class="toggle-btn" onclick="setToggle('pth-view',this,'noi-khu')">Nội khu</button></div></div>
     <div class="form-group"><label class="form-label">Có hồ bơi riêng không?</label>
       <div class="toggle-group" id="pth-pool"><button class="toggle-btn active" onclick="setToggle('pth-pool',this,'khong')">Không</button><button class="toggle-btn" onclick="setToggle('pth-pool',this,'co')">Có hồ bơi riêng (+15%)</button></div></div>
-    <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
       <div class="toggle-group" id="pth-legal"><button class="toggle-btn active" onclick="setToggle('pth-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('pth-legal',this,'hop-dong')">HĐMB</button><button class="toggle-btn" onclick="setToggle('pth-legal',this,'chua-co')">Chưa có sổ</button></div></div>
   </div>
   <div class="btn-actions">
@@ -741,7 +746,7 @@ body{
      SCREEN 2C: NHÀ PHỐ / NHÀ LIỀN KỀ
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-landed">
-  <div class="screen-step">Bước 2 / 3 · 🏠 Nhà phố / Nhà liền kề</div>
+  <div class="screen-step" data-i18n="step.land">Bước 2 / 3 · 🏠 Nhà phố / Nhà liền kề</div>
   <h2 class="screen-title">Thông số nhà phố</h2>
   <p class="screen-desc">Tải ảnh Sổ đỏ để AI trích xuất thông tin, hoặc nhập thủ công.</p>
   <div class="form-group">
@@ -755,32 +760,32 @@ body{
   </div>
   <div class="divider">hoặc nhập thủ công</div>
   <div class="form-section">
-    <div class="form-section-title">Vị trí & đường tiếp giáp</div>
+    <div class="form-section-title" data-i18n="section.road">Vị trí & đường tiếp giáp</div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="land-province" onchange="updateDistricts('land')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="land-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="land-province" onchange="updateDistricts('land')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="land-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
-    <div class="form-group"><label class="form-label">Loại đường tiếp giáp</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.road_type">Loại đường tiếp giáp</label>
       <div class="toggle-group" id="land-road-type"><button class="toggle-btn active" onclick="setToggle('land-road-type',this,'mat-tien')">Mặt tiền đường lớn</button><button class="toggle-btn" onclick="setToggle('land-road-type',this,'hem-xe-ho')">Hẻm xe hơi</button><button class="toggle-btn" onclick="setToggle('land-road-type',this,'hem-nho')">Hẻm nhỏ</button></div></div>
   </div>
   <div class="form-section">
     <div class="form-section-title">Thông số thửa đất & công trình</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích đất (m²)</label><input type="number" class="form-input" id="land-area" placeholder="VD: 80"><div class="form-hint">Theo sổ đỏ</div></div>
-      <div class="form-group"><label class="form-label">Mặt tiền (m)</label><input type="number" class="form-input" id="land-front" placeholder="VD: 5" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.frontage">Mặt tiền (m)</label><input type="number" class="form-input" id="land-front" placeholder="VD: 5" step="0.1"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Chiều sâu (m)</label><input type="number" class="form-input" id="land-depth" placeholder="VD: 16" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.depth">Chiều sâu (m)</label><input type="number" class="form-input" id="land-depth" placeholder="VD: 16" step="0.1"></div>
       <div class="form-group"><label class="form-label">Đường trước rộng (m)</label><input type="number" class="form-input" id="land-road-width" placeholder="VD: 8" step="0.5"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Số tầng xây dựng</label><input type="number" class="form-input" id="land-floors" placeholder="VD: 4" min="1" max="10"><div class="form-hint">Bao gồm tầng trệt</div></div>
-      <div class="form-group"><label class="form-label">Số phòng ngủ</label><input type="number" class="form-input" id="land-bedrooms" placeholder="VD: 5" min="1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.floors">Số tầng xây dựng</label><input type="number" class="form-input" id="land-floors" placeholder="VD: 4" min="1" max="10"><div class="form-hint">Bao gồm tầng trệt</div></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.bedrooms">Số phòng ngủ</label><input type="number" class="form-input" id="land-bedrooms" placeholder="VD: 5" min="1"></div>
     </div>
     <div class="form-group"><label class="form-label">Diện tích sàn xây dựng (m²) <span>(nếu biết)</span></label><input type="number" class="form-input" id="land-floor-area" placeholder="VD: 320"><div class="form-hint">Tổng diện tích các sàn = diện tích đất × số tầng (ước tính)</div></div>
-    <div class="form-group"><label class="form-label">Tình trạng nội thất</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.interior">Tình trạng nội thất</label>
       <div class="toggle-group" id="land-interior"><button class="toggle-btn active" onclick="setToggle('land-interior',this,'tho')">Thô / Xây thô</button><button class="toggle-btn" onclick="setToggle('land-interior',this,'co-ban')">Hoàn thiện cơ bản</button><button class="toggle-btn" onclick="setToggle('land-interior',this,'full')">Full nội thất</button></div></div>
-    <div class="form-group"><label class="form-label">Phong thủy / Vị trí đặc biệt</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.fengshui">Phong thủy / Vị trí đặc biệt</label>
       <div class="toggle-group" id="land-feng">
         <button class="toggle-btn active" onclick="setToggle('land-feng',this,'none')">Bình thường</button>
         <button class="toggle-btn" onclick="setToggle('land-feng',this,'goc')">Lô góc 2 MT (+12%)</button>
@@ -793,7 +798,7 @@ body{
         <button class="toggle-btn" onclick="setToggle('land-feng',this,'tay-nang')">Hướng Tây nắng (-4%)</button>
       </div>
       <div class="form-hint">Các yếu tố phong thủy ảnh hưởng 4–20% giá trị thị trường theo tâm lý người mua VN</div></div>
-    <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
       <div class="toggle-group" id="land-legal"><button class="toggle-btn active" onclick="setToggle('land-legal',this,'so-do')">Sổ đỏ đầy đủ</button><button class="toggle-btn" onclick="setToggle('land-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('land-legal',this,'giay-tay')">Giấy tờ tay</button></div></div>
   </div>
   <div class="btn-actions">
@@ -806,35 +811,35 @@ body{
      SCREEN 2D: BIỆT THỰ / VILLA
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-villa">
-  <div class="screen-step">Bước 2 / 3 · 🌿 Biệt thự / Villa</div>
+  <div class="screen-step" data-i18n="step.villa">Bước 2 / 3 · 🌿 Biệt thự / Villa</div>
   <h2 class="screen-title">Thông số biệt thự</h2>
   <p class="screen-desc">Biệt thự định giá theo phương pháp So sánh + Chi phí, có phân biệt biệt thự dự án và biệt thự độc lập.</p>
   <div class="form-section">
-    <div class="form-section-title">Phân loại & vị trí</div>
-    <div class="form-group"><label class="form-label">Loại biệt thự</label>
+    <div class="form-section-title" data-i18n="section.classify">Phân loại & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.villa_type">Loại biệt thự</label>
       <div class="toggle-group" id="villa-type"><button class="toggle-btn active" onclick="setToggle('villa-type',this,'don-lap')">Đơn lập</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'song-lap')">Song lập</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'lien-ke')">Liền kề cao cấp</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'du-an')">Biệt thự dự án</button></div></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="villa-province" onchange="updateDistricts('villa')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="villa-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="villa-province" onchange="updateDistricts('villa')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="villa-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
     <div class="form-group"><label class="form-label">Tên dự án <span>(nếu là biệt thự dự án)</span></label><input type="text" class="form-input" id="villa-project" placeholder="VD: Vinhomes Riverside, Ecopark..."></div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số đất & công trình</div>
+    <div class="form-section-title" data-i18n="section.landwork">Thông số đất & công trình</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích đất (m²)</label><input type="number" class="form-input" id="villa-land-area" placeholder="VD: 300"></div>
       <div class="form-group"><label class="form-label">Diện tích xây dựng (m²)</label><input type="number" class="form-input" id="villa-built-area" placeholder="VD: 250"><div class="form-hint">Tổng diện tích sàn xây dựng</div></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Số tầng</label><input type="number" class="form-input" id="villa-floors" placeholder="VD: 2" min="1" max="5"></div>
-      <div class="form-group"><label class="form-label">Số phòng ngủ</label><input type="number" class="form-input" id="villa-bedrooms" placeholder="VD: 4" min="1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.floors">Số tầng</label><input type="number" class="form-input" id="villa-floors" placeholder="VD: 2" min="1" max="5"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.bedrooms">Số phòng ngủ</label><input type="number" class="form-input" id="villa-bedrooms" placeholder="VD: 4" min="1"></div>
     </div>
     <div class="form-group"><label class="form-label">Tiện ích đặc biệt</label>
       <div class="toggle-group" id="villa-amenity"><button class="toggle-btn active" onclick="setToggle('villa-amenity',this,'none')">Cơ bản</button><button class="toggle-btn" onclick="setToggle('villa-amenity',this,'pool')">Có hồ bơi (+12%)</button><button class="toggle-btn" onclick="setToggle('villa-amenity',this,'pool-garden')">Hồ bơi + Sân vườn lớn (+18%)</button></div></div>
-    <div class="form-group"><label class="form-label">View / Cảnh quan</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.view">View / Cảnh quan</label>
       <div class="toggle-group" id="villa-view"><button class="toggle-btn active" onclick="setToggle('villa-view',this,'noi-khu')">Nội khu</button><button class="toggle-btn" onclick="setToggle('villa-view',this,'song-ho')">Sông / Hồ</button><button class="toggle-btn" onclick="setToggle('villa-view',this,'bien')">Biển</button><button class="toggle-btn" onclick="setToggle('villa-view',this,'golf')">Golf</button></div></div>
-    <div class="form-group"><label class="form-label">Năm xây dựng</label><input type="number" class="form-input" id="villa-year" placeholder="VD: 2018" min="1980" max="2030"></div>
-    <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.year_built">Năm xây dựng</label><input type="number" class="form-input" id="villa-year" placeholder="VD: 2018" min="1980" max="2030"></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
       <div class="toggle-group" id="villa-legal"><button class="toggle-btn active" onclick="setToggle('villa-legal',this,'so-do')">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('villa-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('villa-legal',this,'chua-co')">Chưa có sổ</button></div></div>
   </div>
   <div class="btn-actions">
@@ -847,7 +852,7 @@ body{
      SCREEN 2E: ĐẤT NỀN
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-landplot">
-  <div class="screen-step">Bước 2 / 3 · 🏡 Đất nền</div>
+  <div class="screen-step" data-i18n="step.lp">Bước 2 / 3 · 🏡 Đất nền</div>
   <h2 class="screen-title">Thông số đất nền</h2>
   <p class="screen-desc">Tải ảnh Sổ đỏ để AI trích xuất thông tin.</p>
   <div class="form-group">
@@ -861,31 +866,31 @@ body{
   </div>
   <div class="divider">hoặc nhập thủ công</div>
   <div class="form-section">
-    <div class="form-section-title">Vị trí & đường tiếp giáp</div>
+    <div class="form-section-title" data-i18n="section.road">Vị trí & đường tiếp giáp</div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="lp-province" onchange="updateDistricts('lp')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="lp-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="lp-province" onchange="updateDistricts('lp')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="lp-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
-    <div class="form-group"><label class="form-label">Loại đường tiếp giáp</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.road_type">Loại đường tiếp giáp</label>
       <div class="toggle-group" id="lp-road-type"><button class="toggle-btn active" onclick="setToggle('lp-road-type',this,'mat-tien')">Mặt tiền đường lớn</button><button class="toggle-btn" onclick="setToggle('lp-road-type',this,'hem-xe-ho')">Hẻm xe hơi</button><button class="toggle-btn" onclick="setToggle('lp-road-type',this,'hem-nho')">Hẻm nhỏ</button></div></div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số thửa đất</div>
+    <div class="form-section-title" data-i18n="section.plot">Thông số thửa đất</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích đất (m²)</label><input type="number" class="form-input" id="lp-area" placeholder="VD: 120"></div>
-      <div class="form-group"><label class="form-label">Mặt tiền (m)</label><input type="number" class="form-input" id="lp-front" placeholder="VD: 6" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.frontage">Mặt tiền (m)</label><input type="number" class="form-input" id="lp-front" placeholder="VD: 6" step="0.1"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Chiều sâu (m)</label><input type="number" class="form-input" id="lp-depth" placeholder="VD: 20" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.depth">Chiều sâu (m)</label><input type="number" class="form-input" id="lp-depth" placeholder="VD: 20" step="0.1"></div>
       <div class="form-group"><label class="form-label">Đường trước rộng (m)</label><input type="number" class="form-input" id="lp-road-width" placeholder="VD: 8" step="0.5"></div>
     </div>
-    <div class="form-group"><label class="form-label">Mục đích sử dụng đất</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.land_use">Mục đích sử dụng đất</label>
       <div class="toggle-group" id="lp-purpose"><button class="toggle-btn active" onclick="setToggle('lp-purpose',this,'dat-o')">Đất ở đô thị</button><button class="toggle-btn" onclick="setToggle('lp-purpose',this,'dat-vuon')">Đất vườn (CLN)</button><button class="toggle-btn" onclick="setToggle('lp-purpose',this,'dat-nn')">Đất nông nghiệp</button></div></div>
     <div class="form-group"><label class="form-label">Quy hoạch 1/500</label>
       <div class="toggle-group" id="lp-qh"><button class="toggle-btn active" onclick="setToggle('lp-qh',this,'da-phe-duyet')">Đã phê duyệt</button><button class="toggle-btn" onclick="setToggle('lp-qh',this,'chua-phe-duyet')">Chưa phê duyệt</button><button class="toggle-btn" onclick="setToggle('lp-qh',this,'khong-ro')">Không rõ</button></div><div class="form-hint">Quy hoạch 1/500 đã phê duyệt tăng giá trị đáng kể</div></div>
-    <div class="form-group"><label class="form-label">Hạ tầng kỹ thuật</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.infra">Hạ tầng kỹ thuật</label>
       <div class="toggle-group" id="lp-infra"><button class="toggle-btn active" onclick="setToggle('lp-infra',this,'day-du')">Đầy đủ (điện + nước + đường nhựa)</button><button class="toggle-btn" onclick="setToggle('lp-infra',this,'co-ban')">Cơ bản</button><button class="toggle-btn" onclick="setToggle('lp-infra',this,'thieu')">Thiếu hạ tầng</button></div></div>
-    <div class="form-group"><label class="form-label">Phong thủy / Vị trí đặc biệt</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.fengshui">Phong thủy / Vị trí đặc biệt</label>
       <div class="toggle-group" id="lp-feng">
         <button class="toggle-btn active" onclick="setToggle('lp-feng',this,'none')">Bình thường</button>
         <button class="toggle-btn" onclick="setToggle('lp-feng',this,'goc')">Lô góc 2 MT (+12%)</button>
@@ -898,7 +903,7 @@ body{
         <button class="toggle-btn" onclick="setToggle('lp-feng',this,'tay-nang')">Hướng Tây nắng (-4%)</button>
       </div>
       <div class="form-hint">Các yếu tố phong thủy ảnh hưởng 4–20% giá trị thị trường theo tâm lý người mua VN</div></div>
-    <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
       <div class="toggle-group" id="lp-legal"><button class="toggle-btn active" onclick="setToggle('lp-legal',this,'so-do')">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('lp-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('lp-legal',this,'giay-tay')">Giấy tờ tay</button></div></div>
   </div>
   <div class="btn-actions">
@@ -910,25 +915,25 @@ body{
      SCREEN 2F: SHOPHOUSE CHÂN ĐẾ
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-shophouse">
-  <div class="screen-step">Bước 2 / 3 · 🏪 Shophouse chân đế</div>
+  <div class="screen-step" data-i18n="step.sh">Bước 2 / 3 · 🏪 Shophouse chân đế</div>
   <h2 class="screen-title">Thông số Shophouse</h2>
   <p class="screen-desc">Shophouse định giá kết hợp So sánh trực tiếp và Thu nhập thương mại. Premium thương mại thường +40–80% so với chung cư cùng tầng.</p>
   <div class="form-section">
-    <div class="form-section-title">Thông tin dự án & vị trí</div>
-    <div class="form-group"><label class="form-label">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="sh-project" placeholder="VD: Masteri Thảo Điền, Vinhomes..."></div>
+    <div class="form-section-title" data-i18n="section.project">Thông tin dự án & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.building">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="sh-project" placeholder="VD: Masteri Thảo Điền, Vinhomes..."></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="sh-province" onchange="updateDistricts('sh')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="sh-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="sh-province" onchange="updateDistricts('sh')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="sh-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số Shophouse</div>
+    <div class="form-section-title" data-i18n="section.sh">Thông số Shophouse</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích sử dụng (m²)</label><input type="number" class="form-input" id="sh-area" placeholder="VD: 80"></div>
       <div class="form-group"><label class="form-label">Số tầng sử dụng</label><input type="number" class="form-input" id="sh-floors" placeholder="VD: 2" min="1" max="4"><div class="form-hint">Tầng 1 + lửng/tầng 2</div></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Mặt tiền (m)</label><input type="number" class="form-input" id="sh-front" placeholder="VD: 6" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.frontage">Mặt tiền (m)</label><input type="number" class="form-input" id="sh-front" placeholder="VD: 6" step="0.1"></div>
       <div class="form-group"><label class="form-label">Chiều rộng đường trước (m)</label><input type="number" class="form-input" id="sh-road-width" placeholder="VD: 12" step="0.5"></div>
     </div>
     <div class="form-group"><label class="form-label">Vị trí trong khu phức hợp</label>
@@ -936,7 +941,7 @@ body{
     <div class="form-group"><label class="form-label">Ngành kinh doanh phù hợp</label>
       <div class="toggle-group" id="sh-biz"><button class="toggle-btn active" onclick="setToggle('sh-biz',this,'fb')">F&B / Nhà hàng</button><button class="toggle-btn" onclick="setToggle('sh-biz',this,'retail')">Bán lẻ thời trang</button><button class="toggle-btn" onclick="setToggle('sh-biz',this,'bank')">Ngân hàng / Dịch vụ</button><button class="toggle-btn" onclick="setToggle('sh-biz',this,'mixed')">Đa ngành</button></div></div>
     <div class="form-group"><label class="form-label">Doanh thu cho thuê hiện tại / tháng (VNĐ) <span>(nếu đang cho thuê)</span></label><input type="number" class="form-input" id="sh-rent" placeholder="VD: 80000000"><div class="form-hint">Để trống nếu chưa có tenant — hệ thống tự ước tính theo khu vực</div></div>
-    <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
       <div class="toggle-group" id="sh-legal"><button class="toggle-btn active" onclick="setToggle('sh-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('sh-legal',this,'hop-dong')">HĐMB</button><button class="toggle-btn" onclick="setToggle('sh-legal',this,'chua-co')">Chưa có sổ</button></div></div>
   </div>
   <div class="btn-actions">
@@ -949,14 +954,14 @@ body{
      SCREEN 2G: BĐS DÒNG TIỀN
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-income">
-  <div class="screen-step">Bước 2 / 3 · 💼 BĐS Dòng tiền</div>
+  <div class="screen-step" data-i18n="step.inc">Bước 2 / 3 · 💼 BĐS Dòng tiền</div>
   <h2 class="screen-title">Thông số tài sản & dòng tiền</h2>
   <p class="screen-desc">Định giá theo phương pháp Thu nhập (Income Approach) — chuẩn TĐGVN 06.</p>
   <div class="form-section">
-    <div class="form-section-title">Thông tin tài sản</div>
+    <div class="form-section-title" data-i18n="section.asset">Thông tin tài sản</div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Loại BĐS dòng tiền</label><select class="form-select" id="inc-subtype"><option value="nha-tro">Nhà trọ / Phòng cho thuê</option><option value="can-ho-cho-thue">Căn hộ cho thuê (Airbnb)</option><option value="khach-san-mini">Khách sạn mini</option><option value="mat-bang">Mặt bằng thương mại</option><option value="van-phong">Văn phòng cho thuê</option><option value="nha-xuong">Nhà xưởng / Kho</option></select></div>
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="inc-province" onchange="updateDistricts('inc')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.income_type">Loại BĐS dòng tiền</label><select class="form-select" id="inc-subtype"><option value="nha-tro">Nhà trọ / Phòng cho thuê</option><option value="can-ho-cho-thue">Căn hộ cho thuê (Airbnb)</option><option value="khach-san-mini">Khách sạn mini</option><option value="mat-bang">Mặt bằng thương mại</option><option value="van-phong">Văn phòng cho thuê</option><option value="nha-xuong">Nhà xưởng / Kho</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="inc-province" onchange="updateDistricts('inc')">PROVINCE_OPTIONS</select></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Tổng diện tích (m²)</label><input type="number" class="form-input" id="inc-area" placeholder="VD: 200"></div>
@@ -968,7 +973,7 @@ body{
     </div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Dữ liệu dòng tiền thực tế</div>
+    <div class="form-section-title" data-i18n="section.cashflow">Dữ liệu dòng tiền thực tế</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Doanh thu cho thuê / tháng (VNĐ)</label><input type="number" class="form-input" id="inc-revenue" placeholder="VD: 50000000"><div class="form-hint">Trung bình 3–6 tháng gần nhất</div></div>
       <div class="form-group"><label class="form-label">Tỷ lệ lấp đầy trung bình (%)</label><input type="number" class="form-input" id="inc-occupancy" placeholder="VD: 85" min="0" max="100"></div>
@@ -979,7 +984,7 @@ body{
     </div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số tài chính</div>
+    <div class="form-section-title" data-i18n="section.finance">Thông số tài chính</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Cap Rate tham chiếu vùng (%) <span class="info-tip" title="Để trống = tự động theo khu vực">?</span></label><input type="number" class="form-input" id="inc-cap-rate" placeholder="Tự động" step="0.1"></div>
       <div class="form-group"><label class="form-label">Tăng trưởng thuê dự kiến (%/năm)</label><input type="number" class="form-input" id="inc-growth" placeholder="VD: 5" step="0.5"></div>
@@ -995,36 +1000,36 @@ body{
      SCREEN 2H: CẢ TÒA NHÀ
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-building">
-  <div class="screen-step">Bước 2 / 3 · 🏗️ Cả tòa nhà</div>
+  <div class="screen-step" data-i18n="step.bld">Bước 2 / 3 · 🏗️ Cả tòa nhà</div>
   <h2 class="screen-title">Thông số tòa nhà</h2>
   <p class="screen-desc">Định giá cả tòa nhà theo Thu nhập (Income) kết hợp Chi phí tái tạo. Phù hợp văn phòng, căn hộ dịch vụ, mix-use.</p>
   <div class="form-section">
-    <div class="form-section-title">Thông tin tòa nhà</div>
-    <div class="form-group"><label class="form-label">Tên tòa nhà</label><input type="text" class="form-input" id="bld-name" placeholder="VD: Tòa nhà ABC, Saigon Center..."></div>
-    <div class="form-group"><label class="form-label">Loại hình tòa nhà</label>
+    <div class="form-section-title" data-i18n="section.bldinfo">Thông tin tòa nhà</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.bld_name">Tên tòa nhà</label><input type="text" class="form-input" id="bld-name" placeholder="VD: Tòa nhà ABC, Saigon Center..."></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.bld_type">Loại hình tòa nhà</label>
       <div class="toggle-group" id="bld-type"><button class="toggle-btn active" onclick="setToggle('bld-type',this,'van-phong')">Văn phòng</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'can-ho-dv')">Căn hộ dịch vụ</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'mix-use')">Mix-use</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'khach-san')">Khách sạn</button></div></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Tỉnh / Thành phố</label><select class="form-select" id="bld-province" onchange="updateDistricts('bld')">PROVINCE_OPTIONS</select></div>
-      <div class="form-group"><label class="form-label">Quận / Huyện</label><select class="form-select" id="bld-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="bld-province" onchange="updateDistricts('bld')">PROVINCE_OPTIONS</select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="bld-district"><option value="">Chọn quận huyện</option></select></div>
     </div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Thông số vật lý</div>
+    <div class="form-section-title" data-i18n="section.physical">Thông số vật lý</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Tổng diện tích sàn GFA (m²)</label><input type="number" class="form-input" id="bld-gfa" placeholder="VD: 5000"><div class="form-hint">Gross Floor Area — tổng các sàn</div></div>
-      <div class="form-group"><label class="form-label">Tổng số tầng</label><input type="number" class="form-input" id="bld-floors" placeholder="VD: 12" min="1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.total_floors">Tổng số tầng</label><input type="number" class="form-input" id="bld-floors" placeholder="VD: 12" min="1"></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Diện tích đất (m²)</label><input type="number" class="form-input" id="bld-land-area" placeholder="VD: 600"></div>
-      <div class="form-group"><label class="form-label">Năm xây dựng</label><input type="number" class="form-input" id="bld-year" placeholder="VD: 2015" min="1970" max="2026"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.year_built">Năm xây dựng</label><input type="number" class="form-input" id="bld-year" placeholder="VD: 2015" min="1970" max="2026"></div>
     </div>
-    <div class="form-group"><label class="form-label">Hạng tòa nhà</label>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.bld_grade">Hạng tòa nhà</label>
       <div class="toggle-group" id="bld-grade"><button class="toggle-btn active" onclick="setToggle('bld-grade',this,'A')">Hạng A</button><button class="toggle-btn" onclick="setToggle('bld-grade',this,'B')">Hạng B</button><button class="toggle-btn" onclick="setToggle('bld-grade',this,'C')">Hạng C</button></div></div>
     <div class="form-group"><label class="form-label">Thang máy, PCCC</label>
       <div class="toggle-group" id="bld-systems"><button class="toggle-btn active" onclick="setToggle('bld-systems',this,'day-du')">Đầy đủ, cập nhật</button><button class="toggle-btn" onclick="setToggle('bld-systems',this,'co-ban')">Cơ bản</button><button class="toggle-btn" onclick="setToggle('bld-systems',this,'cu')">Cũ, cần nâng cấp</button></div></div>
   </div>
   <div class="form-section">
-    <div class="form-section-title">Dữ liệu vận hành</div>
+    <div class="form-section-title" data-i18n="section.ops">Dữ liệu vận hành</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Doanh thu cho thuê / tháng (VNĐ)</label><input type="number" class="form-input" id="bld-revenue" placeholder="VD: 500000000"></div>
       <div class="form-group"><label class="form-label">Tỷ lệ lấp đầy (%)</label><input type="number" class="form-input" id="bld-occupancy" placeholder="VD: 90" min="0" max="100"></div>
@@ -1045,13 +1050,13 @@ body{
      ══════════════════════════════════════ -->
 <div class="screen" id="screen-result">
   <div class="result-header">
-    <div class="result-badge">🏠 Kết quả định giá sơ bộ</div>
+    <div class="result-badge" data-i18n="result.badge">🏠 Kết quả định giá sơ bộ</div>
     <div class="result-property-name" id="resultPropertyName">—</div>
     <div class="result-value-range"><span id="resultLow">—</span> – <span id="resultHigh">—</span></div>
-    <div class="result-unit">Tỷ đồng (VNĐ)</div>
+    <div class="result-unit" data-i18n="result.unit">Tỷ đồng (VNĐ)</div>
   </div>
   <div class="method-breakdown">
-    <div class="method-breakdown-title">Phân tích theo phương pháp</div>
+    <div class="method-breakdown-title" data-i18n="result.methods">Phân tích theo phương pháp</div>
     <div id="methodRows"></div>
   </div>
   <div class="metrics-grid">
@@ -1074,7 +1079,7 @@ body{
       <div class="freemium-price">$15 USD</div>
     </div>
   </div>
-  <div class="disclaimer"><strong>Miễn trừ trách nhiệm:</strong> Kết quả chỉ mang tính tham khảo dựa trên AVM và dữ liệu thị trường. <strong>Không thay thế</strong> Chứng thư thẩm định giá chính thức theo quy định Bộ Tài chính. Tham vấn đơn vị thẩm định độc lập trước khi giao dịch.</div>
+  <div class="disclaimer" data-i18n="[html]result.disclaimer"><strong>Miễn trừ trách nhiệm:</strong> Kết quả chỉ mang tính tham khảo dựa trên AVM và dữ liệu thị trường. <strong>Không thay thế</strong> Chứng thư thẩm định giá chính thức theo quy định Bộ Tài chính. Tham vấn đơn vị thẩm định độc lập trước khi giao dịch.</div>
   <div class="btn-actions">
     <button class="btn btn-gold" onclick="goToPayment()">🔓 Mở khóa báo cáo đầy đủ — $15 USD</button>
     <button class="btn-back" onclick="goBack()">← Chỉnh sửa thông số</button>
@@ -1124,7 +1129,7 @@ body{
 <div class="screen" id="screen-success">
   <div class="success-screen">
     <div class="success-icon">✓</div>
-    <h2 class="success-title">Đang tạo báo cáo!</h2>
+    <h2 class="success-title" data-i18n="success.title">Đang tạo báo cáo!</h2>
     <p class="success-desc">Báo cáo định giá BĐS chuyên sâu đang được AI xử lý và sẽ gửi về email <strong id="successEmail"></strong> trong 3–5 phút.</p>
     <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);border-radius:12px;padding:14px;margin-bottom:22px;font-size:12px;color:var(--grey-400);line-height:1.8">
       📄 Báo cáo PDF định giá chuẩn TĐGVN<br>
@@ -1143,8 +1148,8 @@ body{
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-header">
-      <div class="modal-title">Chọn phương thức thanh toán</div>
-      <div class="modal-sub">Mở khóa Báo cáo Định giá BĐS chuyên sâu</div>
+      <div class="modal-title" data-i18n="modal.title">Chọn phương thức thanh toán</div>
+      <div class="modal-sub" data-i18n="modal.sub">Mở khóa Báo cáo Định giá BĐS chuyên sâu</div>
     </div>
     <div class="modal-body">
 
@@ -1159,13 +1164,13 @@ body{
       <div class="pay-methods" id="payMethods">
         <div class="pay-method selected" id="pm-polar" onclick="selectPayMethod('polar')">
           <div class="pay-method-icon">💳</div>
-          <div class="pay-method-name">Thẻ quốc tế</div>
+          <div class="pay-method-name" data-i18n="pay.intl.name">Thẻ quốc tế</div>
           <div class="pay-method-desc">Visa · Mastercard<br>Khách nước ngoài / VN ở nước ngoài</div>
           <div class="pay-method-price" id="polarPrice">$15 USD</div>
         </div>
         <div class="pay-method" id="pm-sepay" onclick="selectPayMethod('sepay')">
           <div class="pay-method-icon">🏦</div>
-          <div class="pay-method-name">Chuyển khoản VN</div>
+          <div class="pay-method-name" data-i18n="pay.vn.name">Chuyển khoản VN</div>
           <div class="pay-method-desc">MBBank · SePay<br>Khách trong nước</div>
           <div class="pay-method-price" id="sepayPrice">420,000 VND</div>
         </div>
@@ -2064,216 +2069,333 @@ function resetApp(){
 
 // ─── LANGUAGE ─────────────────────────────────────────────
 var LANG = 'vi';
-var TRANSLATIONS = {
-  vi: {
-    'hero-eyebrow': 'Định Giá Bất Động Sản',
-    'hero-title-1': 'Ước tính giá trị BĐS',
-    'hero-title-2': 'chuẩn TĐGVN trong 3 phút',
-    'hero-sub': 'Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận.',
-    'nav-back': '← Về trang chủ',
-    'step1-title': 'Chọn loại hình bất động sản',
-    'step1-desc': 'Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.',
-    'group1-label': '🏡 Nhà ở & Đầu tư cá nhân',
-    'group2-label': '🏪 Thương mại & Đầu tư',
-    'btn-calculate': 'Tính giá trị ước tính →',
-    'btn-unlock': '🔓 Mở khóa báo cáo đầy đủ — $15 USD',
-    'modal-title': 'Chọn phương thức thanh toán',
-    'modal-sub': 'Mở khóa Báo cáo Định giá BĐS chuyên sâu',
-    'back-btn': '← Chọn lại loại hình',
-    'result-badge': '🏠 Kết quả định giá sơ bộ',
-    'result-unit': 'Tỷ đồng (VNĐ)',
-    'method-title': 'Phân tích theo phương pháp',
-    'metric-psm': 'Giá / m²',
-    'metric-method': 'Phương pháp chính',
-    'metric-conf': 'Mức tin cậy',
-    'promo-placeholder': 'Nhập mã giảm giá (nếu có)',
-    'promo-apply': 'Áp dụng',
-    'pay-intl-name': 'Thẻ quốc tế',
-    'pay-intl-desc': 'Visa · Mastercard · Khách nước ngoài',
-    'pay-vn-name': 'Chuyển khoản VN',
-    'pay-vn-desc': 'MBBank · SePay · Khách trong nước',
-    'pay-intl-btn': '💳 Thanh toán bằng thẻ quốc tế →',
-    'ck-title': 'Tôi đã chuyển khoản',
-    'email-label': 'Email nhận báo cáo',
-    'success-title': 'Đang tạo báo cáo!',
-    'success-desc': 'Báo cáo định giá BĐS chuyên sâu đang được AI xử lý và sẽ gửi về email trong 3–5 phút.'
-  },
-  en: {
-    'hero-eyebrow': 'Real Estate Valuation',
-    'hero-title-1': 'Estimate your property value',
-    'hero-title-2': 'Vietnam standard · 3 minutes',
-    'hero-sub': 'Automated AVM system — 8 property types, 4 Ministry of Finance-recognized valuation methods. AI-powered Land Certificate OCR supported.',
-    'nav-back': '← Back to Home',
-    'step1-title': 'Select property type',
-    'step1-desc': 'The system applies the most appropriate valuation methodology for each asset class.',
-    'group1-label': '🏡 Residential & Personal Investment',
-    'group2-label': '🏪 Commercial & Investment',
-    'btn-calculate': 'Calculate estimated value →',
-    'btn-unlock': '🔓 Unlock full report — $15 USD',
-    'modal-title': 'Select payment method',
-    'modal-sub': 'Unlock your In-Depth Real Estate Valuation Report',
-    'back-btn': '← Back to property types',
-    'result-badge': '🏠 Preliminary Valuation Result',
-    'result-unit': 'Billion VND',
-    'method-title': 'Breakdown by valuation method',
-    'metric-psm': 'Price / sqm',
-    'metric-method': 'Primary Method',
-    'metric-conf': 'Confidence',
-    'promo-placeholder': 'Enter discount code (if any)',
-    'promo-apply': 'Apply',
-    'pay-intl-name': 'International Card',
-    'pay-intl-desc': 'Visa · Mastercard · Overseas customers',
-    'pay-vn-name': 'Bank Transfer (Vietnam)',
-    'pay-vn-desc': 'MBBank · SePay · Domestic customers',
-    'pay-intl-btn': '💳 Pay with international card →',
-    'ck-title': 'I have transferred',
-    'email-label': 'Email for report delivery',
-    'success-title': 'Generating your report!',
-    'success-desc': 'Your in-depth Real Estate Valuation Report is being processed by AI and will be delivered to your email within 3–5 minutes.'
-  }
+// ── i18next CONFIGURATION ────────────────────────────────────
+var I18N_RESOURCES = {
+  vi: { translation: {
+    hero: {
+      eyebrow: 'Định Giá Bất Động Sản',
+      title: 'Ước tính giá trị BĐS<br><em>chuẩn TĐGVN</em> trong 3 phút',
+      subtitle: 'Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận. Hỗ trợ trích xuất thông tin Sổ đỏ qua AI Vision.'
+    },
+    nav: { back: '← Về trang chủ' },
+    step1: {
+      step: 'Bước 1 / 3',
+      title: 'Chọn loại hình bất động sản',
+      desc: 'Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.'
+    },
+    step: {
+      apt:  'Bước 2 / 3 · 🏢 Chung cư / Căn hộ',
+      pth:  'Bước 2 / 3 · 👑 Penthouse',
+      land: 'Bước 2 / 3 · 🏠 Nhà phố / Nhà liền kề',
+      villa:'Bước 2 / 3 · 🌿 Biệt thự / Villa',
+      lp:   'Bước 2 / 3 · 🏡 Đất nền',
+      sh:   'Bước 2 / 3 · 🏪 Shophouse chân đế',
+      inc:  'Bước 2 / 3 · 💼 BĐS Dòng tiền',
+      bld:  'Bước 2 / 3 · 🏗️ Cả tòa nhà'
+    },
+    group: {
+      residential: '🏡 Nhà ở & Đầu tư cá nhân',
+      commercial:  '🏪 Thương mại & Đầu tư'
+    },
+    type: {
+      apartment: { name:'Chung cư / Căn hộ',      desc:'Căn hộ trong dự án có chủ đầu tư, condotel' },
+      penthouse:  { name:'Penthouse',               desc:'Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh' },
+      landed:     { name:'Nhà phố / Nhà liền kề',  desc:'Nhà phố, nhà liền kề, số tầng xác định' },
+      villa:      { name:'Biệt thự / Villa',        desc:'Biệt thự đơn lập, song lập, liền kề cao cấp' },
+      landplot:   { name:'Đất nền',                 desc:'Đất thổ cư, đất nền dự án, đất vườn' },
+      shophouse:  { name:'Shophouse chân đế',       desc:'Tầng 1–3 tòa nhà, mặt tiền kinh doanh' },
+      income:     { name:'BĐS Dòng tiền',           desc:'Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini' },
+      building:   { name:'Cả tòa nhà',              desc:'Tòa nhà văn phòng, căn hộ dịch vụ, mix-use' }
+    },
+    section: {
+      project: 'Thông tin dự án & vị trí', projinfo: 'Thông tin dự án',
+      apt: 'Thông số căn hộ', pth: 'Thông số Penthouse',
+      land: 'Thông số nhà phố', lp: 'Thông số thửa đất',
+      sh: 'Thông số Shophouse', asset: 'Thông tin tài sản',
+      cashflow: 'Dữ liệu dòng tiền thực tế', finance: 'Thông số tài chính',
+      bldinfo: 'Thông tin tòa nhà', physical: 'Thông số vật lý',
+      ops: 'Dữ liệu vận hành', location: 'Vị trí tài sản',
+      road: 'Vị trí & đường tiếp giáp', plot: 'Thông số thửa đất',
+      classify: 'Phân loại & vị trí', landwork: 'Thông số đất & công trình',
+      amenity: 'Tiện ích đặc biệt', legal: 'Pháp lý'
+    },
+    lbl: {
+      province:'Tỉnh / Thành phố', district:'Quận / Huyện',
+      project:'Tên dự án / Chủ đầu tư', building:'Tên tòa nhà / Dự án',
+      bedrooms:'Số phòng ngủ', direction:'Hướng ban công',
+      year:'Năm bàn giao', year_built:'Năm xây dựng',
+      interior:'Tình trạng nội thất', legal:'Tình trạng pháp lý',
+      floors:'Số tầng xây dựng', total_floors:'Tổng số tầng',
+      frontage:'Mặt tiền (m)', depth:'Chiều sâu (m)',
+      road_type:'Loại đường tiếp giáp', land_use:'Mục đích sử dụng đất',
+      infra:'Hạ tầng kỹ thuật', fengshui:'Phong thủy / Vị trí đặc biệt',
+      villa_type:'Loại biệt thự', view:'View / Cảnh quan',
+      income_type:'Loại BĐS dòng tiền', bld_type:'Loại hình tòa nhà',
+      bld_grade:'Hạng tòa nhà', bld_name:'Tên tòa nhà'
+    },
+    btn: {
+      calculate: 'Tính giá trị ước tính →',
+      unlock: '🔓 Mở khóa báo cáo đầy đủ — $15 USD',
+      back: '← Chọn lại loại hình',
+      ck: '✓ Tôi đã chuyển khoản',
+      polar: '💳 Thanh toán bằng thẻ quốc tế →',
+      reset: 'Định giá BĐS khác →'
+    },
+    result: {
+      badge: '🏠 Kết quả định giá sơ bộ',
+      unit: 'Tỷ đồng (VNĐ)',
+      methods: 'Phân tích theo phương pháp',
+      disclaimer: '<strong>Miễn trừ trách nhiệm:</strong> Kết quả chỉ mang tính tham khảo dựa trên AVM và dữ liệu thị trường. <strong>Không thay thế</strong> Chứng thư thẩm định giá chính thức theo quy định Bộ Tài chính. Tham vấn đơn vị thẩm định độc lập trước khi giao dịch.'
+    },
+    modal: {
+      title: 'Chọn phương thức thanh toán',
+      sub: 'Mở khóa Báo cáo Định giá BĐS chuyên sâu'
+    },
+    pay: {
+      intl: { name:'Thẻ quốc tế', desc:'Visa · Mastercard', subdesc:'Khách nước ngoài / VN ở nước ngoài' },
+      vn:   { name:'Chuyển khoản VN', desc:'MBBank · SePay', subdesc:'Khách trong nước' }
+    },
+    promo: { placeholder:'Nhập mã giảm giá (nếu có)', apply:'Áp dụng' },
+    email: { label:'Email nhận báo cáo' },
+    verify: {
+      checking: 'Đang xác nhận giao dịch tự động...',
+      checking_sub: 'Kiểm tra hệ thống ngân hàng, vui lòng chờ',
+      not_found_title: '⚠️ Chưa xác nhận được giao dịch tự động',
+      not_found_desc: 'Giao dịch có thể mất 1–3 phút để cập nhật. Bạn có thể upload ảnh bill chuyển khoản để chúng tôi xử lý ngay.',
+      bill_title: 'Chụp hoặc tải ảnh bill chuyển khoản',
+      bill_sub: 'Screenshot VCB · MB · TCB · BIDV · bất kỳ ngân hàng nào',
+      submit_valid: '📤 Gửi bill xác nhận → Nhận báo cáo',
+      submit_manual: '📤 Gửi bill (admin xác nhận thủ công)',
+      submitted_title: 'Đã nhận bill của bạn!',
+      submitted_desc: 'Admin đang xác nhận. Báo cáo sẽ gửi về email trong 5–15 phút.',
+      retry: '🔄 Kiểm tra lại',
+      telegram: '✈️ Telegram Support'
+    },
+    success: {
+      title: 'Đang tạo báo cáo!',
+      desc: 'Báo cáo định giá BĐS chuyên sâu đang được AI xử lý và sẽ gửi về email trong 3–5 phút.'
+    },
+    payment: {
+      title: 'Mở khóa báo cáo định giá',
+      desc: 'Báo cáo PDF gửi về email trong 3–5 phút sau khi xác nhận thanh toán.'
+    }
+  }},
+  en: { translation: {
+    hero: {
+      eyebrow: 'Real Estate Valuation',
+      title: 'Estimate your property value<br><em>Vietnam standard · 3 minutes</em>',
+      subtitle: 'Automated AVM platform — 8 property types, 4 valuation methods recognized by the Ministry of Finance. AI-powered Land Certificate extraction supported.'
+    },
+    nav: { back: '← Back to Home' },
+    step1: {
+      step: 'Step 1 of 3',
+      title: 'Select property type',
+      desc: 'The system applies the most appropriate valuation methodology for each asset class.'
+    },
+    step: {
+      apt:  'Step 2 of 3 · 🏢 Apartment / Condo',
+      pth:  'Step 2 of 3 · 👑 Penthouse',
+      land: 'Step 2 of 3 · 🏠 Townhouse / Row house',
+      villa:'Step 2 of 3 · 🌿 Villa / Detached House',
+      lp:   'Step 2 of 3 · 🏡 Land Plot',
+      sh:   'Step 2 of 3 · 🏪 Podium Shophouse',
+      inc:  'Step 2 of 3 · 💼 Income-generating Property',
+      bld:  'Step 2 of 3 · 🏗️ Entire Building'
+    },
+    group: {
+      residential: '🏡 Residential & Personal Investment',
+      commercial:  '🏪 Commercial & Investment'
+    },
+    type: {
+      apartment: { name:'Apartment / Condo',          desc:'Units within a developer project, condotel' },
+      penthouse:  { name:'Penthouse',                  desc:'Top-floor unit with private rooftop & panoramic views' },
+      landed:     { name:'Townhouse / Row house',      desc:'Terraced house, shophouse, defined number of floors' },
+      villa:      { name:'Villa / Detached House',     desc:'Detached, semi-detached or high-end linked villa' },
+      landplot:   { name:'Land Plot',                  desc:'Residential land, project site, agricultural land' },
+      shophouse:  { name:'Podium Shophouse',           desc:'Ground-floor retail unit, street-facing commercial space' },
+      income:     { name:'Income-generating Property', desc:'Rental units, serviced apartments, F&B / retail space' },
+      building:   { name:'Entire Building',            desc:'Office tower, serviced apartment building, mixed-use' }
+    },
+    section: {
+      project:'Project & Location', projinfo:'Project Information',
+      apt:'Apartment Specifications', pth:'Penthouse Specifications',
+      land:'Property Specifications', lp:'Plot Specifications',
+      sh:'Shophouse Specifications', asset:'Asset Information',
+      cashflow:'Actual Cash Flow Data', finance:'Financial Parameters',
+      bldinfo:'Building Information', physical:'Physical Specifications',
+      ops:'Operating Data', location:'Asset Location',
+      road:'Location & Road Access', plot:'Land Plot Details',
+      classify:'Classification & Location', landwork:'Land & Structure Details',
+      amenity:'Special Amenities', legal:'Legal Status'
+    },
+    lbl: {
+      province:'Province / City', district:'District',
+      project:'Project Name / Developer', building:'Building Name / Project',
+      bedrooms:'Bedrooms', direction:'Primary balcony orientation',
+      year:'Year of completion', year_built:'Year of construction',
+      interior:'Interior condition', legal:'Legal status',
+      floors:'Number of floors', total_floors:'Total building floors',
+      frontage:'Frontage width (m)', depth:'Plot depth (m)',
+      road_type:'Road access type', land_use:'Land use purpose',
+      infra:'Technical infrastructure', fengshui:'Feng shui / Special location factors',
+      villa_type:'Villa type', view:'View / Landscape',
+      income_type:'Income property type', bld_type:'Building type',
+      bld_grade:'Building grade', bld_name:'Building name'
+    },
+    btn: {
+      calculate: 'Calculate estimated value →',
+      unlock: '🔓 Unlock full report — $15 USD',
+      back: '← Back to property types',
+      ck: '✓ I have transferred',
+      polar: '💳 Pay with international card →',
+      reset: 'Valuate another property →'
+    },
+    result: {
+      badge: '🏠 Preliminary Valuation Result',
+      unit: 'Billion VND',
+      methods: 'Breakdown by valuation method',
+      disclaimer: '<strong>Disclaimer:</strong> Results are indicative only, based on our Automated Valuation Model (AVM) and market data. This report does <strong>not</strong> constitute an official Valuation Certificate under Vietnam Ministry of Finance regulations (Law on Prices No. 16/2023/QH15). Please consult a licensed appraiser before transacting.'
+    },
+    modal: {
+      title: 'Select payment method',
+      sub: 'Unlock your In-Depth Real Estate Valuation Report'
+    },
+    pay: {
+      intl: { name:'International Card', desc:'Visa · Mastercard', subdesc:'Overseas customers / Vietnamese abroad' },
+      vn:   { name:'Bank Transfer (Vietnam)', desc:'MBBank · SePay', subdesc:'Domestic customers' }
+    },
+    promo: { placeholder:'Enter discount code (if any)', apply:'Apply' },
+    email: { label:'Email for report delivery' },
+    verify: {
+      checking: 'Verifying your transaction automatically...',
+      checking_sub: 'Checking bank records, please wait',
+      not_found_title: '⚠️ Unable to confirm transaction automatically',
+      not_found_desc: 'Transactions may take 1–3 minutes to process. You can upload a screenshot of your transfer receipt for immediate manual processing.',
+      bill_title: 'Upload transfer receipt screenshot',
+      bill_sub: 'Screenshots from any bank app accepted: VCB · MB · TCB · BIDV',
+      submit_valid: '📤 Submit receipt → Receive report',
+      submit_manual: '📤 Submit receipt (manual review required)',
+      submitted_title: 'Receipt received!',
+      submitted_desc: 'Our team is reviewing your payment. Your report will be delivered to your email within 5–15 minutes.',
+      retry: '🔄 Check again',
+      telegram: '✈️ Telegram Support'
+    },
+    success: {
+      title: 'Generating your report!',
+      desc: 'Your in-depth Real Estate Valuation Report is being processed by our AI engine and will be delivered to your email within 3–5 minutes.'
+    },
+    payment: {
+      title: 'Unlock valuation report',
+      desc: 'Your PDF report will be delivered to your email within 3–5 minutes of payment confirmation.'
+    }
+  }}
 };
 
-function setLang(lang) {
-  LANG = lang;
-  var t = TRANSLATIONS[lang];
-  if (!t) return;
+// ── INIT i18next ───────────────────────────────────────────
+var LANG = localStorage.getItem('valuitbiz_lang') || 'vi';
 
-  // Toggle buttons
-  document.getElementById('btn-vi').classList.toggle('active', lang==='vi');
-  document.getElementById('btn-en').classList.toggle('active', lang==='en');
-
-  function setText(sel, key) {
-    var el = document.querySelector(sel);
-    if (el && t[key]) el.textContent = t[key];
-  }
-  function setHTML(sel, html) {
-    var el = document.querySelector(sel);
-    if (el) el.innerHTML = html;
-  }
-  function setAll(sel, key) {
-    document.querySelectorAll(sel).forEach(function(el){ if(t[key]) el.textContent = t[key]; });
-  }
-  function setAttr(sel, attr, key) {
-    var el = document.querySelector(sel);
-    if (el && t[key]) el.setAttribute(attr, t[key]);
-  }
-
-  // ── Hero ──
-  setHTML('.hero-eyebrow',
-    '<span style="width:28px;height:1px;background:var(--terra-400);opacity:.6;display:inline-block"></span> '+
-    t['hero-eyebrow']+
-    '<span style="width:28px;height:1px;background:var(--terra-400);opacity:.6;display:inline-block"></span>');
-  setHTML('.hero-title', t['hero-title-1']+'<br><em>'+t['hero-title-2']+'</em>');
-  setText('.hero-subtitle', 'hero-sub');
-  setText('#nav-back-link', 'nav-back');
-
-  // ── Screen 1 ──
-  setText('#screen-1 .screen-title', 'step1-title');
-  setText('#screen-1 .screen-desc', 'step1-desc');
-  var groups = document.querySelectorAll('.type-group-label');
-  if (groups[0]) groups[0].textContent = t['group1-label'];
-  if (groups[1]) groups[1].textContent = t['group2-label'];
-
-  // ── Property type cards ──
-  var typeLabels = {
-    'apartment': lang==='en' ? ['Apartment / Condo','Units within a developer project, condotel'] : ['Chung cư / Căn hộ','Căn hộ trong dự án có chủ đầu tư, condotel'],
-    'penthouse':  lang==='en' ? ['Penthouse','Top-floor unit with private rooftop & panoramic views'] : ['Penthouse','Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh'],
-    'landed':     lang==='en' ? ['Townhouse / Row house','Shophouse, terraced house, defined number of floors'] : ['Nhà phố / Nhà liền kề','Nhà phố, nhà liền kề, số tầng xác định'],
-    'villa':      lang==='en' ? ['Villa / Detached House','Detached, semi-detached or luxury linked villa'] : ['Biệt thự / Villa','Biệt thự đơn lập, song lập, liền kề cao cấp'],
-    'landplot':   lang==='en' ? ['Land Plot','Residential land, project land, garden land'] : ['Đất nền','Đất thổ cư, đất nền dự án, đất vườn'],
-    'shophouse':  lang==='en' ? ['Podium Shophouse','Ground-floor retail unit, street-facing commercial'] : ['Shophouse chân đế','Tầng 1–3 tòa nhà, mặt tiền kinh doanh'],
-    'income':     lang==='en' ? ['Income-generating Property','Rental units, serviced apartments, commercial space'] : ['BĐS Dòng tiền','Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini'],
-    'building':   lang==='en' ? ['Entire Building','Office, serviced apartment, mixed-use building'] : ['Cả tòa nhà','Tòa nhà văn phòng, căn hộ dịch vụ, mix-use']
-  };
-  Object.keys(typeLabels).forEach(function(type) {
-    var card = document.getElementById('type-'+type);
-    if (!card) return;
-    var labels = typeLabels[type];
-    var nameEl = card.querySelector('.type-name');
-    var descEl = card.querySelector('.type-desc');
-    if (nameEl) nameEl.textContent = labels[0];
-    if (descEl) descEl.textContent = labels[1];
+function initI18n(callback) {
+  i18next.init({
+    lng: LANG,
+    fallbackLng: 'vi',
+    resources: I18N_RESOURCES,
+    interpolation: { escapeValue: false }
+  }, function(err) {
+    if (err) console.warn('i18next init error:', err);
+    if (callback) callback();
   });
+}
 
-  // ── Form labels (key inputs) ──
-  var formLabels = lang === 'en' ? {
-    'Province / City': 'Province / City',
-    'District': 'District',
-    'Project Name / Developer': 'Project Name / Developer',
-    'Net floor area (sqm)': 'Net floor area (sqm)',
-    'Floor': 'Floor',
-    'Bedrooms': 'Bedrooms',
-    'Balcony orientation': 'Balcony orientation',
-    'Legal status': 'Legal status',
-    'Year of completion': 'Year of completion',
-    'Interior condition': 'Interior condition'
-  } : {};
-
-  // ── Result screen ──
-  setText('#screen-result .result-badge', 'result-badge');
-  setText('#screen-result .result-unit', 'result-unit');
-  setText('.method-breakdown-title', 'method-title');
-  document.querySelectorAll('.metric-card').forEach(function(card, i) {
-    var labelEl = card.querySelector('.metric-label');
-    if (!labelEl) return;
-    var keys = ['metric-psm','metric-method','metric-conf'];
-    if (t[keys[i]]) labelEl.textContent = t[keys[i]];
-  });
-  setText('.disclaimer', 'disclaimer-text');
-
-  // ── Modal ──
-  setText('.modal-title', 'modal-title');
-  setText('.modal-sub', 'modal-sub');
-  setText('.pay-method-name:first-of-type', 'pay-intl-name');
-  var pmNames = document.querySelectorAll('.pay-method-name');
-  var pmDescs = document.querySelectorAll('.pay-method-desc');
-  if (pmNames[0] && t['pay-intl-name']) pmNames[0].textContent = t['pay-intl-name'];
-  if (pmNames[1] && t['pay-vn-name'])   pmNames[1].textContent = t['pay-vn-name'];
-  if (pmDescs[0] && t['pay-intl-desc']) pmDescs[0].innerHTML = t['pay-intl-desc'].replace('\n','<br>');
-  if (pmDescs[1] && t['pay-vn-desc'])   pmDescs[1].innerHTML = t['pay-vn-desc'].replace('\n','<br>');
-  var polarBtn = document.getElementById('btnPolar');
-  if (polarBtn && t['pay-intl-btn']) polarBtn.textContent = t['pay-intl-btn'];
-  setAttr('#promoInput', 'placeholder', 'promo-placeholder');
-  setText('.promo-btn', 'promo-apply');
-
-  // ── Email label ──
-  document.querySelectorAll('.form-label').forEach(function(el) {
-    if (el.textContent.includes('Email nhận') || el.textContent.includes('Email for')) {
-      el.childNodes[0].textContent = t['email-label'] + ' ';
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (key.startsWith('[html]')) {
+      key = key.replace('[html]','');
+      var val = i18next.t(key);
+      if (val && val !== key) el.innerHTML = val;
+    } else {
+      var val = i18next.t(key);
+      if (val && val !== key) el.textContent = val;
     }
   });
 
-  // ── CK Button ──
-  var ckBtn = document.getElementById('btnSepayCK');
-  if (ckBtn && !ckBtn.disabled) ckBtn.textContent = (lang==='en' ? '✓ ' : '✓ Tôi đã ') + t['ck-title'];
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-placeholder');
+    var val = i18next.t(key);
+    if (val && val !== key) el.setAttribute('placeholder', val);
+  });
 
-  // ── All "calculate" buttons ──
+  // Dynamic elements not easily tagged
+  var t = i18next.t.bind(i18next);
+
+  // All "Calculate" buttons
   document.querySelectorAll('.btn.btn-primary[onclick="goToResult()"]').forEach(function(b){
-    b.textContent = t['btn-calculate'];
+    b.textContent = t('btn.calculate');
   });
-
-  // ── All "unlock" buttons ──
+  // All "Unlock" buttons
   document.querySelectorAll('.btn.btn-gold[onclick="goToPayment()"]').forEach(function(b){
-    b.textContent = t['btn-unlock'];
+    b.textContent = t('btn.unlock');
   });
-
-  // ── Back buttons ──
+  // All "Back" buttons
   document.querySelectorAll('.btn-back[onclick="goBack()"]').forEach(function(b){
-    b.textContent = t['back-btn'];
+    b.textContent = t('btn.back');
   });
-
-  // ── Success screen ──
-  setText('#screen-success .success-title', 'success-title');
-  setText('#screen-success .success-desc', 'success-desc');
+  // Promo
+  var promoInput = document.getElementById('promoInput');
+  if (promoInput) promoInput.placeholder = t('promo.placeholder');
+  var promoBtn = document.querySelector('.promo-btn');
+  if (promoBtn) promoBtn.textContent = t('promo.apply');
+  // Pay method descriptions
+  var pmDescs = document.querySelectorAll('.pay-method-desc');
+  if (pmDescs[0]) pmDescs[0].innerHTML = t('pay.intl.desc')+'<br><span style="font-size:10px;color:var(--grey-600)">'+t('pay.intl.subdesc')+'</span>';
+  if (pmDescs[1]) pmDescs[1].innerHTML = t('pay.vn.desc')+'<br><span style="font-size:10px;color:var(--grey-600)">'+t('pay.vn.subdesc')+'</span>';
+  // Polar button
+  var btnPolar = document.getElementById('btnPolar');
+  if (btnPolar) btnPolar.textContent = t('btn.polar');
+  // CK button (only if not disabled)
+  var btnCK = document.getElementById('btnSepayCK');
+  if (btnCK && !btnCK.disabled) btnCK.textContent = t('btn.ck');
+  // Email labels
+  document.querySelectorAll('.form-label').forEach(function(el){
+    if (el.textContent.trim().startsWith('Email')) {
+      var span = el.querySelector('span');
+      el.textContent = t('email.label') + ' ';
+      if (span) el.appendChild(span);
+    }
+  });
+  // Reset button
+  document.querySelectorAll('[onclick="resetApp()"]').forEach(function(b){
+    b.textContent = t('btn.reset');
+  });
+  // Verify states
+  var vChecking = document.querySelector('.verify-checking-text');
+  if (vChecking) vChecking.innerHTML = t('verify.checking')+'<br><span style="font-size:11px;color:var(--grey-600)">'+t('verify.checking_sub')+'</span>';
+  var vUpTitle = document.querySelector('.verify-upload-title');
+  if (vUpTitle) vUpTitle.textContent = t('verify.not_found_title');
+  var vUpSub = document.querySelector('.verify-upload-sub');
+  if (vUpSub) vUpSub.textContent = t('verify.not_found_desc');
+  var billTitle = document.querySelector('.bill-upload-text');
+  if (billTitle) billTitle.textContent = t('verify.bill_title');
+  var billSub = document.querySelector('.bill-upload-sub-text');
+  if (billSub) billSub.textContent = t('verify.bill_sub');
+  var subTitle = document.querySelector('.verify-submitted-title');
+  if (subTitle) subTitle.textContent = t('verify.submitted_title');
+  var subDesc = document.querySelector('.verify-submitted-desc');
+  if (subDesc) subDesc.innerHTML = t('verify.submitted_desc');
+  // Contact buttons
+  document.querySelectorAll('[onclick="retryVerify()"]').forEach(function(b){ b.textContent = t('verify.retry'); });
 }
 
-// ─── INIT ─────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded',function(){
-  // Inject province & direction options
-  document.querySelectorAll('select[id$="-province"]').forEach(function(s){s.innerHTML=PROVINCE_HTML;});
-  document.querySelectorAll('select[id="apt-direction"]').forEach(function(s){s.innerHTML=DIRECTION_HTML;});
-  goTo('screen-1');
-});
-</script>
-</body>
-</html>
+function setLang(lang) {
+  LANG = lang;
+  localStorage.setItem('valuitbiz_lang', lang);
+  document.getElementById('btn-vi').classList.toggle('active', lang==='vi');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.documentElement.lang = lang;
+  i18next.changeLanguage(lang, function() {
+    applyTranslations();
+  });
+}
+
+
