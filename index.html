@@ -516,8 +516,19 @@ body{
     <div class="form-group"><label class="form-label">Diện tích sàn xây dựng (m²) <span>(nếu biết)</span></label><input type="number" class="form-input" id="land-floor-area" placeholder="VD: 320"><div class="form-hint">Tổng diện tích các sàn = diện tích đất × số tầng (ước tính)</div></div>
     <div class="form-group"><label class="form-label">Tình trạng nội thất</label>
       <div class="toggle-group" id="land-interior"><button class="toggle-btn active" onclick="setToggle('land-interior',this,'tho')">Thô / Xây thô</button><button class="toggle-btn" onclick="setToggle('land-interior',this,'co-ban')">Hoàn thiện cơ bản</button><button class="toggle-btn" onclick="setToggle('land-interior',this,'full')">Full nội thất</button></div></div>
-    <div class="form-group"><label class="form-label">Lỗi phong thủy / vị trí đặc biệt</label>
-      <div class="toggle-group" id="land-feng"><button class="toggle-btn active" onclick="setToggle('land-feng',this,'none')">Không có</button><button class="toggle-btn" onclick="setToggle('land-feng',this,'dam-duong')">Đâm đường</button><button class="toggle-btn" onclick="setToggle('land-feng',this,'top-hau')">Tóp hậu</button><button class="toggle-btn" onclick="setToggle('land-feng',this,'goc')">Lô góc (+)</button></div></div>
+    <div class="form-group"><label class="form-label">Phong thủy / Vị trí đặc biệt</label>
+      <div class="toggle-group" id="land-feng">
+        <button class="toggle-btn active" onclick="setToggle('land-feng',this,'none')">Bình thường</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'goc')">Lô góc 2 MT (+12%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'no-hau')">Nở hậu (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'view-song')">View sông/hồ (+15%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'gan-truong')">Gần trường tốt (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'dam-duong')">Đâm đường (-10%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'top-hau')">Tóp hậu (-7%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'gan-chua')">Gần chùa/nghĩa trang (-12%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'tay-nang')">Hướng Tây nắng (-4%)</button>
+      </div>
+      <div class="form-hint">Các yếu tố phong thủy ảnh hưởng 4–20% giá trị thị trường theo tâm lý người mua VN</div></div>
     <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
       <div class="toggle-group" id="land-legal"><button class="toggle-btn active" onclick="setToggle('land-legal',this,'so-do')">Sổ đỏ đầy đủ</button><button class="toggle-btn" onclick="setToggle('land-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('land-legal',this,'giay-tay')">Giấy tờ tay</button></div></div>
   </div>
@@ -610,8 +621,19 @@ body{
       <div class="toggle-group" id="lp-qh"><button class="toggle-btn active" onclick="setToggle('lp-qh',this,'da-phe-duyet')">Đã phê duyệt</button><button class="toggle-btn" onclick="setToggle('lp-qh',this,'chua-phe-duyet')">Chưa phê duyệt</button><button class="toggle-btn" onclick="setToggle('lp-qh',this,'khong-ro')">Không rõ</button></div><div class="form-hint">Quy hoạch 1/500 đã phê duyệt tăng giá trị đáng kể</div></div>
     <div class="form-group"><label class="form-label">Hạ tầng kỹ thuật</label>
       <div class="toggle-group" id="lp-infra"><button class="toggle-btn active" onclick="setToggle('lp-infra',this,'day-du')">Đầy đủ (điện + nước + đường nhựa)</button><button class="toggle-btn" onclick="setToggle('lp-infra',this,'co-ban')">Cơ bản</button><button class="toggle-btn" onclick="setToggle('lp-infra',this,'thieu')">Thiếu hạ tầng</button></div></div>
-    <div class="form-group"><label class="form-label">Lỗi phong thủy</label>
-      <div class="toggle-group" id="lp-feng"><button class="toggle-btn active" onclick="setToggle('lp-feng',this,'none')">Không có</button><button class="toggle-btn" onclick="setToggle('lp-feng',this,'dam-duong')">Đâm đường</button><button class="toggle-btn" onclick="setToggle('lp-feng',this,'top-hau')">Tóp hậu</button><button class="toggle-btn" onclick="setToggle('lp-feng',this,'goc')">Lô góc (+)</button></div></div>
+    <div class="form-group"><label class="form-label">Phong thủy / Vị trí đặc biệt</label>
+      <div class="toggle-group" id="lp-feng">
+        <button class="toggle-btn active" onclick="setToggle('lp-feng',this,'none')">Bình thường</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'goc')">Lô góc 2 MT (+12%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'no-hau')">Nở hậu (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'view-song')">View sông/hồ (+15%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'gan-truong')">Gần trường tốt (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'dam-duong')">Đâm đường (-10%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'top-hau')">Tóp hậu (-7%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'gan-chua')">Gần chùa/nghĩa trang (-12%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'tay-nang')">Hướng Tây nắng (-4%)</button>
+      </div>
+      <div class="form-hint">Các yếu tố phong thủy ảnh hưởng 4–20% giá trị thị trường theo tâm lý người mua VN</div></div>
     <div class="form-group"><label class="form-label">Tình trạng pháp lý</label>
       <div class="toggle-group" id="lp-legal"><button class="toggle-btn active" onclick="setToggle('lp-legal',this,'so-do')">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('lp-legal',this,'so-hong')">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('lp-legal',this,'giay-tay')">Giấy tờ tay</button></div></div>
   </div>
@@ -1001,8 +1023,8 @@ function getBM(type, prov, dist) {
 // ─── MULTIPLIERS ──────────────────────────────────────────────
 var MUL = {
   direction:{nam:1.03,'dong-nam':1.02,dong:1.0,'dong-bac':0.99,bac:0.97,'tay-bac':0.97,tay:0.98,'tay-nam':1.01},
-  feng:{none:1.0,'dam-duong':0.92,'top-hau':0.93,goc:1.12},
-  legal:{'so-do':1.0,'so-hong':0.99,'giay-tay':0.78,'chua-co':0.80,'hop-dong':0.88},
+  feng:{none:1.0,'dam-duong':0.90,'top-hau':0.93,'no-hau':1.04,goc:1.12,'gan-chua':0.88,'gan-truong':1.04,'view-song':1.15,'tay-nang':0.96},
+  legal:{'so-do':1.0,'so-hong':1.0,'giay-tay':0.78,'chua-co':0.80,'hop-dong':0.93},
   road:{'mat-tien':1.0,'hem-xe-ho':0.80,'hem-nho':0.65},
   purpose:{'dat-o':1.0,'dat-vuon':0.55,'dat-nn':0.35},
   qh:{'da-phe-duyet':1.08,'chua-phe-duyet':1.0,'khong-ro':0.97},
@@ -1021,7 +1043,13 @@ var MUL = {
 
 function floorMul(f) {
   f = parseInt(f)||5;
-  if(f<=3) return 0.92; if(f<=8) return 1.0; if(f<=15) return 1.05; if(f<=25) return 1.08; return 1.05;
+  if(f===1)  return 0.86;  // Tầng 1: mất an ninh, ẩm, ồn
+  if(f<=3)   return 0.93;  // Tầng 2-3: thiếu view
+  if(f<=6)   return 1.00;  // Tầng 4-6: chuẩn tham chiếu
+  if(f<=15)  return 1.05;  // Tầng 7-15: view tốt
+  if(f<=25)  return 1.09;  // Tầng 16-25: premium view
+  if(f<=35)  return 1.11;  // Tầng 26-35: high premium
+  return 1.07;             // Tầng 36+: giảm nhẹ (thang máy chờ, áp lực nước)
 }
 function depreciationMul(year) {
   var age = 2026 - (parseInt(year)||2018);
@@ -1041,7 +1069,7 @@ var STATE = {
     'pth-type':'simplex','pth-view':'song','pth-pool':'khong','pth-legal':'so-hong',
     'land-road-type':'mat-tien','land-interior':'tho','land-feng':'none','land-legal':'so-do',
     'villa-type':'don-lap','villa-amenity':'none','villa-view':'noi-khu','villa-legal':'so-do',
-    'lp-road-type':'mat-tien','lp-purpose':'dat-o','lp-qh':'da-phe-duyet','lp-infra':'day-du','lp-feng':'none','lp-legal':'so-do',
+    'lp-road-type':'mat-tien','lp-purpose':'dat-o','lp-qh':'da-phe-duyet','lp-infra':'day-du','lp-feng':'none','lp-legal':'so-do','land-feng':'none',
     'sh-position':'mat-tien-chinh','sh-biz':'fb','sh-legal':'so-hong',
     'bld-type':'van-phong','bld-grade':'B','bld-systems':'day-du'
   }
