@@ -219,6 +219,50 @@ body{
   .method-row-name{width:120px;}
   .ocr-fields{grid-template-columns:1fr;}
 }
+
+/* ── PAYMENT MODAL ─────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(7,16,30,0.85);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal-box{background:var(--navy-900);border:1px solid rgba(196,98,45,0.25);border-radius:var(--radius-xl);width:100%;max-width:480px;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--terra-500),var(--amber-400),var(--terra-500),transparent);}
+.modal-header{padding:28px 28px 0;}
+.modal-title{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.modal-sub{font-size:13px;color:var(--grey-400);}
+.modal-body{padding:24px 28px 28px;}
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.pay-method{background:rgba(255,255,255,0.03);border:2px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);padding:18px 14px;cursor:pointer;transition:var(--transition);text-align:center;}
+.pay-method:hover{border-color:rgba(196,98,45,0.4);background:rgba(196,98,45,0.06);}
+.pay-method.selected{border-color:var(--terra-500);background:rgba(196,98,45,0.1);}
+.pay-method-icon{font-size:28px;margin-bottom:8px;}
+.pay-method-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.pay-method-desc{font-size:11px;color:var(--grey-400);line-height:1.4;}
+.pay-method-price{font-size:15px;font-weight:700;color:var(--amber-400);margin-top:6px;font-family:var(--font-display);}
+/* Promo */
+.promo-row{display:flex;gap:8px;margin-bottom:18px;}
+.promo-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:10px 14px;font-family:var(--font-body);font-size:13px;color:var(--white);outline:none;transition:var(--transition);text-transform:uppercase;letter-spacing:.08em;}
+.promo-input::placeholder{text-transform:none;letter-spacing:0;color:var(--grey-600);}
+.promo-input:focus{border-color:var(--terra-500);box-shadow:0 0 0 3px rgba(196,98,45,0.12);}
+.promo-btn{padding:10px 16px;border-radius:var(--radius-md);background:rgba(196,98,45,0.15);border:1px solid rgba(196,98,45,0.3);color:var(--terra-300);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap;font-family:var(--font-body);}
+.promo-btn:hover{background:rgba(196,98,45,0.25);}
+.promo-badge{display:none;font-size:12px;color:var(--success);background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:6px;padding:6px 12px;margin-bottom:14px;text-align:center;}
+.promo-badge.active{display:block;}
+/* SePay section */
+.sepay-section{display:none;}
+.sepay-section.active{display:block;}
+.qr-wrap{text-align:center;margin:16px 0;}
+.qr-img-box{display:inline-flex;flex-direction:column;align-items:center;gap:8px;background:var(--white);padding:14px;border-radius:var(--radius-lg);}
+.qr-img-box img{width:140px;height:140px;border-radius:6px;}
+.bank-detail{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-md);padding:14px 16px;font-size:12px;line-height:1.9;}
+.bank-row{display:flex;justify-content:space-between;align-items:center;}
+.bank-label{color:var(--grey-600);}
+.bank-val{color:var(--white);font-weight:600;}
+.bank-val.highlight{color:var(--amber-400);}
+.copy-btn{background:rgba(196,98,45,0.12);border:1px solid rgba(196,98,45,0.2);border-radius:4px;padding:2px 8px;font-size:10px;color:var(--terra-300);cursor:pointer;font-family:var(--font-body);transition:var(--transition);}
+.copy-btn:hover{background:rgba(196,98,45,0.25);}
+.email-row{margin-top:16px;}
+.confirm-waiting{display:none;text-align:center;padding:12px;}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);border:none;border-radius:50%;width:28px;height:28px;color:var(--grey-400);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--transition);}
+.modal-close:hover{background:rgba(255,255,255,0.12);color:var(--white);}
 </style>
 </head>
 <body>
@@ -805,6 +849,80 @@ body{
   </div>
 </div>
 
+
+<!-- ══════════════════════════════════════
+     PAYMENT MODAL (overlay)
+     ══════════════════════════════════════ -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-title">Chọn phương thức thanh toán</div>
+      <div class="modal-sub">Mở khóa Báo cáo Định giá BĐS chuyên sâu</div>
+    </div>
+    <div class="modal-body">
+
+      <!-- PROMO CODE -->
+      <div class="promo-row">
+        <input class="promo-input" id="promoInput" placeholder="Nhập mã giảm giá (nếu có)" maxlength="20">
+        <button class="promo-btn" onclick="applyPromo()">Áp dụng</button>
+      </div>
+      <div class="promo-badge" id="promoBadge">✓ Mã hợp lệ — Chỉ thanh toán <strong id="promoPrice"></strong></div>
+
+      <!-- PAYMENT METHOD SELECT -->
+      <div class="pay-methods" id="payMethods">
+        <div class="pay-method selected" id="pm-polar" onclick="selectPayMethod('polar')">
+          <div class="pay-method-icon">💳</div>
+          <div class="pay-method-name">Thẻ quốc tế</div>
+          <div class="pay-method-desc">Visa · Mastercard<br>Khách nước ngoài / VN ở nước ngoài</div>
+          <div class="pay-method-price" id="polarPrice">$15 USD</div>
+        </div>
+        <div class="pay-method" id="pm-sepay" onclick="selectPayMethod('sepay')">
+          <div class="pay-method-icon">🏦</div>
+          <div class="pay-method-name">Chuyển khoản VN</div>
+          <div class="pay-method-desc">MBBank · SePay<br>Khách trong nước</div>
+          <div class="pay-method-price" id="sepayPrice">420,000 VND</div>
+        </div>
+      </div>
+
+      <!-- SEPAY SECTION -->
+      <div class="sepay-section" id="sepaySec">
+        <div class="qr-wrap">
+          <div class="qr-img-box">
+            <img id="qrImg" src="" alt="QR Code MBBank">
+            <div style="font-size:11px;color:#333;font-weight:600">Quét thanh toán · MBBank</div>
+          </div>
+        </div>
+        <div class="bank-detail">
+          <div class="bank-row"><span class="bank-label">Ngân hàng</span><span class="bank-val">MBBank</span></div>
+          <div class="bank-row"><span class="bank-label">Số tài khoản</span><span class="bank-val">9688666686 <button class="copy-btn" onclick="copyText('9688666686')">Copy</button></span></div>
+          <div class="bank-row"><span class="bank-label">Chủ tài khoản</span><span class="bank-val">SCF INVESTMENT JS CO</span></div>
+          <div class="bank-row"><span class="bank-label">Số tiền</span><span class="bank-val highlight" id="sepayAmount">420,000 VND</span></div>
+          <div class="bank-row"><span class="bank-label">Nội dung</span><span class="bank-val highlight" id="sepayRef">Valuit15-000000 <button class="copy-btn" onclick="copyRef()">Copy</button></span></div>
+        </div>
+        <div class="email-row">
+          <div class="form-group" style="margin-top:14px;margin-bottom:12px;">
+            <label class="form-label">Email nhận báo cáo <span>*</span></label>
+            <input type="email" class="form-input" id="sepayEmail" placeholder="email@gmail.com">
+          </div>
+        </div>
+        <div class="confirm-waiting" id="sepayWaiting">
+          <div class="waiting-dots" style="justify-content:center"><div class="waiting-dot"></div><div class="waiting-dot"></div><div class="waiting-dot"></div></div>
+          <div style="font-size:12px;color:var(--grey-400);margin-top:6px">Đang chờ xác nhận thanh toán...</div>
+        </div>
+        <button class="btn btn-primary" id="btnSepayCK" onclick="confirmSepay()" style="margin-top:0">✓ Tôi đã chuyển khoản</button>
+      </div>
+
+      <!-- POLAR SECTION -->
+      <div id="polarSec" style="margin-top:4px;">
+        <button class="btn btn-gold" onclick="goPolar()" id="btnPolar">💳 Thanh toán bằng thẻ quốc tế →</button>
+        <div style="font-size:11px;color:var(--grey-600);text-align:center;margin-top:8px">Visa · Mastercard · Bảo mật bởi Polar & Stripe</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 </div><!-- /.card -->
 </div><!-- /.container -->
 
@@ -1277,28 +1395,153 @@ function renderResult(r) {
 }
 
 // ─── PAYMENT ──────────────────────────────────────────────────
-var POLAR_CHECKOUT = 'https://buy.polar.sh/polar_cl_MGyIvdrC29kcXTTSFKXxwJkEnGRm1OfdhJFPs3n0I23';
+// ── PAYMENT CONFIG ────────────────────────────────────────
+var POLAR_URL   = 'https://buy.polar.sh/polar_cl_MGyIvdrC29kcXTTSFKXxwJkEnGRm1OfdhJFPs3n0i23';
+var SEPAY_WEBHOOK = 'https://globalvaluate.sandboxstartup.vn/webhook';
+var MBBANK_ACC  = '9688666686';
+var USD_VND     = 26000;
+var VAT         = 1.08;
+var BASE_VND    = Math.round(15 * USD_VND * VAT / 1000) * 1000; // 421,200 → 421,000
+var PROMO_CODES = { 'JAMELA10K': 10000 }; // code: VND amount
 
+var PAY = { method: 'polar', promoCode: '', promoAmount: 0 };
+
+// ── MODAL ─────────────────────────────────────────────────
 function goToPayment() {
+  // Reset state
+  PAY.method = 'polar'; PAY.promoCode = ''; PAY.promoAmount = 0;
+  document.getElementById('promoInput').value = '';
+  document.getElementById('promoBadge').classList.remove('active');
+  selectPayMethod('polar');
+  // Update ref
   var ref = STATE.paymentId || ('BDS' + Date.now().toString().slice(-6));
-  var url = POLAR_CHECKOUT + '?ref=' + ref;
-  if (STATE.result) {
-    url += '&metadata[type]=' + encodeURIComponent(STATE.type||'')
-        + '&metadata[label]=' + encodeURIComponent((STATE.result.label||'').substring(0,60))
-        + '&metadata[mid_vnd]=' + Math.round((STATE.result.mid||0)/1e6);
+  STATE.paymentId = ref;
+  document.getElementById('sepayRef').innerHTML = 'Valuit15-' + ref +
+    ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
+  // Generate QR (VietQR standard)
+  updateQR(BASE_VND, 'Valuit15-' + ref);
+  document.getElementById('sepayAmount').textContent = fmtVND(BASE_VND);
+  document.getElementById('sepayPrice').textContent = fmtVND(BASE_VND);
+  // Show modal
+  document.getElementById('paymentModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('paymentModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function selectPayMethod(method) {
+  PAY.method = method;
+  document.getElementById('pm-polar').classList.toggle('selected', method === 'polar');
+  document.getElementById('pm-sepay').classList.toggle('selected', method === 'sepay');
+  document.getElementById('sepaySec').classList.toggle('active', method === 'sepay');
+  document.getElementById('polarSec').style.display = (method === 'polar') ? 'block' : 'none';
+}
+
+// ── PROMO CODE ────────────────────────────────────────────
+function applyPromo() {
+  var code = document.getElementById('promoInput').value.trim().toUpperCase();
+  var badge = document.getElementById('promoBadge');
+  var promoPrice = document.getElementById('promoPrice');
+  if (PROMO_CODES[code] !== undefined) {
+    PAY.promoCode = code;
+    PAY.promoAmount = PROMO_CODES[code];
+    promoPrice.textContent = fmtVND(PAY.promoAmount);
+    badge.classList.add('active');
+    // Update amounts
+    var finalVND = PAY.promoAmount;
+    document.getElementById('sepayAmount').textContent = fmtVND(finalVND);
+    document.getElementById('sepayPrice').textContent = fmtVND(finalVND);
+    document.getElementById('sepayRef').innerHTML = 'Valuit15-' + STATE.paymentId +
+      ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
+    updateQR(finalVND, 'Valuit15-' + STATE.paymentId);
+    // Polar price label
+    document.getElementById('polarPrice').textContent = 'TEST MODE';
+    document.getElementById('btnPolar').textContent = '🧪 Test — ' + fmtVND(finalVND);
+  } else {
+    badge.classList.remove('active');
+    promoPrice.textContent = '';
+    alert('Mã không hợp lệ');
   }
-  window.location.href = url;
 }
-function confirmPayment(){
-  var email=document.getElementById('paymentEmail').value.trim();
-  if(!email||!email.includes('@')){document.getElementById('paymentEmail').style.borderColor='var(--danger)';return;}
-  document.getElementById('paymentEmail').style.borderColor='';
-  var btn=document.getElementById('btnConfirmPayment');
-  btn.disabled=true;btn.textContent='Đang xác nhận...';
-  document.getElementById('waitingIndicator').style.display='block';
+
+// ── QR CODE (VietQR) ──────────────────────────────────────
+function updateQR(amount, content) {
+  // VietQR API: bank=MB, account=9688666686
+  var qrUrl = 'https://img.vietqr.io/image/MB-9688666686-compact2.png'
+    + '?amount=' + amount
+    + '&addInfo=' + encodeURIComponent(content)
+    + '&accountName=' + encodeURIComponent('SCF INVESTMENT JS CO');
+  document.getElementById('qrImg').src = qrUrl;
+}
+
+// ── COPY HELPERS ──────────────────────────────────────────
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    // brief feedback handled by browser
+  }).catch(function() {});
+}
+function copyRef() {
+  var ref = 'Valuit15-' + STATE.paymentId;
+  copyText(ref);
+}
+
+// ── SEPAY CONFIRM ─────────────────────────────────────────
+function confirmSepay() {
+  var email = document.getElementById('sepayEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('sepayEmail').style.borderColor = 'var(--danger)';
+    return;
+  }
+  document.getElementById('sepayEmail').style.borderColor = '';
+  var btn = document.getElementById('btnSepayCK');
+  btn.disabled = true; btn.textContent = 'Đang xác nhận...';
+  document.getElementById('sepayWaiting').style.display = 'block';
+  // Save lead to GSheet
   saveLead(email);
-  setTimeout(function(){document.getElementById('successEmail').textContent=email;goTo('screen-success');},2800);
+  // Notify SePay webhook
+  fetch(SEPAY_WEBHOOK, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'payment_intent',
+      email: email,
+      paymentId: STATE.paymentId,
+      promoCode: PAY.promoCode || null,
+      amountVND: PAY.promoAmount || BASE_VND,
+      propertyType: STATE.type,
+      result: STATE.result ? { label: STATE.result.label, mid: STATE.result.mid } : null,
+      timestamp: new Date().toISOString()
+    })
+  }).catch(function(){});
+  // Close modal → show success screen after 3s
+  setTimeout(function() {
+    closeModal();
+    document.getElementById('successEmail').textContent = email;
+    goTo('screen-success');
+  }, 3000);
 }
+
+// ── POLAR CHECKOUT ────────────────────────────────────────
+function goPolar() {
+  var ref = STATE.paymentId || 'BDSV000';
+  var url = POLAR_URL + '?ref=' + ref;
+  if (STATE.result) {
+    url += '&metadata[type]='  + encodeURIComponent(STATE.type||'')
+         + '&metadata[label]=' + encodeURIComponent((STATE.result.label||'').substring(0,60))
+         + '&metadata[mid]='   + Math.round((STATE.result.mid||0)/1e6);
+  }
+  if (PAY.promoCode) url += '&metadata[promo]=' + PAY.promoCode;
+  window.open(url, '_blank'); // open in new tab — user stays on page
+}
+
+// ── FORMAT ────────────────────────────────────────────────
+function fmtVND(n) {
+  return n.toLocaleString('vi-VN') + ' ₫';
+}
+// confirmPayment legacy — replaced by modal flow
 function saveLead(email){
   if(!GSHEET_URL) return;
   fetch(GSHEET_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_lead',email:email,propertyType:STATE.type,paymentId:STATE.paymentId,result:STATE.result?{label:STATE.result.label,low:Math.round(STATE.result.low),mid:Math.round(STATE.result.mid),high:Math.round(STATE.result.high)}:null,timestamp:new Date().toISOString()})}).catch(function(){});
