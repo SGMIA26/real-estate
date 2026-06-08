@@ -209,15 +209,87 @@ body{
 .calc-sub{font-size:13px;color:var(--grey-400);}
 /* MISC */
 .info-tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(255,255,255,0.08);font-size:9px;color:var(--grey-600);cursor:help;margin-left:5px;flex-shrink:0;}
-@media(max-width:600px){
-  .screen{padding:24px 20px 20px;}
-  .nav{padding:0 18px;}
-  .progress-steps{padding:18px 20px 0;}
-  .form-row,.form-row-3{grid-template-columns:1fr;}
-  .metrics-grid{grid-template-columns:1fr 1fr;}
+@media(max-width:640px){
+  /* Layout */
+  .screen{padding:20px 16px 16px;}
+  .nav{padding:0 16px;height:56px;}
+  .nav-brand-text{font-size:17px;}
+  .nav-badge{font-size:10px;padding:2px 8px;}
+  .nav-back{font-size:12px;}
+  .container{padding:0 12px 60px;}
+  .card{border-radius:16px;}
+  .progress-steps{padding:16px 16px 0;gap:0;}
+  .prog-label{font-size:9px;}
+  .prog-dot{width:22px;height:22px;font-size:9px;}
+
+  /* Hero */
+  .hero{padding:80px 16px 32px;}
+  .hero-title{font-size:28px;}
+  .hero-subtitle{font-size:13px;}
+  .hero-tags{gap:6px;}
+  .htag{font-size:10px;padding:3px 10px;}
+
+  /* Type grid — 1 col on mobile */
   .type-grid{grid-template-columns:1fr;}
-  .method-row-name{width:120px;}
+  .type-card{padding:14px 16px;}
+  .type-icon{width:38px;height:38px;font-size:16px;}
+  .type-name{font-size:15px;}
+  .type-group-label{font-size:9px;}
+
+  /* Forms */
+  .form-row,.form-row-3{grid-template-columns:1fr;}
+  .form-input,.form-select{padding:11px 13px;font-size:14px;}
+  .toggle-group{gap:6px;}
+  .toggle-btn{padding:9px 10px;font-size:11px;min-width:70px;}
+  .screen-title{font-size:22px;}
+  .form-section-title{font-size:10px;}
+
+  /* Upload */
+  .upload-zone{padding:20px 14px;}
+  .upload-icon{font-size:24px;}
   .ocr-fields{grid-template-columns:1fr;}
+
+  /* Result */
+  .result-value-range{font-size:26px;}
+  .metrics-grid{grid-template-columns:1fr 1fr;}
+  .metric-value{font-size:16px;}
+  .method-row{flex-wrap:wrap;gap:6px;}
+  .method-row-name{width:100%;font-size:11px;}
+  .method-row-bar-wrap{flex:1;}
+  .method-row-val{width:auto;}
+  .method-row-weight{width:auto;}
+
+  /* Modal */
+  .modal-box{border-radius:16px;max-height:92vh;overflow-y:auto;}
+  .modal-header{padding:20px 20px 0;}
+  .modal-body{padding:16px 20px 20px;}
+  .pay-methods{grid-template-columns:1fr 1fr;gap:8px;}
+  .pay-method{padding:14px 10px;}
+  .pay-method-icon{font-size:22px;}
+  .pay-method-name{font-size:12px;}
+  .pay-method-desc{font-size:10px;}
+  .pay-method-price{font-size:13px;}
+  .bank-detail{font-size:11px;}
+  .bank-row{flex-wrap:wrap;gap:2px;}
+  .qr-img-box img{width:130px;height:130px;}
+
+  /* Buttons */
+  .btn{padding:13px 20px;font-size:13px;}
+  .btn-gold{font-size:13px;}
+
+  /* Payment */
+  .payment-amount{font-size:28px;}
+
+  /* Success */
+  .success-screen{padding:32px 16px;}
+  .success-title{font-size:22px;}
+}
+
+/* Extra small phones */
+@media(max-width:380px){
+  .hero-title{font-size:24px;}
+  .pay-methods{grid-template-columns:1fr;}
+  .screen{padding:16px 14px 14px;}
 }
 
 /* ── PAYMENT MODAL ─────────────────────────────────────── */
@@ -263,6 +335,145 @@ body{
 .confirm-waiting{display:none;text-align:center;padding:12px;}
 .modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);border:none;border-radius:50%;width:28px;height:28px;color:var(--grey-400);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--transition);}
 .modal-close:hover{background:rgba(255,255,255,0.12);color:var(--white);}
+
+/* LANG TOGGLE */
+.lang-toggle{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:3px;}
+.lang-btn{padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--grey-400);font-family:var(--font-body);transition:var(--transition);}
+.lang-btn.active{background:var(--terra-500);color:var(--white);}
+
+/* ── BILL UPLOAD FLOW ─────────────────────────────────────── */
+.verify-states { margin-top: 16px; }
+.verify-state  { display: none; }
+.verify-state.active { display: block; }
+
+/* State 1: Verifying spinner */
+.verify-checking {
+  text-align: center; padding: 20px 0;
+}
+.verify-spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid rgba(196,98,45,0.2);
+  border-top-color: var(--terra-500);
+  animation: spin .8s linear infinite;
+  margin: 0 auto 12px;
+}
+.verify-checking-text { font-size: 13px; color: var(--grey-400); line-height: 1.6; }
+.verify-countdown {
+  font-size: 22px; font-weight: 700;
+  color: var(--amber-400);
+  font-family: var(--font-display);
+  margin: 8px 0;
+}
+
+/* State 2: Not found — upload bill */
+.verify-upload-bill {
+  background: rgba(240,168,48,0.06);
+  border: 1px solid rgba(240,168,48,0.2);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.verify-upload-title {
+  font-size: 14px; font-weight: 600;
+  color: var(--white); margin-bottom: 4px;
+}
+.verify-upload-sub {
+  font-size: 12px; color: var(--grey-400);
+  margin-bottom: 16px; line-height: 1.5;
+}
+.bill-upload-zone {
+  border: 2px dashed rgba(240,168,48,0.3);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.bill-upload-zone:hover {
+  border-color: rgba(240,168,48,0.6);
+  background: rgba(240,168,48,0.04);
+}
+.bill-upload-zone.has-file {
+  border-color: var(--success);
+  background: rgba(46,204,113,0.06);
+}
+.bill-upload-zone.analyzing {
+  border-color: var(--amber-400);
+  background: rgba(240,168,48,0.08);
+}
+.bill-upload-zone input[type="file"] {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer;
+  width: 100%; height: 100%;
+}
+.bill-upload-icon { font-size: 28px; margin-bottom: 8px; }
+.bill-upload-text { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+.bill-upload-sub-text { font-size: 11px; color: var(--grey-600); }
+
+/* Bill analysis result */
+.bill-analysis {
+  display: none;
+  background: rgba(46,204,113,0.08);
+  border: 1px solid rgba(46,204,113,0.2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.bill-analysis.invalid {
+  background: rgba(231,76,60,0.08);
+  border-color: rgba(231,76,60,0.2);
+}
+.bill-analysis-title {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--success); margin-bottom: 8px;
+}
+.bill-analysis.invalid .bill-analysis-title { color: var(--danger); }
+.bill-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.bill-field { font-size: 11px; color: var(--grey-400); }
+.bill-field strong { color: var(--white); font-weight: 500; }
+
+/* State 3: Submitted */
+.verify-submitted {
+  text-align: center; padding: 16px 0;
+}
+.verify-submitted-icon {
+  font-size: 40px; margin-bottom: 12px;
+}
+.verify-submitted-title {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 600;
+  color: var(--white); margin-bottom: 6px;
+}
+.verify-submitted-desc {
+  font-size: 12px; color: var(--grey-400);
+  line-height: 1.6; margin-bottom: 16px;
+}
+
+/* Fallback contact */
+.fallback-contact {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.contact-btn {
+  flex: 1; padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none;
+  font-family: var(--font-body);
+  text-align: center;
+  text-decoration: none;
+  display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+  transition: var(--transition);
+}
+.contact-tele {
+  background: rgba(39,174,96,0.15);
+  border: 1px solid rgba(39,174,96,0.3);
+  color: var(--success);
+}
+.contact-tele:hover { background: rgba(39,174,96,0.25); }
 </style>
 </head>
 <body>
@@ -273,7 +484,13 @@ body{
     <span class="nav-brand-text">Valuit<span>Biz</span></span>
   </a>
   <span class="nav-badge">BĐS · Real Estate</span>
-  <a href="/" class="nav-back">← Về trang chủ</a>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-vi" onclick="setLang('vi')">🇻🇳 VN</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
+    <a href="/" class="nav-back" id="nav-back-link">← Về trang chủ</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -922,17 +1139,97 @@ body{
           <div class="bank-row"><span class="bank-label">Số tiền</span><span class="bank-val highlight" id="sepayAmount">420,000 VND</span></div>
           <div class="bank-row"><span class="bank-label">Nội dung</span><span class="bank-val highlight" id="sepayRef">Valuit15-000000 <button class="copy-btn" onclick="copyRef()">Copy</button></span></div>
         </div>
-        <div class="email-row">
-          <div class="form-group" style="margin-top:14px;margin-bottom:12px;">
-            <label class="form-label">Email nhận báo cáo <span>*</span></label>
-            <input type="email" class="form-input" id="sepayEmail" placeholder="email@gmail.com">
-          </div>
+
+        <!-- Email input -->
+        <div class="form-group" style="margin-top:14px;margin-bottom:12px;">
+          <label class="form-label">Email nhận báo cáo <span>*</span></label>
+          <input type="email" class="form-input" id="sepayEmail" placeholder="email@gmail.com">
         </div>
-        <div class="confirm-waiting" id="sepayWaiting">
-          <div class="waiting-dots" style="justify-content:center"><div class="waiting-dot"></div><div class="waiting-dot"></div><div class="waiting-dot"></div></div>
-          <div style="font-size:12px;color:var(--grey-400);margin-top:6px">Đang chờ xác nhận thanh toán...</div>
-        </div>
+
+        <!-- CK button -->
         <button class="btn btn-primary" id="btnSepayCK" onclick="confirmSepay()" style="margin-top:0">✓ Tôi đã chuyển khoản</button>
+
+        <!-- VERIFY STATES -->
+        <div class="verify-states" id="verifyStates">
+
+          <!-- State 1: Auto-checking -->
+          <div class="verify-state" id="vs-checking">
+            <div class="verify-checking">
+              <div class="verify-spinner"></div>
+              <div class="verify-countdown" id="verifyCountdown">10</div>
+              <div class="verify-checking-text">
+                Đang xác nhận giao dịch tự động...<br>
+                <span style="font-size:11px;color:var(--grey-600)">Kiểm tra hệ thống ngân hàng, vui lòng chờ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 2: Not found — upload bill -->
+          <div class="verify-state" id="vs-upload">
+            <div class="verify-upload-bill">
+              <div class="verify-upload-title">⚠️ Chưa xác nhận được giao dịch tự động</div>
+              <div class="verify-upload-sub">
+                Giao dịch có thể mất 1–3 phút để cập nhật. Bạn có thể upload ảnh bill chuyển khoản để chúng tôi xử lý ngay.
+              </div>
+
+              <!-- Bill upload zone -->
+              <div class="bill-upload-zone" id="billUploadZone">
+                <input type="file" accept="image/*" id="billFileInput" onchange="handleBillUpload(this)">
+                <div id="billUploadContent">
+                  <div class="bill-upload-icon">📸</div>
+                  <div class="bill-upload-text">Chụp hoặc tải ảnh bill chuyển khoản</div>
+                  <div class="bill-upload-sub-text">Screenshot VCB · MB · TCB · BIDV · bất kỳ ngân hàng nào</div>
+                </div>
+                <div id="billAnalyzingContent" style="display:none">
+                  <div class="bill-upload-icon">🤖</div>
+                  <div class="bill-upload-text">AI đang đọc bill...</div>
+                  <div class="bill-upload-sub-text">Claude Vision đang phân tích ảnh</div>
+                </div>
+              </div>
+
+              <!-- AI analysis result -->
+              <div class="bill-analysis" id="billAnalysis">
+                <div class="bill-analysis-title" id="billAnalysisTitle">✓ AI đã đọc bill thành công</div>
+                <div class="bill-fields" id="billFields"></div>
+              </div>
+
+              <!-- Submit bill button -->
+              <button class="btn btn-primary" id="btnSubmitBill" onclick="submitBill()" style="display:none;margin-top:8px">
+                📤 Gửi bill để xác nhận thủ công
+              </button>
+
+              <!-- Fallback contact -->
+              <div style="margin-top:14px;text-align:center">
+                <div style="font-size:11px;color:var(--grey-600);margin-bottom:8px">Hoặc liên hệ trực tiếp:</div>
+                <div class="fallback-contact">
+                  <a href="https://t.me/sandboxstartup" target="_blank" class="contact-btn contact-tele">
+                    ✈️ Telegram Support
+                  </a>
+                  <button class="contact-btn contact-tele" onclick="retryVerify()" style="background:rgba(196,98,45,0.12);border-color:rgba(196,98,45,0.3);color:var(--terra-300)">
+                    🔄 Kiểm tra lại
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 3: Bill submitted -->
+          <div class="verify-state" id="vs-submitted">
+            <div class="verify-submitted">
+              <div class="verify-submitted-icon">📨</div>
+              <div class="verify-submitted-title">Đã nhận bill của bạn!</div>
+              <div class="verify-submitted-desc">
+                Admin đang xác nhận giao dịch. Báo cáo sẽ được gửi về email trong <strong style="color:var(--white)">5–15 phút</strong>.
+                <br><br>
+                Nếu sau 30 phút chưa nhận được, reply email xác nhận hoặc liên hệ Telegram.
+              </div>
+              <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.15);border-radius:10px;padding:12px;font-size:12px;color:var(--grey-400)">
+                🔑 Mã giao dịch: <strong style="color:var(--white)" id="submittedRef"></strong>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.verify-states -->
       </div>
 
       <!-- POLAR SECTION -->
@@ -1516,41 +1813,177 @@ function copyRef() {
   copyText(ref);
 }
 
-// ── SEPAY CONFIRM ─────────────────────────────────────────
+// ── SEPAY CONFIRM (with real polling) ────────────────────
+var POLL_COUNT = 0;
+var POLL_MAX   = 6;   // 6 × 10s = 60s max
+var POLL_TIMER = null;
+var N8N_VERIFY = 'https://saigonmia.tino.page/webhook/globalvaluate/payment-verify';
+
+// ── SEPAY CONFIRM — 3-LAYER VERIFY ────────────────────────
+var VERIFY = { timer: null, attempts: 0, maxAttempts: 3, billData: null, billImageB64: null };
+
+function showVerifyState(id) {
+  document.querySelectorAll('.verify-state').forEach(function(s){ s.classList.remove('active'); });
+  var el = document.getElementById('vs-'+id);
+  if (el) el.classList.add('active');
+}
+
 function confirmSepay() {
   var email = document.getElementById('sepayEmail').value.trim();
   if (!email || !email.includes('@')) {
     document.getElementById('sepayEmail').style.borderColor = 'var(--danger)';
+    document.getElementById('sepayEmail').focus();
     return;
   }
   document.getElementById('sepayEmail').style.borderColor = '';
   var btn = document.getElementById('btnSepayCK');
   btn.disabled = true; btn.textContent = 'Đang xác nhận...';
-  document.getElementById('sepayWaiting').style.display = 'block';
-  // Save lead to GSheet
+  var vs = document.getElementById('verifyStates');
+  if (vs) vs.style.display = 'block';
   saveLead(email);
-  // Notify SePay webhook
-  fetch(SEPAY_WEBHOOK, {
+  VERIFY.attempts = 0; VERIFY.billData = null; VERIFY.billImageB64 = null;
+  startAutoVerify(email);
+}
+
+function startAutoVerify(email) {
+  showVerifyState('checking');
+  var countdown = 10;
+  var cdEl = document.getElementById('verifyCountdown');
+  if (cdEl) cdEl.textContent = countdown;
+  VERIFY.timer = setInterval(function() {
+    countdown--;
+    if (cdEl) cdEl.textContent = countdown;
+    if (countdown <= 0) { clearInterval(VERIFY.timer); autoVerifyNow(email); }
+  }, 1000);
+}
+
+function autoVerifyNow(email) {
+  VERIFY.attempts++;
+  fetch(SEPAY_VERIFY, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      action: 'payment_intent',
-      email: email,
-      paymentId: STATE.paymentId,
-      promoCode: PAY.promoCode || null,
+      paymentId: STATE.paymentId, email: email,
       amountVND: PAY.promoAmount || BASE_VND,
-      propertyType: STATE.type,
-      result: STATE.result ? { label: STATE.result.label, mid: STATE.result.mid } : null,
-      timestamp: new Date().toISOString()
+      referenceCode: 'Valuit15-' + STATE.paymentId
     })
-  }).catch(function(){});
-  // Close modal → show success screen after 3s
-  setTimeout(function() {
-    closeModal();
-    document.getElementById('successEmail').textContent = email;
-    goTo('screen-success');
-  }, 3000);
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data.verified) {
+      clearInterval(VERIFY.timer);
+      var vs = document.getElementById('verifyStates');
+      if (vs) vs.style.display = 'none';
+      closeModal();
+      document.getElementById('successEmail').textContent = email;
+      goTo('screen-success');
+    } else if (VERIFY.attempts < VERIFY.maxAttempts) {
+      startAutoVerify(email);
+    } else {
+      showVerifyState('upload');
+    }
+  })
+  .catch(function() {
+    if (VERIFY.attempts < VERIFY.maxAttempts) startAutoVerify(email);
+    else showVerifyState('upload');
+  });
 }
+
+function retryVerify() {
+  VERIFY.attempts = 0;
+  var email = document.getElementById('sepayEmail').value.trim();
+  startAutoVerify(email);
+}
+
+function handleBillUpload(input) {
+  var file = input.files[0]; if (!file) return;
+  var zone = document.getElementById('billUploadZone');
+  var uc = document.getElementById('billUploadContent');
+  var ua = document.getElementById('billAnalyzingContent');
+  var ab = document.getElementById('billAnalysis');
+  var fb = document.getElementById('billFields');
+  var sb = document.getElementById('btnSubmitBill');
+  zone.classList.add('analyzing');
+  uc.style.display = 'none'; ua.style.display = 'block';
+  ab.style.display = 'none'; sb.style.display = 'none';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result.split(',')[1];
+    VERIFY.billImageB64 = b64;
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 500,
+        messages: [{ role: 'user', content: [
+          { type: 'image', source: { type: 'base64', media_type: file.type||'image/jpeg', data: b64 } },
+          { type: 'text', text: 'Đọc bill chuyển khoản ngân hàng VN. Trích xuất JSON: so_tien, noi_dung, ngan_hang_gui, thoi_gian, ma_giao_dich. Trả JSON thuần.' }
+        ]}]
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      zone.classList.remove('analyzing'); zone.classList.add('has-file');
+      ua.style.display = 'none'; uc.style.display = 'block';
+      uc.querySelector('.bill-upload-icon').textContent = '✅';
+      uc.querySelector('.bill-upload-text').textContent = 'Bill đã tải lên';
+      var text = (data.content && data.content[0]) ? data.content[0].text||'' : '';
+      var parsed = {};
+      try { parsed = JSON.parse(text.replace(/```json|```/g,'').trim()); } catch(e) { parsed = {thong_tin: text.substring(0,100)}; }
+      VERIFY.billData = parsed;
+      var nd = (parsed.noi_dung||'').toLowerCase();
+      var st = parseFloat((parsed.so_tien||'0').toString().replace(/[^0-9]/g,''));
+      var valid = nd.includes('valuit15') && st >= 10000;
+      ab.style.display = 'block';
+      ab.className = 'bill-analysis' + (valid ? '' : ' invalid');
+      document.getElementById('billAnalysisTitle').textContent = valid
+        ? '✓ Bill hợp lệ — nội dung khớp' : '⚠️ Nội dung CK không khớp "Valuit15..."';
+      fb.innerHTML = '';
+      Object.keys(parsed).forEach(function(k){
+        var d = document.createElement('div'); d.className = 'bill-field';
+        d.innerHTML = k.replace(/_/g,' ')+': <strong>'+(parsed[k]||'—')+'</strong>';
+        fb.appendChild(d);
+      });
+      sb.style.display = 'block';
+      sb.textContent = valid ? '📤 Gửi bill xác nhận → Nhận báo cáo' : '📤 Gửi bill (admin xác nhận thủ công)';
+    })
+    .catch(function(){
+      zone.classList.remove('analyzing'); ua.style.display='none'; uc.style.display='block';
+      sb.style.display='block'; sb.textContent='📤 Gửi bill thủ công';
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function submitBill() {
+  var email = document.getElementById('sepayEmail').value.trim();
+  var btn = document.getElementById('btnSubmitBill');
+  btn.disabled = true; btn.textContent = '⏳ Đang gửi...';
+  var payload = {
+    action: 'bill_submit', email: email,
+    paymentId: STATE.paymentId,
+    ref: 'Valuit15-' + STATE.paymentId,
+    billData: VERIFY.billData || {},
+    label: STATE.result ? STATE.result.label : '',
+    amountVND: PAY.promoAmount || BASE_VND,
+    promoCode: PAY.promoCode || null,
+    timestamp: new Date().toISOString()
+  };
+  if (VERIFY.billImageB64) payload.billImageB64 = VERIFY.billImageB64.substring(0, 30000);
+  fetch(SEPAY_WEBHOOK, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function(){});
+  fetch(GSHEET_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'support', email: email,
+      paymentId: STATE.paymentId,
+      issue: 'Bill submitted — pending manual confirm',
+      message: JSON.stringify(VERIFY.billData||{}).substring(0,200) })
+  }).catch(function(){});
+  document.getElementById('submittedRef').textContent = 'Valuit15-' + STATE.paymentId;
+  showVerifyState('submitted');
+}
+
 
 // ── POLAR CHECKOUT ────────────────────────────────────────
 function goPolar() {
@@ -1579,6 +2012,82 @@ function resetApp(){
   STATE.toggleValues=Object.assign({},STATE.defaults);
   document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('selected');});
   goTo('screen-1');
+}
+
+
+// ─── LANGUAGE ─────────────────────────────────────────────
+var LANG = 'vi';
+var TRANSLATIONS = {
+  vi: {
+    'hero-eyebrow': 'Định Giá Bất Động Sản',
+    'hero-title-1': 'Ước tính giá trị BĐS',
+    'hero-title-2': 'chuẩn TĐGVN trong 3 phút',
+    'hero-sub': 'Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận.',
+    'nav-back': '← Về trang chủ',
+    'step1-title': 'Chọn loại hình bất động sản',
+    'step1-desc': 'Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.',
+    'group1-label': '🏡 Nhà ở & Đầu tư cá nhân',
+    'group2-label': '🏪 Thương mại & Đầu tư',
+    'btn-calculate': 'Tính giá trị ước tính →',
+    'btn-unlock': '🔓 Mở khóa báo cáo đầy đủ — $15 USD',
+    'modal-title': 'Chọn phương thức thanh toán',
+    'modal-sub': 'Mở khóa Báo cáo Định giá BĐS chuyên sâu',
+  },
+  en: {
+    'hero-eyebrow': 'Real Estate Valuation',
+    'hero-title-1': 'Estimate property value',
+    'hero-title-2': 'Vietnam standard · 3 minutes',
+    'hero-sub': 'Automated AVM system — 8 property types, 4 valuation methods recognized by Ministry of Finance.',
+    'nav-back': '← Home',
+    'step1-title': 'Select property type',
+    'step1-desc': 'The system applies the most suitable valuation method for each property type.',
+    'group1-label': '🏡 Residential & Personal Investment',
+    'group2-label': '🏪 Commercial & Investment',
+    'btn-calculate': 'Calculate estimate →',
+    'btn-unlock': '🔓 Unlock full report — $15 USD',
+    'modal-title': 'Choose payment method',
+    'modal-sub': 'Unlock your in-depth Real Estate Valuation Report',
+  }
+};
+
+function setLang(lang) {
+  LANG = lang;
+  document.getElementById('btn-vi').classList.toggle('active', lang==='vi');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  var t = TRANSLATIONS[lang];
+  // Apply translations
+  var map = {
+    '.hero-eyebrow': 'hero-eyebrow',
+    '#nav-back-link': 'nav-back',
+    '.screen-step': null, // skip
+  };
+  // Hero
+  var heroEyebrow = document.querySelector('.hero-eyebrow');
+  if (heroEyebrow) heroEyebrow.childNodes[1] && (heroEyebrow.innerHTML = heroEyebrow.innerHTML.replace(/[^←→•]+(?=<\/div>|$)/, t['hero-eyebrow']));
+  var navBack = document.getElementById('nav-back-link');
+  if (navBack) navBack.textContent = t['nav-back'];
+  // Hero title
+  var heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) heroTitle.innerHTML = t['hero-title-1']+'<br><em>'+t['hero-title-2']+'</em>';
+  var heroSub = document.querySelector('.hero-subtitle');
+  if (heroSub) heroSub.textContent = t['hero-sub'];
+  // Screen 1
+  var s1title = document.querySelector('#screen-1 .screen-title');
+  if (s1title) s1title.textContent = t['step1-title'];
+  var s1desc = document.querySelector('#screen-1 .screen-desc');
+  if (s1desc) s1desc.textContent = t['step1-desc'];
+  // Group labels
+  var groups = document.querySelectorAll('.type-group-label');
+  if (groups[0]) groups[0].textContent = t['group1-label'];
+  if (groups[1]) groups[1].textContent = t['group2-label'];
+  // Buttons
+  document.querySelectorAll('.btn-calculate-trigger').forEach(function(b){ b.textContent = t['btn-calculate']; });
+  document.querySelectorAll('.btn-unlock-trigger').forEach(function(b){ b.textContent = t['btn-unlock']; });
+  // Modal
+  var mTitle = document.querySelector('.modal-title');
+  if (mTitle) mTitle.textContent = t['modal-title'];
+  var mSub = document.querySelector('.modal-sub');
+  if (mSub) mSub.textContent = t['modal-sub'];
 }
 
 // ─── INIT ─────────────────────────────────────────────────────
