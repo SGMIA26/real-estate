@@ -1302,7 +1302,7 @@ body{
 'use strict';
 
 // ─── CONSTANTS ────────────────────────────────────────────────
-var GSHEET_URL = 'https://script.google.com/macros/s/AKfycbxwPrRqbfOB7V30IzcnOHQdf8mYWxhZhzamuZKrX5ED9Yy6xg_hiD8cSA-HPFtTjnXl/exec';
+var GSHEET_URL = 'https://script.google.com/macros/s/AKfycbx17lLCU5CSaSY0vgDdRXH13aBmSdUP9sAiEyHuxTPM5LQyuxsjXnSPbtX_VXvCCI7f/exec';
 
 var PROVINCE_HTML = '<option value="">Chọn tỉnh thành</option><option value="HCM">TP. Hồ Chí Minh</option><option value="HN">Hà Nội</option><option value="DN">Đà Nẵng</option><option value="BD">Bình Dương</option><option value="BRV">Bà Rịa - Vũng Tàu</option><option value="other">Tỉnh khác</option>';
 
@@ -2079,62 +2079,192 @@ var TRANSLATIONS = {
     'btn-unlock': '🔓 Mở khóa báo cáo đầy đủ — $15 USD',
     'modal-title': 'Chọn phương thức thanh toán',
     'modal-sub': 'Mở khóa Báo cáo Định giá BĐS chuyên sâu',
+    'back-btn': '← Chọn lại loại hình',
+    'result-badge': '🏠 Kết quả định giá sơ bộ',
+    'result-unit': 'Tỷ đồng (VNĐ)',
+    'method-title': 'Phân tích theo phương pháp',
+    'metric-psm': 'Giá / m²',
+    'metric-method': 'Phương pháp chính',
+    'metric-conf': 'Mức tin cậy',
+    'promo-placeholder': 'Nhập mã giảm giá (nếu có)',
+    'promo-apply': 'Áp dụng',
+    'pay-intl-name': 'Thẻ quốc tế',
+    'pay-intl-desc': 'Visa · Mastercard · Khách nước ngoài',
+    'pay-vn-name': 'Chuyển khoản VN',
+    'pay-vn-desc': 'MBBank · SePay · Khách trong nước',
+    'pay-intl-btn': '💳 Thanh toán bằng thẻ quốc tế →',
+    'ck-title': 'Tôi đã chuyển khoản',
+    'email-label': 'Email nhận báo cáo',
+    'success-title': 'Đang tạo báo cáo!',
+    'success-desc': 'Báo cáo định giá BĐS chuyên sâu đang được AI xử lý và sẽ gửi về email trong 3–5 phút.'
   },
   en: {
     'hero-eyebrow': 'Real Estate Valuation',
-    'hero-title-1': 'Estimate property value',
+    'hero-title-1': 'Estimate your property value',
     'hero-title-2': 'Vietnam standard · 3 minutes',
-    'hero-sub': 'Automated AVM system — 8 property types, 4 valuation methods recognized by Ministry of Finance.',
-    'nav-back': '← Home',
+    'hero-sub': 'Automated AVM system — 8 property types, 4 Ministry of Finance-recognized valuation methods. AI-powered Land Certificate OCR supported.',
+    'nav-back': '← Back to Home',
     'step1-title': 'Select property type',
-    'step1-desc': 'The system applies the most suitable valuation method for each property type.',
+    'step1-desc': 'The system applies the most appropriate valuation methodology for each asset class.',
     'group1-label': '🏡 Residential & Personal Investment',
     'group2-label': '🏪 Commercial & Investment',
-    'btn-calculate': 'Calculate estimate →',
+    'btn-calculate': 'Calculate estimated value →',
     'btn-unlock': '🔓 Unlock full report — $15 USD',
-    'modal-title': 'Choose payment method',
-    'modal-sub': 'Unlock your in-depth Real Estate Valuation Report',
+    'modal-title': 'Select payment method',
+    'modal-sub': 'Unlock your In-Depth Real Estate Valuation Report',
+    'back-btn': '← Back to property types',
+    'result-badge': '🏠 Preliminary Valuation Result',
+    'result-unit': 'Billion VND',
+    'method-title': 'Breakdown by valuation method',
+    'metric-psm': 'Price / sqm',
+    'metric-method': 'Primary Method',
+    'metric-conf': 'Confidence',
+    'promo-placeholder': 'Enter discount code (if any)',
+    'promo-apply': 'Apply',
+    'pay-intl-name': 'International Card',
+    'pay-intl-desc': 'Visa · Mastercard · Overseas customers',
+    'pay-vn-name': 'Bank Transfer (Vietnam)',
+    'pay-vn-desc': 'MBBank · SePay · Domestic customers',
+    'pay-intl-btn': '💳 Pay with international card →',
+    'ck-title': 'I have transferred',
+    'email-label': 'Email for report delivery',
+    'success-title': 'Generating your report!',
+    'success-desc': 'Your in-depth Real Estate Valuation Report is being processed by AI and will be delivered to your email within 3–5 minutes.'
   }
 };
 
 function setLang(lang) {
   LANG = lang;
+  var t = TRANSLATIONS[lang];
+  if (!t) return;
+
+  // Toggle buttons
   document.getElementById('btn-vi').classList.toggle('active', lang==='vi');
   document.getElementById('btn-en').classList.toggle('active', lang==='en');
-  var t = TRANSLATIONS[lang];
-  // Apply translations
-  var map = {
-    '.hero-eyebrow': 'hero-eyebrow',
-    '#nav-back-link': 'nav-back',
-    '.screen-step': null, // skip
-  };
-  // Hero
-  var heroEyebrow = document.querySelector('.hero-eyebrow');
-  if (heroEyebrow) heroEyebrow.childNodes[1] && (heroEyebrow.innerHTML = heroEyebrow.innerHTML.replace(/[^←→•]+(?=<\/div>|$)/, t['hero-eyebrow']));
-  var navBack = document.getElementById('nav-back-link');
-  if (navBack) navBack.textContent = t['nav-back'];
-  // Hero title
-  var heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) heroTitle.innerHTML = t['hero-title-1']+'<br><em>'+t['hero-title-2']+'</em>';
-  var heroSub = document.querySelector('.hero-subtitle');
-  if (heroSub) heroSub.textContent = t['hero-sub'];
-  // Screen 1
-  var s1title = document.querySelector('#screen-1 .screen-title');
-  if (s1title) s1title.textContent = t['step1-title'];
-  var s1desc = document.querySelector('#screen-1 .screen-desc');
-  if (s1desc) s1desc.textContent = t['step1-desc'];
-  // Group labels
+
+  function setText(sel, key) {
+    var el = document.querySelector(sel);
+    if (el && t[key]) el.textContent = t[key];
+  }
+  function setHTML(sel, html) {
+    var el = document.querySelector(sel);
+    if (el) el.innerHTML = html;
+  }
+  function setAll(sel, key) {
+    document.querySelectorAll(sel).forEach(function(el){ if(t[key]) el.textContent = t[key]; });
+  }
+  function setAttr(sel, attr, key) {
+    var el = document.querySelector(sel);
+    if (el && t[key]) el.setAttribute(attr, t[key]);
+  }
+
+  // ── Hero ──
+  setHTML('.hero-eyebrow',
+    '<span style="width:28px;height:1px;background:var(--terra-400);opacity:.6;display:inline-block"></span> '+
+    t['hero-eyebrow']+
+    '<span style="width:28px;height:1px;background:var(--terra-400);opacity:.6;display:inline-block"></span>');
+  setHTML('.hero-title', t['hero-title-1']+'<br><em>'+t['hero-title-2']+'</em>');
+  setText('.hero-subtitle', 'hero-sub');
+  setText('#nav-back-link', 'nav-back');
+
+  // ── Screen 1 ──
+  setText('#screen-1 .screen-title', 'step1-title');
+  setText('#screen-1 .screen-desc', 'step1-desc');
   var groups = document.querySelectorAll('.type-group-label');
   if (groups[0]) groups[0].textContent = t['group1-label'];
   if (groups[1]) groups[1].textContent = t['group2-label'];
-  // Buttons
-  document.querySelectorAll('.btn-calculate-trigger').forEach(function(b){ b.textContent = t['btn-calculate']; });
-  document.querySelectorAll('.btn-unlock-trigger').forEach(function(b){ b.textContent = t['btn-unlock']; });
-  // Modal
-  var mTitle = document.querySelector('.modal-title');
-  if (mTitle) mTitle.textContent = t['modal-title'];
-  var mSub = document.querySelector('.modal-sub');
-  if (mSub) mSub.textContent = t['modal-sub'];
+
+  // ── Property type cards ──
+  var typeLabels = {
+    'apartment': lang==='en' ? ['Apartment / Condo','Units within a developer project, condotel'] : ['Chung cư / Căn hộ','Căn hộ trong dự án có chủ đầu tư, condotel'],
+    'penthouse':  lang==='en' ? ['Penthouse','Top-floor unit with private rooftop & panoramic views'] : ['Penthouse','Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh'],
+    'landed':     lang==='en' ? ['Townhouse / Row house','Shophouse, terraced house, defined number of floors'] : ['Nhà phố / Nhà liền kề','Nhà phố, nhà liền kề, số tầng xác định'],
+    'villa':      lang==='en' ? ['Villa / Detached House','Detached, semi-detached or luxury linked villa'] : ['Biệt thự / Villa','Biệt thự đơn lập, song lập, liền kề cao cấp'],
+    'landplot':   lang==='en' ? ['Land Plot','Residential land, project land, garden land'] : ['Đất nền','Đất thổ cư, đất nền dự án, đất vườn'],
+    'shophouse':  lang==='en' ? ['Podium Shophouse','Ground-floor retail unit, street-facing commercial'] : ['Shophouse chân đế','Tầng 1–3 tòa nhà, mặt tiền kinh doanh'],
+    'income':     lang==='en' ? ['Income-generating Property','Rental units, serviced apartments, commercial space'] : ['BĐS Dòng tiền','Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini'],
+    'building':   lang==='en' ? ['Entire Building','Office, serviced apartment, mixed-use building'] : ['Cả tòa nhà','Tòa nhà văn phòng, căn hộ dịch vụ, mix-use']
+  };
+  Object.keys(typeLabels).forEach(function(type) {
+    var card = document.getElementById('type-'+type);
+    if (!card) return;
+    var labels = typeLabels[type];
+    var nameEl = card.querySelector('.type-name');
+    var descEl = card.querySelector('.type-desc');
+    if (nameEl) nameEl.textContent = labels[0];
+    if (descEl) descEl.textContent = labels[1];
+  });
+
+  // ── Form labels (key inputs) ──
+  var formLabels = lang === 'en' ? {
+    'Province / City': 'Province / City',
+    'District': 'District',
+    'Project Name / Developer': 'Project Name / Developer',
+    'Net floor area (sqm)': 'Net floor area (sqm)',
+    'Floor': 'Floor',
+    'Bedrooms': 'Bedrooms',
+    'Balcony orientation': 'Balcony orientation',
+    'Legal status': 'Legal status',
+    'Year of completion': 'Year of completion',
+    'Interior condition': 'Interior condition'
+  } : {};
+
+  // ── Result screen ──
+  setText('#screen-result .result-badge', 'result-badge');
+  setText('#screen-result .result-unit', 'result-unit');
+  setText('.method-breakdown-title', 'method-title');
+  document.querySelectorAll('.metric-card').forEach(function(card, i) {
+    var labelEl = card.querySelector('.metric-label');
+    if (!labelEl) return;
+    var keys = ['metric-psm','metric-method','metric-conf'];
+    if (t[keys[i]]) labelEl.textContent = t[keys[i]];
+  });
+  setText('.disclaimer', 'disclaimer-text');
+
+  // ── Modal ──
+  setText('.modal-title', 'modal-title');
+  setText('.modal-sub', 'modal-sub');
+  setText('.pay-method-name:first-of-type', 'pay-intl-name');
+  var pmNames = document.querySelectorAll('.pay-method-name');
+  var pmDescs = document.querySelectorAll('.pay-method-desc');
+  if (pmNames[0] && t['pay-intl-name']) pmNames[0].textContent = t['pay-intl-name'];
+  if (pmNames[1] && t['pay-vn-name'])   pmNames[1].textContent = t['pay-vn-name'];
+  if (pmDescs[0] && t['pay-intl-desc']) pmDescs[0].innerHTML = t['pay-intl-desc'].replace('\n','<br>');
+  if (pmDescs[1] && t['pay-vn-desc'])   pmDescs[1].innerHTML = t['pay-vn-desc'].replace('\n','<br>');
+  var polarBtn = document.getElementById('btnPolar');
+  if (polarBtn && t['pay-intl-btn']) polarBtn.textContent = t['pay-intl-btn'];
+  setAttr('#promoInput', 'placeholder', 'promo-placeholder');
+  setText('.promo-btn', 'promo-apply');
+
+  // ── Email label ──
+  document.querySelectorAll('.form-label').forEach(function(el) {
+    if (el.textContent.includes('Email nhận') || el.textContent.includes('Email for')) {
+      el.childNodes[0].textContent = t['email-label'] + ' ';
+    }
+  });
+
+  // ── CK Button ──
+  var ckBtn = document.getElementById('btnSepayCK');
+  if (ckBtn && !ckBtn.disabled) ckBtn.textContent = (lang==='en' ? '✓ ' : '✓ Tôi đã ') + t['ck-title'];
+
+  // ── All "calculate" buttons ──
+  document.querySelectorAll('.btn.btn-primary[onclick="goToResult()"]').forEach(function(b){
+    b.textContent = t['btn-calculate'];
+  });
+
+  // ── All "unlock" buttons ──
+  document.querySelectorAll('.btn.btn-gold[onclick="goToPayment()"]').forEach(function(b){
+    b.textContent = t['btn-unlock'];
+  });
+
+  // ── Back buttons ──
+  document.querySelectorAll('.btn-back[onclick="goBack()"]').forEach(function(b){
+    b.textContent = t['back-btn'];
+  });
+
+  // ── Success screen ──
+  setText('#screen-success .success-title', 'success-title');
+  setText('#screen-success .success-desc', 'success-desc');
 }
 
 // ─── INIT ─────────────────────────────────────────────────────
