@@ -1277,7 +1277,18 @@ function renderResult(r) {
 }
 
 // ─── PAYMENT ──────────────────────────────────────────────────
-function goToPayment(){goTo('screen-payment');}
+var POLAR_CHECKOUT = 'https://buy.polar.sh/polar_cl_MGyIvdrC29kcXTTSFKXxwJkEnGRm1OfdhJFPs3n0I23';
+
+function goToPayment() {
+  var ref = STATE.paymentId || ('BDS' + Date.now().toString().slice(-6));
+  var url = POLAR_CHECKOUT + '?ref=' + ref;
+  if (STATE.result) {
+    url += '&metadata[type]=' + encodeURIComponent(STATE.type||'')
+        + '&metadata[label]=' + encodeURIComponent((STATE.result.label||'').substring(0,60))
+        + '&metadata[mid_vnd]=' + Math.round((STATE.result.mid||0)/1e6);
+  }
+  window.location.href = url;
+}
 function confirmPayment(){
   var email=document.getElementById('paymentEmail').value.trim();
   if(!email||!email.includes('@')){document.getElementById('paymentEmail').style.borderColor='var(--danger)';return;}
