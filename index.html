@@ -2672,9 +2672,9 @@ function submitBill() {
 // ── POLAR CHECKOUT ────────────────────────────────────────
 function goPolar() {
   var ref = STATE.paymentId || 'BDSV000';
-  // Save lead + notify via GSheet
   var emailEl = document.getElementById('sepayEmail');
   var em = emailEl ? emailEl.value.trim() : '';
+
   if(em) {
     saveLead(em, 'paid');
     fetch(GSHEET_URL, {
@@ -2684,6 +2684,22 @@ function goPolar() {
         status:'checkout-initiated', timestamp:new Date().toISOString() })
     }).catch(function(){});
   }
+
+  // Luu STATE vao sessionStorage — dung khi Polar redirect ve
+  if (STATE.result) {
+    try {
+      sessionStorage.setItem('gv_polar_state', JSON.stringify({
+        type:        STATE.type || '',
+        paymentId:   ref,
+        email:       em,
+        result:      STATE.result,
+        usdRate:     STATE.usdRate || 26000,
+        lang:        LANG || 'vi',
+        toggleValues: STATE.toggleValues || {}
+      }));
+    } catch(e) {}
+  }
+
   var url = POLAR_URL + '?ref=' + ref;
   if (STATE.result) {
     url += '&metadata[type]='  + encodeURIComponent(STATE.type||'')
@@ -2691,7 +2707,8 @@ function goPolar() {
          + '&metadata[mid]='   + Math.round((STATE.result.mid||0)/1e6);
   }
   if (PAY.promoCode) url += '&metadata[promo]=' + PAY.promoCode;
-  window.open(url, '_blank'); // open in new tab — user stays on page
+  // Mo cung tab — Polar redirect ve success?checkout_id=... cung origin
+  window.location.href = url;
 }
 
 // ── FORMAT ────────────────────────────────────────────────
@@ -3371,9 +3388,90 @@ window.addEventListener('load', function() {
   // Init i18next then render
   initI18n(function() {
     applyTranslations();
-    goTo('screen-1');
+    // ── POLAR REDIRECT DETECTION ──────────────────────────────────
+    // Polar redirect ve: /real-estate.html?checkout_id=xxx HOAC /?checkout_id=xxx
+    var urlParams = new URLSearchParams(window.location.search);
+    var checkoutId = urlParams.get('checkout_id');
+    if (checkoutId) {
+      initFromPolarRedirect(checkoutId);
+    } else {
+      goTo('screen-1');
+    }
   });
 });
+
+// Khoi phuc STATE tu sessionStorage sau khi Polar redirect ve
+function initFromPolarRedirect(checkoutId) {
+  try {
+    var saved = sessionStorage.getItem('gv_polar_state');
+    if (saved) {
+      var s = JSON.parse(saved);
+      // Rebuild STATE
+      STATE.type         = s.type || 'apartment';
+      STATE.result       = s.result || {};
+      STATE.paymentId    = s.paymentId || checkoutId.slice(0,12).toUpperCase();
+      STATE.usdRate      = s.usdRate || 26000;
+      STATE.toggleValues = s.toggleValues || {};
+      LANG               = s.lang || 'vi';
+      var email          = s.email || '';
+
+      // Hien thi success screen
+      goTo('screen-success');
+
+      // Cap nhat UI success
+      var emailEl = document.getElementById('successEmail');
+      if (emailEl) emailEl.textContent = email;
+
+      // Cap nhat GSheet — xac nhan Polar payment
+      fetch(GSHEET_URL, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          action: 'payment', paymentId: STATE.paymentId,
+          email: email, amount: 15, currency: 'USD', gateway: 'Polar',
+          status: 'confirmed', checkoutId: checkoutId,
+          timestamp: new Date().toISOString()
+        })
+      }).catch(function(){});
+
+      // Telegram notify
+      var tgMsg = '\u2705 Polar Confirmed\n'
+        + 'Checkout: ' + checkoutId.slice(0,16) + '\n'
+        + 'Email: ' + email + '\n'
+        + 'ID: ' + STATE.paymentId + '\n'
+        + 'Loai: ' + (STATE.type||'?') + '\n'
+        + 'Gia: ' + (STATE.result && STATE.result.mid ? (STATE.result.mid/1e9).toFixed(2)+'t' : '?');
+      fetch('https://api.telegram.org/bot8594427054:AAGG0FY_m2sJ3Tvq66EkMgwRIf5BJ5ztumY/sendMessage', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ chat_id:'-5271001547', text: tgMsg })
+      }).catch(function(){});
+
+      // Xoa sessionStorage
+      sessionStorage.removeItem('gv_polar_state');
+
+      // Auto trigger PDF sau 800ms
+      setTimeout(generateReportPDF, 800);
+      return;
+    }
+  } catch(e) { console.warn('Polar redirect restore failed:', e); }
+
+  // Fallback: khong co saved state — hien trang success don gian
+  goTo('screen-success');
+  var pending = document.getElementById('pdfPending');
+  var btn     = document.getElementById('btnDownloadPDF');
+  if (pending) {
+    pending.innerHTML = '<div style="padding:16px;text-align:center">'
+      + '<div style="font-size:28px;margin-bottom:8px">✅</div>'
+      + '<div style="font-size:14px;color:var(--amber-400);font-weight:600;margin-bottom:4px">Thanh toan Polar thanh cong!</div>'
+      + '<div style="font-size:12px;color:var(--grey-400)">Checkout ID: ' + checkoutId.slice(0,20) + '</div>'
+      + '<div style="font-size:11px;color:var(--grey-600);margin-top:8px">Bao cao se duoc gui ve email ban da dang ky.</div>'
+      + '</div>';
+  }
+  if (btn) {
+    btn.style.display = 'none';
+  }
+  // Xoa checkout_id khoi URL
+  history.replaceState({}, '', window.location.pathname);
+}
 
 
 // ── AI (alias — giữ tương thích) ──────────────────────────────
