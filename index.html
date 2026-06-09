@@ -1220,6 +1220,7 @@ body{
 
         <!-- CK button -->
         <button class="btn btn-primary" id="btnSepayCK" onclick="confirmSepay()" style="margin-top:0">✓ Tôi đã chuyển khoản</button>
+        <div id="sepayHint" style="display:none;font-size:11px;color:var(--amber-400);margin-top:6px;padding:8px 10px;background:rgba(240,168,48,0.08);border-radius:8px;text-align:center"></div>
 
         <!-- VERIFY STATES -->
         <div class="verify-states" id="verifyStates">
@@ -1295,8 +1296,22 @@ body{
                 <br><br>
                 Nếu sau 30 phút chưa nhận được, reply email xác nhận hoặc liên hệ Telegram.
               </div>
-              <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.15);border-radius:10px;padding:12px;font-size:12px;color:var(--grey-400)">
+              <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.15);border-radius:10px;padding:12px;font-size:12px;color:var(--grey-400);margin-bottom:12px">
                 🔑 Mã giao dịch: <strong style="color:var(--white)" id="submittedRef"></strong>
+              </div>
+              <div style="font-size:11px;color:var(--grey-600);margin-bottom:8px;text-align:center">Liên hệ admin xác nhận ngay:</div>
+              <div style="display:flex;gap:8px;">
+                <a href="https://t.me/sandboxstartup" target="_blank"
+                   style="flex:1;padding:10px;background:rgba(39,174,96,0.12);border:1px solid rgba(39,174,96,0.3);border-radius:10px;color:var(--success);font-size:12px;font-weight:600;text-decoration:none;text-align:center">
+                  ✈️ Telegram Admin
+                </a>
+                <a href="https://zalo.me/0906886686" target="_blank"
+                   style="flex:1;padding:10px;background:rgba(0,120,240,0.12);border:1px solid rgba(0,120,240,0.3);border-radius:10px;color:#4A9EF0;font-size:12px;font-weight:600;text-decoration:none;text-align:center">
+                  💬 Zalo Admin
+                </a>
+              </div>
+              <div style="margin-top:8px;font-size:10px;color:var(--grey-600);text-align:center">
+                Gửi kèm ảnh bill + mã giao dịch — Admin phản hồi trong 5 phút
               </div>
             </div>
           </div>
@@ -1942,27 +1957,57 @@ function confirmSepay() {
     return;
   }
   document.getElementById('sepayEmail').style.borderColor = '';
+
+  // Smart check: Has user actually initiated payment?
+  // If no promo and SePay selected, show gentle warning first
+  if (PAY.method === 'sepay' && PAY.promoCode !== 'JAMELA100' && !VERIFY._warnShown) {
+    VERIFY._warnShown = true;
+    var btn0 = document.getElementById('btnSepayCK');
+    btn0.style.background = 'rgba(240,168,48,0.15)';
+    btn0.style.borderColor = 'var(--amber-400)';
+    btn0.style.color = 'var(--amber-400)';
+    btn0.textContent = '⚠️ Xác nhận lần 2 — Tôi đã CK xong ✓';
+    setTimeout(function(){ btn0.style.cssText=''; }, 3000);
+    // Show hint
+    var hint = document.getElementById('sepayHint');
+    if(hint) { hint.style.display='block'; hint.textContent='Nếu chưa chuyển khoản, vui lòng CK trước rồi bấm xác nhận.'; }
+    return;
+  }
+  VERIFY._warnShown = false;
+
   var btn = document.getElementById('btnSepayCK');
   btn.disabled = true; btn.textContent = 'Đang xác nhận...';
   saveLead(email);
   // JAMELA100 = 0 VND → skip verify, go straight to success
   if (PAY.promoAmount === 0 && PAY.promoCode === 'JAMELA100') {
-    // Notify admin via GSheet + Telegram
+    var ts = new Date().toISOString();
+    // 1. Log to GSheet
     fetch(GSHEET_URL, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ action:'payment', paymentId:STATE.paymentId,
-        email:email, amount:0, currency:'VND', gateway:'SePay-Free',
-        status:'confirmed-promo', timestamp:new Date().toISOString() })
+      body: JSON.stringify({
+        action:'payment', paymentId:STATE.paymentId,
+        email:email, amount:0, currency:'VND',
+        gateway:'SePay-Promo', status:'confirmed-promo',
+        rawWebhook:'promo_'+PAY.promoCode, timestamp:ts
+      })
     }).catch(function(){});
+    // 2. Telegram notify
+    fetch('https://api.telegram.org/bot8594427054:AAGG0FY_m2sJ3Tvq66EkMgwRIf5BJ5ztumY/sendMessage', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        chat_id: '-5271001547',
+        text: '🎟 PROMO PAYMENT CONFIRMED!\nCode: '+PAY.promoCode+'\nEmail: '+email+
+              '\nID: '+STATE.paymentId+'\n✅ Auto confirmed (0 VND)\n⏰ '+ts
+      })
+    }).catch(function(){});
+    // 3. Save lead as paid
     saveLead(email, 'paid');
     setTimeout(function() {
       closeModal();
       document.getElementById('successEmail').textContent = email;
-      document.getElementById('reportEmail').textContent = email;
       goTo('screen-success');
-      // Generate PDF immediately
       setTimeout(generateReportPDF, 800);
-    }, 1500);
+    }, 1000);
     return;
   }
   var vs = document.getElementById('verifyStates');
@@ -2055,29 +2100,40 @@ function submitBill() {
   var email = document.getElementById('sepayEmail').value.trim();
   var btn = document.getElementById('btnSubmitBill');
   btn.disabled = true; btn.textContent = '⏳ Đang gửi...';
-  var payload = {
-    action: 'bill_submit', email: email,
-    paymentId: STATE.paymentId,
-    ref: 'Valuit15-' + STATE.paymentId,
-    billData: VERIFY.billData || {},
-    label: STATE.result ? STATE.result.label : '',
-    amountVND: PAY.promoAmount || BASE_VND,
-    promoCode: PAY.promoCode || null,
-    timestamp: new Date().toISOString()
-  };
-  if (VERIFY.billImageB64) payload.billImageB64 = VERIFY.billImageB64.substring(0, 30000);
-  fetch(SEPAY_WEBHOOK, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).catch(function(){});
+  var ts = new Date().toISOString();
+  var ref = 'Valuit15-' + STATE.paymentId;
+
+  // 1. Log to GSheet
   fetch(GSHEET_URL, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'support', email: email,
-      paymentId: STATE.paymentId,
-      issue: 'Bill submitted — pending manual confirm',
-      message: JSON.stringify(VERIFY.billData||{}).substring(0,200) })
+    body: JSON.stringify({
+      action: 'support', email: email, paymentId: STATE.paymentId,
+      issue: 'BILL SUBMITTED — chờ xác nhận thủ công',
+      message: JSON.stringify(VERIFY.billData||{}).substring(0,300),
+      timestamp: ts
+    })
   }).catch(function(){});
-  document.getElementById('submittedRef').textContent = 'Valuit15-' + STATE.paymentId;
+
+  // 2. Telegram alert to admin with bill info
+  var billInfo = VERIFY.billData ? Object.keys(VERIFY.billData).map(function(k){
+    return k+': '+VERIFY.billData[k];
+  }).join(', ') : 'No bill data';
+  fetch('https://api.telegram.org/bot8594427054:AAGG0FY_m2sJ3Tvq66EkMgwRIf5BJ5ztumY/sendMessage', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      chat_id: '-5271001547',
+      text: '📸 BILL SUBMITTED — XÁC NHẬN THỦ CÔNG!\n' +
+            '📧 Email: ' + email + '\n' +
+            '🔑 ID: ' + ref + '\n' +
+            '💰 Số tiền: ' + (PAY.promoAmount || BASE_VND).toLocaleString('vi-VN') + ' VND\n' +
+            '📋 Bill: ' + billInfo.substring(0,200) + '\n' +
+            '⚠️ Vui lòng kiểm tra SePay và gửi báo cáo PDF thủ công!\n' +
+            '⏰ ' + ts
+    })
+  }).catch(function(){});
+
+  // 3. Show submitted state
+  document.getElementById('submittedRef').textContent = ref;
   showVerifyState('submitted');
 }
 
