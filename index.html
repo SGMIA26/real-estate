@@ -386,6 +386,18 @@ body{
 .modal-close{position:sticky;top:0;float:right;margin:12px 12px 0 0;z-index:10;background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:30px;height:30px;color:var(--grey-400);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--transition);}
 .modal-close:hover{background:rgba(255,255,255,0.12);color:var(--white);}
 
+/* AI PROMO MODAL */
+.ai-promo-modal{position:fixed;inset:0;z-index:400;background:rgba(7,16,30,0.92);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px;}
+.ai-promo-modal.active{display:flex;}
+.ai-promo-box{background:var(--navy-900);border:1px solid rgba(240,168,48,0.3);border-radius:var(--radius-xl);max-width:380px;width:100%;padding:28px;position:relative;box-shadow:0 8px 40px rgba(0,0,0,0.6);}
+.ai-promo-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber-400),transparent);}
+.ai-chat-bubble{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:0 14px 14px 14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--grey-400);line-height:1.7;}
+.ai-code-display{background:rgba(240,168,48,0.1);border:2px dashed rgba(240,168,48,0.4);border-radius:12px;padding:16px;text-align:center;margin:16px 0;}
+.ai-code-text{font-size:24px;font-weight:700;color:var(--amber-400);letter-spacing:.15em;font-family:monospace;}
+.ai-copy-btn{background:linear-gradient(135deg,var(--amber-400),var(--amber-500));color:var(--navy-950);border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;font-family:var(--font-body);}
+.ai-typing{display:inline-block;width:6px;height:14px;background:var(--amber-400);border-radius:2px;animation:blink .7s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
 /* LANG TOGGLE */
 .lang-toggle{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:3px;}
 .lang-btn{padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--grey-400);font-family:var(--font-body);transition:var(--transition);white-space:nowrap;}
@@ -663,8 +675,8 @@ body{
   <div class="form-group">
     <label class="form-label">Tải ảnh Sổ hồng / Trang thông số <span>(AI tự điền)</span></label>
     <div class="upload-zone" id="uz-apt">
-      <input type="file" accept="image/*" onchange="handleOCR(this,'apt')">
-      <div id="uc-apt"><div class="upload-icon">📄</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh</div><div class="upload-sub">JPG · PNG · HEIC · Tối đa 10MB</div></div>
+      <input type="file" accept="image/*,.pdf,application/pdf" multiple onchange="handleOCR(this,'apt')">
+      <div id="uc-apt"><div class="upload-icon">📄</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh</div><div class="upload-sub">JPG · PNG · PDF · HEIC · Tối đa 2 ảnh hoặc 1 PDF</div></div>
       <div class="upload-progress" id="up-apt"><div class="progress-bar"><div class="progress-fill" id="pf-apt"></div></div><div style="font-size:12px;color:var(--grey-400);margin-top:7px" id="us-apt">Đang phân tích...</div></div>
       <div class="ocr-result" id="or-apt"><div class="ocr-result-title">✓ AI trích xuất xong</div><div class="ocr-fields" id="of-apt"></div></div>
     </div>
@@ -761,8 +773,8 @@ body{
   <div class="form-group">
     <label class="form-label">Tải ảnh Sổ đỏ <span>(AI tự điền)</span></label>
     <div class="upload-zone" id="uz-land">
-      <input type="file" accept="image/*" onchange="handleOCR(this,'land')">
-      <div id="uc-land"><div class="upload-icon">📋</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh Sổ đỏ</div><div class="upload-sub">AI trích xuất diện tích, địa chỉ, mục đích sử dụng</div></div>
+      <input type="file" accept="image/*,.pdf,application/pdf" multiple onchange="handleOCR(this,'land')">
+      <div id="uc-land"><div class="upload-icon">📋</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh Sổ đỏ</div><div class="upload-sub">Tải 1–2 ảnh (mặt trước/sau) hoặc 1 file PDF</div></div>
       <div class="upload-progress" id="up-land"><div class="progress-bar"><div class="progress-fill" id="pf-land"></div></div><div style="font-size:12px;color:var(--grey-400);margin-top:7px" id="us-land">Đang phân tích...</div></div>
       <div class="ocr-result" id="or-land"><div class="ocr-result-title">✓ AI trích xuất xong</div><div class="ocr-fields" id="of-land"></div></div>
     </div>
@@ -867,8 +879,8 @@ body{
   <div class="form-group">
     <label class="form-label">Tải ảnh Sổ đỏ <span>(AI tự điền)</span></label>
     <div class="upload-zone" id="uz-lp">
-      <input type="file" accept="image/*" onchange="handleOCR(this,'lp')">
-      <div id="uc-lp"><div class="upload-icon">📋</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh</div><div class="upload-sub">AI trích xuất diện tích, địa chỉ, mục đích sử dụng</div></div>
+      <input type="file" accept="image/*,.pdf,application/pdf" multiple onchange="handleOCR(this,'lp')">
+      <div id="uc-lp"><div class="upload-icon">📋</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh</div><div class="upload-sub">Tải 1–2 ảnh (mặt trước/sau) hoặc 1 file PDF</div></div>
       <div class="upload-progress" id="up-lp"><div class="progress-bar"><div class="progress-fill" id="pf-lp"></div></div><div style="font-size:12px;color:var(--grey-400);margin-top:7px" id="us-lp">Đang phân tích...</div></div>
       <div class="ocr-result" id="or-lp"><div class="ocr-result-title">✓ AI trích xuất xong</div><div class="ocr-fields" id="of-lp"></div></div>
     </div>
@@ -1085,12 +1097,21 @@ body{
       <div class="freemium-lock">🔒</div>
       <div class="freemium-title">Báo cáo Định giá Chuyên sâu</div>
       <div class="freemium-desc">Phân tích đầy đủ · So sánh thị trường · PDF xuất ngay</div>
-      <div class="freemium-price">$15 USD</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0">
+        <span style="font-size:16px;color:var(--grey-600);text-decoration:line-through">$100 USD</span>
+        <span style="font-size:11px;background:rgba(46,204,113,0.15);color:var(--success);border:1px solid rgba(46,204,113,0.3);padding:2px 8px;border-radius:10px;font-weight:600">Tiết kiệm $85</span>
+      </div>
+      <div class="freemium-price" id="anchorPrice">$15 USD</div>
+      <!-- AI Assistant promo button -->
+      <button onclick="showAIPromo()" style="margin-top:8px;background:rgba(240,168,48,0.12);border:1px solid rgba(240,168,48,0.3);border-radius:10px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:var(--font-body);transition:var(--transition)" onmouseover="this.style.background='rgba(240,168,48,0.22)'" onmouseout="this.style.background='rgba(240,168,48,0.12)'">
+        <span style="font-size:18px">🤖</span>
+        <span style="font-size:12px;color:var(--amber-400);font-weight:600">Nhận mã ưu đãi từ AI Trợ Lý</span>
+      </button>
     </div>
   </div>
   <div class="disclaimer" data-i18n="[html]result.disclaimer"><strong>Miễn trừ trách nhiệm:</strong> Kết quả chỉ mang tính tham khảo dựa trên AVM và dữ liệu thị trường. <strong>Không thay thế</strong> Chứng thư thẩm định giá chính thức theo quy định Bộ Tài chính. Tham vấn đơn vị thẩm định độc lập trước khi giao dịch.</div>
   <div class="btn-actions">
-    <button class="btn btn-gold" onclick="goToPayment()" data-i18n="btn.unlock">🔓 Mở khóa báo cáo đầy đủ — $15 USD</button>
+    <button class="btn btn-gold" onclick="goToPayment()" data-i18n="btn.unlock">🔓 Nhận Full Báo Cáo — $100 USD</button>
     <button class="btn-back" onclick="goBack()">← Chỉnh sửa thông số</button>
   </div>
 </div>
@@ -1104,8 +1125,12 @@ body{
   <p class="screen-desc">Báo cáo PDF gửi về email trong 3–5 phút sau khi xác nhận thanh toán.</p>
   <div class="payment-summary">
     <div style="font-family:var(--font-display);font-size:13px;color:var(--grey-400);margin-bottom:10px;font-style:italic">Bạn đang mở khóa:</div>
-    <div class="payment-amount">$15 <span style="font-size:18px">USD</span></div>
-    <div class="payment-amount-vnd">≈ 390,000 VNĐ</div>
+    <div style="text-align:center;margin-bottom:6px">
+      <span style="font-size:11px;color:var(--grey-600);text-decoration:line-through">$100 USD</span>
+      <span style="font-size:11px;color:var(--success);margin-left:8px;font-weight:600">-85% ưu đãi AI</span>
+    </div>
+    <div class="payment-amount" id="displayAmount">$15 <span style="font-size:18px">USD</span></div>
+    <div class="payment-amount-vnd" id="displayAmountVND">≈ 390,000 VNĐ</div>
     <div class="payment-includes">
       <div class="payment-include-item">Báo cáo định giá BĐS PDF chuyên nghiệp (TĐGVN)</div>
       <div class="payment-include-item">Phân tích chi tiết 2–4 phương pháp định giá</div>
@@ -1331,6 +1356,41 @@ body{
 
 </div><!-- /.card -->
 </div><!-- /.container -->
+
+<!-- AI PROMO MODAL -->
+<div class="ai-promo-modal" id="aiPromoModal">
+  <div class="ai-promo-box">
+    <button onclick="closeAIPromo()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:28px;height:28px;color:var(--grey-400);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--amber-400),var(--terra-500));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🤖</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--white)">AI Trợ Lý ValuitBiz</div>
+        <div style="font-size:11px;color:var(--success)">● Online</div>
+      </div>
+    </div>
+    <div class="ai-chat-bubble" id="aiChatBubble">
+      <span class="ai-typing"></span>
+    </div>
+    <div class="ai-code-display" id="aiCodeDisplay" style="display:none">
+      <div style="font-size:11px;color:var(--grey-600);margin-bottom:4px">Mã ưu đãi đặc biệt của bạn</div>
+      <div class="ai-code-text">JAMELA85</div>
+      <div style="font-size:11px;color:var(--grey-400);margin-top:6px">
+        <span style="text-decoration:line-through;color:var(--grey-600)">$100</span>
+        <span style="color:var(--success);margin-left:6px;font-weight:600">→ Chỉ còn $15 USD</span>
+        <span style="background:rgba(46,204,113,0.15);color:var(--success);padding:1px 6px;border-radius:6px;margin-left:4px;font-size:10px">-85%</span>
+      </div>
+    </div>
+    <button class="ai-copy-btn" id="aiCopyBtn" style="display:none" onclick="copyAndApplyPromo()">
+      📋 Copy mã & Áp dụng ngay
+    </button>
+    <div id="aiPromoApplied" style="display:none;text-align:center;padding:8px;font-size:12px;color:var(--success)">
+      ✅ Mã đã được áp dụng! Bấm "Nhận Full Báo Cáo" để tiếp tục.
+    </div>
+    <div style="font-size:10px;color:var(--grey-600);margin-top:12px;text-align:center">
+      ⏰ Ưu đãi có hạn · Chỉ dành cho lượt định giá này
+    </div>
+  </div>
+</div>
 
 <!-- LOADING OVERLAY -->
 <div class="calculating-overlay" id="calcOverlay">
@@ -1848,7 +1908,8 @@ var MBBANK_ACC  = '9688666686';
 var USD_VND     = 26000;
 var VAT         = 1.08;
 var BASE_VND    = Math.round(15 * USD_VND * VAT / 1000) * 1000; // 421,200 → 421,000
-var PROMO_CODES = { 'JAMELA10K': 10000, 'JAMELA100': 0 }; // code: VND amount
+var PROMO_CODES = { 'JAMELA10K': 10000, 'JAMELA100': 0, 'JAMELA85': -1 };
+// JAMELA85: -1 = special flag for 85% discount off $100 anchor price // code: VND amount
 
 var PAY = { method: 'polar', promoCode: '', promoAmount: 0 };
 
@@ -1887,23 +1948,39 @@ function selectPayMethod(method) {
 }
 
 // ── PROMO CODE ────────────────────────────────────────────
-function applyPromo() {
-  var code = document.getElementById('promoInput').value.trim().toUpperCase();
+function applyPromo(codeOverride) {
+  var code = (codeOverride || document.getElementById('promoInput').value.trim()).toUpperCase();
+  if(codeOverride) document.getElementById('promoInput').value = code;
   var badge = document.getElementById('promoBadge');
   var promoPrice = document.getElementById('promoPrice');
+
+  if (code === 'JAMELA85') {
+    // 85% off $100 anchor = $15 final
+    PAY.promoCode = 'JAMELA85';
+    PAY.promoAmount = Math.round(15 * 26000 * 1.1 / 1000) * 1000; // $15 in VND
+    badge.classList.add('active');
+    promoPrice.textContent = '₫' + PAY.promoAmount.toLocaleString('vi-VN') + ' (Giảm 85% từ $100)';
+    document.getElementById('sepayAmount').textContent = fmtVND(PAY.promoAmount);
+    document.getElementById('sepayPrice').textContent = fmtVND(PAY.promoAmount);
+    document.getElementById('sepayRef').innerHTML = 'Valuit15-' + STATE.paymentId +
+      ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
+    updateQR(PAY.promoAmount, 'Valuit15-' + STATE.paymentId);
+    document.getElementById('polarPrice').textContent = '$15 USD (Tiết kiệm $85)';
+    document.getElementById('btnPolar').textContent = '💳 Thanh toán $15 USD →';
+    return;
+  }
+
   if (PROMO_CODES[code] !== undefined) {
     PAY.promoCode = code;
     PAY.promoAmount = PROMO_CODES[code];
     promoPrice.textContent = fmtVND(PAY.promoAmount);
     badge.classList.add('active');
-    // Update amounts
     var finalVND = PAY.promoAmount;
     document.getElementById('sepayAmount').textContent = fmtVND(finalVND);
     document.getElementById('sepayPrice').textContent = fmtVND(finalVND);
     document.getElementById('sepayRef').innerHTML = 'Valuit15-' + STATE.paymentId +
       ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
     updateQR(finalVND, 'Valuit15-' + STATE.paymentId);
-    // Polar price label
     document.getElementById('polarPrice').textContent = 'TEST MODE';
     document.getElementById('btnPolar').textContent = '🧪 Test — ' + fmtVND(finalVND);
   } else {
@@ -1911,6 +1988,60 @@ function applyPromo() {
     promoPrice.textContent = '';
     alert('Mã không hợp lệ');
   }
+}
+
+function showAIPromo() {
+  document.getElementById('aiPromoModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  // Simulate AI typing
+  var bubble = document.getElementById('aiChatBubble');
+  var msgs = [
+    'Xin chào! Tôi là AI Trợ Lý của ValuitBiz. 👋',
+    'Tôi thấy bạn vừa định giá xong bất động sản của mình.',
+    'Báo cáo đầy đủ của chúng tôi có giá gốc <strong style="color:var(--white)">$100 USD</strong>, bao gồm 5 phương pháp định giá TĐGVN, so sánh giao dịch thực tế và khuyến nghị đầu tư.',
+    'Vì đây là lần đầu tiên bạn sử dụng dịch vụ, tôi được phép tặng bạn <strong style="color:var(--amber-400)">mã ưu đãi 85%</strong> đặc biệt:'
+  ];
+  var i = 0;
+  bubble.innerHTML = '<span class="ai-typing"></span>';
+  function typeNext() {
+    if (i < msgs.length) {
+      setTimeout(function() {
+        bubble.innerHTML = msgs.slice(0,i+1).join('<br><br>');
+        i++;
+        if (i < msgs.length) typeNext();
+        else {
+          // Show code
+          setTimeout(function() {
+            document.getElementById('aiCodeDisplay').style.display = 'block';
+            document.getElementById('aiCopyBtn').style.display = 'block';
+          }, 400);
+        }
+      }, i === 0 ? 800 : 1200);
+    }
+  }
+  typeNext();
+}
+
+function closeAIPromo() {
+  document.getElementById('aiPromoModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function copyAndApplyPromo() {
+  // Copy to clipboard
+  navigator.clipboard.writeText('JAMELA85').catch(function(){});
+  // Apply to payment modal
+  applyPromo('JAMELA85');
+  // Update UI
+  document.getElementById('aiCopyBtn').textContent = '✅ Đã copy và áp dụng!';
+  document.getElementById('aiCopyBtn').style.background = 'linear-gradient(135deg,var(--success),#27AE60)';
+  document.getElementById('aiPromoApplied').style.display = 'block';
+  // Close after 2s
+  setTimeout(function() {
+    closeAIPromo();
+    // Auto-open payment modal
+    goToPayment();
+  }, 2000);
 }
 
 // ── QR CODE (VietQR) ──────────────────────────────────────
@@ -2330,7 +2461,7 @@ var I18N_RESOURCES = {
     },
     btn: {
       calculate: 'Tính giá trị ước tính →',
-      unlock: '🔓 Mở khóa báo cáo đầy đủ — $15 USD',
+      unlock: '🔓 Nhận Full Báo Cáo — $100 USD',
       back: '← Chọn lại loại hình',
       ck: '✓ Tôi đã chuyển khoản',
       polar: '💳 Thanh toán bằng thẻ quốc tế →',
