@@ -1194,7 +1194,13 @@ body{
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-header">
       <div class="modal-title" data-i18n="modal.title">Chọn phương thức thanh toán</div>
-      <div class="modal-sub" data-i18n="modal.sub">Mở khóa Báo cáo Định giá BĐS chuyên sâu</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+        <div class="modal-sub" data-i18n="modal.sub">Mở khóa Báo cáo Định giá BĐS chuyên sâu</div>
+        <button onclick="showAIPromo()" style="display:flex;align-items:center;gap:6px;background:rgba(240,168,48,0.1);border:1px solid rgba(240,168,48,0.3);border-radius:20px;padding:5px 12px;cursor:pointer;font-family:var(--font-body);transition:var(--transition)" onmouseover="this.style.background='rgba(240,168,48,0.2)'" onmouseout="this.style.background='rgba(240,168,48,0.1)'">
+          <span style="font-size:16px">🤖</span>
+          <span style="font-size:11px;color:var(--amber-400);font-weight:600;white-space:nowrap">Nhận mã -85%</span>
+        </button>
+      </div>
     </div>
     <div class="modal-body">
 
@@ -1211,13 +1217,19 @@ body{
           <div class="pay-method-icon">💳</div>
           <div class="pay-method-name" data-i18n="pay.intl.name">Thẻ quốc tế</div>
           <div class="pay-method-desc">Visa · Mastercard<br>Khách nước ngoài / VN ở nước ngoài</div>
-          <div class="pay-method-price" id="polarPrice">$15 USD</div>
+          <div class="pay-method-price" id="polarPrice">
+            <span style="text-decoration:line-through;color:var(--grey-600);font-size:12px">$100</span>
+            <span style="color:var(--amber-400);margin-left:4px">$15 USD</span>
+          </div>
         </div>
         <div class="pay-method" id="pm-sepay" onclick="selectPayMethod('sepay')">
           <div class="pay-method-icon">🏦</div>
           <div class="pay-method-name" data-i18n="pay.vn.name">Chuyển khoản VN</div>
           <div class="pay-method-desc">MBBank · SePay<br>Khách trong nước</div>
-          <div class="pay-method-price" id="sepayPrice">420,000 VND</div>
+          <div class="pay-method-price" id="sepayPrice">
+            <span style="text-decoration:line-through;color:var(--grey-600);font-size:12px" id="sepayOriginalPrice">2,730,000 VND</span>
+            <span style="color:var(--amber-400);margin-left:4px" id="sepayFinalLabel">421,000 VND</span>
+          </div>
         </div>
       </div>
 
@@ -1233,7 +1245,23 @@ body{
           <div class="bank-row"><span class="bank-label">Ngân hàng</span><span class="bank-val">MBBank</span></div>
           <div class="bank-row"><span class="bank-label">Số tài khoản</span><span class="bank-val">9688666686 <button class="copy-btn" onclick="copyText('9688666686')">Copy</button></span></div>
           <div class="bank-row"><span class="bank-label">Chủ tài khoản</span><span class="bank-val">SCF INVESTMENT JS CO</span></div>
-          <div class="bank-row"><span class="bank-label">Số tiền</span><span class="bank-val highlight" id="sepayAmount">420,000 VND</span></div>
+          <!-- Price breakdown -->
+          <div id="priceBreakdown" style="background:rgba(196,98,45,0.06);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:12px">
+            <div style="display:flex;justify-content:space-between;color:var(--grey-600);margin-bottom:3px">
+              <span>Giá gốc báo cáo</span>
+              <span id="breakOriginal">$100 ≈ 2,730,000 VND</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;color:var(--success);margin-bottom:3px" id="breakDiscountRow">
+              <span id="breakDiscountLabel">Ưu đãi JAMELA85 (85%)</span>
+              <span id="breakDiscount">- $85 ≈ 2,321,000 VND</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-weight:700;color:var(--white);border-top:1px solid rgba(255,255,255,0.1);padding-top:6px;margin-top:3px">
+              <span>Thanh toán</span>
+              <span id="breakFinal" style="color:var(--amber-400)">421,000 VND</span>
+            </div>
+            <div style="font-size:10px;color:var(--grey-600);margin-top:4px">* Tỷ giá tham khảo: 1 USD ≈ <span id="rateDisplay">26,000</span> VND | VAT 10% đã bao gồm</div>
+          </div>
+          <div class="bank-row"><span class="bank-label">Số tiền CK</span><span class="bank-val highlight" id="sepayAmount">421,000 VND</span></div>
           <div class="bank-row"><span class="bank-label">Nội dung</span><span class="bank-val highlight" id="sepayRef">Valuit15-000000 <button class="copy-btn" onclick="copyRef()">Copy</button></span></div>
         </div>
 
@@ -1920,18 +1948,74 @@ function goToPayment() {
   document.getElementById('promoInput').value = '';
   document.getElementById('promoBadge').classList.remove('active');
   selectPayMethod('polar');
-  // Update ref
+
   var ref = STATE.paymentId || ('BDS' + Date.now().toString().slice(-6));
   STATE.paymentId = ref;
-  document.getElementById('sepayRef').innerHTML = 'Valuit15-' + ref +
-    ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
-  // Generate QR (VietQR standard)
-  updateQR(BASE_VND, 'Valuit15-' + ref);
-  document.getElementById('sepayAmount').textContent = fmtVND(BASE_VND);
-  document.getElementById('sepayPrice').textContent = fmtVND(BASE_VND);
-  // Show modal
+
+  // Fetch live USD/VND rate (fallback to 26000)
+  fetch('https://api.exchangerate-api.com/v4/latest/USD')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var rate = Math.round((d.rates && d.rates.VND) || 26000);
+      STATE.usdRate = rate;
+      var vnd100 = Math.round(100 * rate * 1.1 / 1000) * 1000; // $100 + VAT10%
+      var vnd15  = Math.round(15  * rate * 1.1 / 1000) * 1000; // $15 + VAT10%
+      BASE_VND = vnd100; // default = full price
+      PAY.fullVND = vnd100;
+      PAY.discountVND = vnd15;
+      updateModalPrices(ref, vnd100, false);
+    })
+    .catch(function(){
+      STATE.usdRate = 26000;
+      var vnd100 = Math.round(100 * 26000 * 1.1 / 1000) * 1000;
+      var vnd15  = Math.round(15  * 26000 * 1.1 / 1000) * 1000;
+      BASE_VND = vnd100;
+      PAY.fullVND = vnd100;
+      PAY.discountVND = vnd15;
+      updateModalPrices(ref, vnd100, false);
+    });
+
   document.getElementById('paymentModal').classList.add('active');
   document.body.style.overflow = 'hidden';
+}
+
+function updateModalPrices(ref, amountVND, hasDiscount) {
+  var rate = STATE.usdRate || 26000;
+  var vnd100 = PAY.fullVND || Math.round(100*rate*1.1/1000)*1000;
+  var vnd15  = PAY.discountVND || Math.round(15*rate*1.1/1000)*1000;
+
+  // Update rate display
+  var rateEl = document.getElementById('rateDisplay');
+  if(rateEl) rateEl.textContent = rate.toLocaleString('vi-VN');
+
+  // Update ref code: Valuit15 if discount, Valuit100 if full price
+  var prefix = hasDiscount ? 'Valuit15' : 'Valuit100';
+  document.getElementById('sepayRef').innerHTML = prefix + '-' + ref +
+    ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
+  STATE.currentPrefix = prefix;
+
+  // Update QR and amount
+  var payVND = hasDiscount ? vnd15 : vnd100;
+  updateQR(payVND, prefix + '-' + ref);
+  document.getElementById('sepayAmount').textContent = fmtVND(payVND);
+
+  // Update original price label
+  var origEl = document.getElementById('breakOriginal');
+  if(origEl) origEl.textContent = '$100 ≈ ' + fmtVND(vnd100);
+
+  // Update breakdown
+  var discRow = document.getElementById('breakDiscountRow');
+  if(discRow) discRow.style.display = hasDiscount ? 'flex' : 'none';
+  var discEl = document.getElementById('breakDiscount');
+  if(discEl) discEl.textContent = '- $85 ≈ ' + fmtVND(vnd100 - vnd15);
+  var finalEl = document.getElementById('breakFinal');
+  if(finalEl) finalEl.textContent = fmtVND(payVND);
+
+  // SePay card price
+  var sepayLabel = document.getElementById('sepayFinalLabel');
+  if(sepayLabel) sepayLabel.textContent = fmtVND(payVND);
+  var sepayOrig = document.getElementById('sepayOriginalPrice');
+  if(sepayOrig) sepayOrig.style.display = hasDiscount ? 'inline' : 'none';
 }
 
 function closeModal() {
@@ -1955,17 +2039,18 @@ function applyPromo(codeOverride) {
   var promoPrice = document.getElementById('promoPrice');
 
   if (code === 'JAMELA85') {
-    // 85% off $100 anchor = $15 final
     PAY.promoCode = 'JAMELA85';
-    PAY.promoAmount = Math.round(15 * 26000 * 1.1 / 1000) * 1000; // $15 in VND
+    var rate = STATE.usdRate || 26000;
+    PAY.promoAmount = Math.round(15 * rate * 1.1 / 1000) * 1000;
     badge.classList.add('active');
-    promoPrice.textContent = '₫' + PAY.promoAmount.toLocaleString('vi-VN') + ' (Giảm 85% từ $100)';
-    document.getElementById('sepayAmount').textContent = fmtVND(PAY.promoAmount);
-    document.getElementById('sepayPrice').textContent = fmtVND(PAY.promoAmount);
-    document.getElementById('sepayRef').innerHTML = 'Valuit15-' + STATE.paymentId +
-      ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
-    updateQR(PAY.promoAmount, 'Valuit15-' + STATE.paymentId);
-    document.getElementById('polarPrice').textContent = '$15 USD (Tiết kiệm $85)';
+    promoPrice.textContent = '$100 → $15 (Giảm 85%)';
+    // Update all prices in modal
+    updateModalPrices(STATE.paymentId, PAY.promoAmount, true);
+    var discLabel = document.getElementById('breakDiscountLabel');
+    if(discLabel) discLabel.textContent = 'Ưu đãi JAMELA85 (-85%)';
+    document.getElementById('polarPrice').innerHTML =
+      '<span style="text-decoration:line-through;color:var(--grey-600);font-size:12px">$100</span>' +
+      '<span style="color:var(--amber-400);margin-left:4px">$15 USD</span>';
     document.getElementById('btnPolar').textContent = '💳 Thanh toán $15 USD →';
     return;
   }
@@ -2061,7 +2146,8 @@ function copyText(text) {
   }).catch(function() {});
 }
 function copyRef() {
-  var ref = 'Valuit15-' + STATE.paymentId;
+  var prefix = STATE.currentPrefix || (PAY.promoCode ? 'Valuit15' : 'Valuit100');
+  var ref = prefix + '-' + STATE.paymentId;
   copyText(ref);
 }
 
@@ -2110,7 +2196,7 @@ function confirmSepay() {
   btn.disabled = true; btn.textContent = 'Đang xác nhận...';
   saveLead(email);
   // JAMELA100 = 0 VND → skip verify, go straight to success
-  if (PAY.promoAmount === 0 && PAY.promoCode === 'JAMELA100') {
+  if ((PAY.promoAmount === 0 && PAY.promoCode === 'JAMELA100') || PAY.promoCode === 'JAMELA100') {
     var ts = new Date().toISOString();
     // 1. Log to GSheet
     fetch(GSHEET_URL, {
@@ -2325,7 +2411,10 @@ function saveLead(email, paymentStatus) {
     email: email || '',
     propertyType: t,
     paymentId: STATE.paymentId || '',
-    paymentStatus: paymentStatus || 'pending', // 'pending' | 'paid'
+    paymentStatus: paymentStatus || 'pending',
+    promoCode: PAY.promoCode || '',
+    promoAmount: PAY.promoAmount || 0,
+    prefix: STATE.currentPrefix || 'Valuit100',
     formData: formData,
     toggleValues: STATE.toggleValues,
     timestamp: new Date().toISOString()
