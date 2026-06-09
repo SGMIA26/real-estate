@@ -1,0 +1,3009 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Định Giá Bất Động Sản | ValuitBiz</title>
+<meta name="description" content="Hệ thống định giá bất động sản tự động theo 4 phương pháp TĐGVN. Chung cư, penthouse, nhà phố, biệt thự, shophouse, đất nền, BĐS dòng tiền, cả tòa nhà.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/i18next@23.11.5/i18next.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --navy-950:#07101E;--navy-900:#0D1B2E;--navy-800:#112240;--navy-700:#1A3356;
+  --amber-400:#F0A830;--amber-500:#D98E22;--amber-300:#F7C563;
+  --terra-600:#A0522D;--terra-500:#C4622D;--terra-400:#D97040;--terra-300:#E8956A;
+  --white:#FFFFFF;--grey-100:#F4F3F0;--grey-200:#E8E6E0;
+  --grey-400:#9A9590;--grey-600:#6B6560;
+  --success:#2ECC71;--danger:#E74C3C;
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --radius-sm:6px;--radius-md:12px;--radius-lg:20px;--radius-xl:28px;
+  --shadow-card:0 8px 40px rgba(0,0,0,0.45);
+  --shadow-glow:0 0 60px rgba(196,98,45,0.15);
+  --transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background-color:var(--navy-950);color:var(--white);
+  font-family:var(--font-body);font-size:15px;line-height:1.6;
+  min-height:100vh;overflow-x:hidden;
+  background-image:linear-gradient(rgba(196,98,45,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(196,98,45,0.03) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,16,30,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(196,98,45,0.12);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--terra-500),var(--amber-500));display:flex;align-items:center;justify-content:center;font-size:14px;}
+.nav-brand-text{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--white);letter-spacing:.02em;}
+.nav-brand-text span{color:var(--terra-400);}
+.nav-badge{font-size:11px;font-weight:500;color:var(--terra-300);background:rgba(196,98,45,0.12);border:1px solid rgba(196,98,45,0.25);padding:3px 10px;border-radius:20px;letter-spacing:.05em;}
+.nav-back{font-size:13px;color:var(--grey-400);text-decoration:none;display:flex;align-items:center;gap:6px;transition:var(--transition);}
+.nav-back:hover{color:var(--amber-400);}
+/* HERO */
+.hero{padding:120px 24px 48px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:320px;background:radial-gradient(ellipse,rgba(196,98,45,0.1) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--terra-300);margin-bottom:20px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--terra-400);opacity:.6;}
+.hero-title{font-family:var(--font-display);font-size:clamp(34px,5vw,56px);font-weight:600;line-height:1.1;letter-spacing:-.01em;margin-bottom:16px;}
+.hero-title em{font-style:italic;color:var(--terra-400);}
+.hero-subtitle{font-size:15px;color:var(--grey-400);max-width:560px;margin:0 auto 28px;line-height:1.7;}
+.hero-tags{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.htag{font-size:11px;font-weight:500;letter-spacing:.04em;color:var(--grey-400);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:4px 12px;border-radius:20px;}
+.htag.a{color:var(--terra-300);background:rgba(196,98,45,0.1);border-color:rgba(196,98,45,0.25);}
+/* CONTAINER */
+.container{max-width:780px;margin:0 auto;padding:0 24px 80px;}
+.card{background:var(--navy-900);border:1px solid rgba(196,98,45,0.15);border-radius:var(--radius-xl);box-shadow:var(--shadow-card),var(--shadow-glow);overflow:hidden;position:relative;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--terra-500),var(--amber-400),var(--terra-500),transparent);}
+/* PROGRESS */
+.progress-steps{display:flex;align-items:center;justify-content:center;gap:0;padding:24px 44px 0;}
+.prog-step{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;flex:1;}
+.prog-step:not(:last-child)::after{content:'';position:absolute;top:13px;left:50%;width:100%;height:1px;background:rgba(255,255,255,0.08);z-index:0;}
+.prog-step.done:not(:last-child)::after{background:rgba(196,98,45,0.4);}
+.prog-dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,0.12);background:var(--navy-900);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--grey-600);position:relative;z-index:1;transition:var(--transition);}
+.prog-step.active .prog-dot{border-color:var(--terra-500);background:rgba(196,98,45,0.15);color:var(--terra-300);}
+.prog-step.done .prog-dot{border-color:var(--terra-500);background:var(--terra-500);color:var(--white);}
+.prog-label{font-size:10px;color:var(--grey-600);letter-spacing:.04em;white-space:nowrap;}
+.prog-step.active .prog-label{color:var(--terra-300);}
+.prog-step.done .prog-label{color:var(--grey-400);}
+/* SCREENS */
+.screen{display:none;padding:40px 44px 36px;animation:screenEnter .4s cubic-bezier(0.4,0,0.2,1);}
+.screen.active{display:block;}
+@keyframes screenEnter{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* SCREEN HEADER */
+.screen-step{font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--terra-400);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.screen-step::after{content:'';flex:1;height:1px;background:rgba(196,98,45,0.2);}
+.screen-title{font-family:var(--font-display);font-size:26px;font-weight:600;line-height:1.2;color:var(--white);margin-bottom:6px;}
+.screen-desc{font-size:13px;color:var(--grey-400);line-height:1.6;margin-bottom:28px;}
+/* TYPE GRID — 2 groups */
+.type-group-label{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--grey-600);margin:20px 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.type-group-label:first-child{margin-top:0;}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+.type-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:16px 18px;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;}
+.type-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(196,98,45,0.07),transparent);opacity:0;transition:var(--transition);}
+.type-card:hover{border-color:rgba(196,98,45,0.35);transform:translateY(-2px);}
+.type-card:hover::after{opacity:1;}
+.type-card.selected{border-color:var(--terra-500);background:rgba(196,98,45,0.08);}
+.type-card.selected::after{opacity:1;}
+.type-icon{width:42px;height:42px;border-radius:10px;background:rgba(196,98,45,0.1);border:1px solid rgba(196,98,45,0.18);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;position:relative;z-index:1;}
+.type-card.selected .type-icon{background:rgba(196,98,45,0.2);border-color:var(--terra-500);}
+.type-info{position:relative;z-index:1;flex:1;min-width:0;}
+.type-name{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--white);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.type-desc{font-size:11px;color:var(--grey-400);line-height:1.4;}
+.type-method{font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--terra-400);background:rgba(196,98,45,0.1);padding:2px 7px;border-radius:4px;margin-top:5px;display:inline-block;}
+/* FORM */
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--grey-400);margin-bottom:7px;}
+.form-label span{color:var(--terra-400);font-style:normal;}
+.form-input,.form-select{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:12px 15px;font-family:var(--font-body);font-size:14px;color:var(--white);outline:none;transition:var(--transition);-webkit-appearance:none;}
+.form-input::placeholder{color:var(--grey-600);}
+.form-input:focus,.form-select:focus{border-color:var(--terra-500);background:rgba(196,98,45,0.06);box-shadow:0 0 0 3px rgba(196,98,45,0.12);}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A9590' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer;}
+.form-select option{background:var(--navy-800);color:var(--white);}
+.form-hint{font-size:11px;color:var(--grey-600);margin-top:5px;line-height:1.5;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.form-section{margin-bottom:24px;}
+.form-section-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--terra-400);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(196,98,45,0.15);}
+/* TOGGLE */
+.toggle-group{display:flex;gap:8px;flex-wrap:wrap;}
+.toggle-btn{flex:1;min-width:80px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:10px 12px;cursor:pointer;transition:var(--transition);text-align:center;color:var(--grey-400);font-family:var(--font-body);font-size:12px;font-weight:500;}
+.toggle-btn:hover{border-color:rgba(196,98,45,0.3);color:var(--white);}
+.toggle-btn.active{background:rgba(196,98,45,0.12);border-color:var(--terra-500);color:var(--terra-300);}
+/* UPLOAD */
+.upload-zone{border:2px dashed rgba(196,98,45,0.25);border-radius:var(--radius-lg);padding:28px 20px;text-align:center;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;}
+.upload-zone:hover{border-color:rgba(196,98,45,0.5);background:rgba(196,98,45,0.04);}
+.upload-zone.has-file{border-color:var(--terra-500);background:rgba(196,98,45,0.06);}
+.upload-zone.processing{border-color:var(--amber-400);background:rgba(240,168,48,0.06);}
+.upload-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:28px;margin-bottom:8px;}
+.upload-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px;}
+.upload-sub{font-size:11px;color:var(--grey-600);}
+.upload-progress{display:none;margin-top:12px;}
+.progress-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--terra-500),var(--amber-400));border-radius:2px;width:0%;transition:width .3s ease;}
+.ocr-result{display:none;margin-top:14px;background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);border-radius:var(--radius-md);padding:12px 14px;text-align:left;}
+.ocr-result-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--success);margin-bottom:7px;}
+.ocr-fields{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.ocr-field{font-size:11px;color:var(--grey-400);}
+.ocr-field strong{color:var(--white);font-weight:500;}
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--grey-600);font-size:11px;letter-spacing:.08em;text-transform:uppercase;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06);}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:var(--radius-md);font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition);border:none;outline:none;text-decoration:none;letter-spacing:.02em;}
+.btn-primary{background:linear-gradient(135deg,var(--terra-500),var(--terra-600));color:var(--white);box-shadow:0 4px 20px rgba(196,98,45,0.35);width:100%;}
+.btn-primary:hover{background:linear-gradient(135deg,var(--terra-400),var(--terra-500));box-shadow:0 6px 28px rgba(196,98,45,0.5);transform:translateY(-1px);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-secondary{background:transparent;color:var(--grey-400);border:1px solid rgba(255,255,255,0.1);width:100%;}
+.btn-secondary:hover{border-color:rgba(255,255,255,0.2);color:var(--white);}
+.btn-gold{background:linear-gradient(135deg,var(--amber-400),var(--amber-500));color:var(--navy-950);box-shadow:0 4px 20px rgba(240,168,48,0.35);width:100%;font-weight:700;}
+.btn-gold:hover{box-shadow:0 6px 28px rgba(240,168,48,0.5);transform:translateY(-1px);}
+.btn-actions{display:flex;flex-direction:column;gap:10px;margin-top:28px;}
+.btn-back{background:none;border:none;color:var(--grey-600);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--transition);font-family:var(--font-body);padding:0;}
+.btn-back:hover{color:var(--grey-400);}
+/* RESULT */
+.result-header{text-align:center;padding:28px 0 22px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:24px;}
+.result-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--terra-300);background:rgba(196,98,45,0.1);border:1px solid rgba(196,98,45,0.2);padding:4px 12px;border-radius:20px;margin-bottom:14px;}
+.result-property-name{font-family:var(--font-display);font-size:15px;color:var(--grey-400);margin-bottom:10px;font-style:italic;}
+.result-value-range{font-family:var(--font-display);font-size:clamp(26px,5vw,40px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:5px;}
+.result-value-range span{color:var(--terra-400);}
+.result-unit{font-size:12px;color:var(--grey-400);}
+.method-breakdown{margin-bottom:22px;}
+.method-breakdown-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-600);margin-bottom:12px;}
+.method-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.method-row-name{font-size:12px;color:var(--grey-400);width:180px;flex-shrink:0;}
+.method-row-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.method-row-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--terra-500),var(--terra-300));transition:width .8s cubic-bezier(0.4,0,0.2,1);}
+.method-row-val{font-size:12px;font-weight:600;color:var(--white);width:90px;text-align:right;flex-shrink:0;}
+.method-row-weight{font-size:11px;color:var(--grey-600);width:32px;text-align:right;flex-shrink:0;}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px;}
+.metric-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-md);padding:14px;text-align:center;}
+.metric-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--grey-600);margin-bottom:5px;}
+.metric-value{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--amber-400);}
+.metric-unit{font-size:11px;color:var(--grey-600);}
+/* FREEMIUM */
+.freemium-section{position:relative;margin-bottom:22px;}
+.freemium-blur{filter:blur(6px);user-select:none;pointer-events:none;opacity:.5;}
+.freemium-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(7,16,30,0.5);backdrop-filter:blur(2px);border-radius:var(--radius-md);padding:18px;text-align:center;}
+.freemium-lock{font-size:26px;margin-bottom:8px;}
+.freemium-title{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.freemium-desc{font-size:12px;color:var(--grey-400);margin-bottom:4px;}
+.freemium-price{font-size:20px;font-weight:700;color:var(--amber-400);font-family:var(--font-display);}
+.report-preview-items{display:flex;flex-direction:column;gap:7px;}
+.report-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-sm);padding:9px 13px;font-size:12px;color:var(--grey-400);}
+/* DISCLAIMER */
+.disclaimer{margin-top:24px;padding:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-md);font-size:11px;color:var(--grey-600);line-height:1.6;text-align:center;}
+.disclaimer strong{color:var(--grey-400);font-weight:600;}
+/* PAYMENT */
+.payment-summary{background:rgba(196,98,45,0.06);border:1px solid rgba(196,98,45,0.15);border-radius:var(--radius-lg);padding:22px;margin-bottom:22px;}
+.payment-amount{font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--amber-400);margin-bottom:3px;}
+.payment-amount-vnd{font-size:13px;color:var(--grey-400);}
+.payment-includes{margin-top:14px;display:flex;flex-direction:column;gap:5px;}
+.payment-include-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--grey-400);}
+.payment-include-item::before{content:'✓';color:var(--success);font-weight:700;font-size:12px;}
+.qr-area{text-align:center;margin-bottom:22px;}
+.qr-box{display:inline-flex;flex-direction:column;align-items:center;gap:10px;background:var(--white);padding:18px;border-radius:var(--radius-lg);margin-bottom:10px;}
+.qr-placeholder{width:150px;height:150px;background:linear-gradient(135deg,#f0f0f0,#e0e0e0);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#666;text-align:center;padding:14px;}
+.qr-bank-info{font-size:11px;color:var(--grey-600);line-height:1.6;}
+.qr-bank-info strong{color:var(--grey-400);display:block;}
+.waiting-indicator{display:none;text-align:center;padding:18px;}
+.waiting-dots{display:inline-flex;gap:6px;margin-bottom:8px;}
+.waiting-dot{width:8px;height:8px;border-radius:50%;background:var(--terra-400);animation:dotPulse 1.4s ease-in-out infinite;}
+.waiting-dot:nth-child(2){animation-delay:.2s;}
+.waiting-dot:nth-child(3){animation-delay:.4s;}
+@keyframes dotPulse{0%,80%,100%{opacity:.3;transform:scale(.8);}40%{opacity:1;transform:scale(1);}}
+/* SUCCESS */
+.success-screen{text-align:center;padding:44px 28px;}
+.success-icon{width:76px;height:76px;border-radius:50%;background:rgba(46,204,113,0.12);border:2px solid rgba(46,204,113,0.3);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 22px;animation:successPop .5s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes successPop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.success-title{font-family:var(--font-display);font-size:26px;font-weight:600;color:var(--white);margin-bottom:10px;}
+.success-desc{font-size:14px;color:var(--grey-400);line-height:1.7;max-width:360px;margin:0 auto 26px;}
+/* LOADING */
+.calculating-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(7,16,30,0.9);backdrop-filter:blur(8px);align-items:center;justify-content:center;flex-direction:column;gap:18px;}
+.calculating-overlay.active{display:flex;}
+.calc-spinner{width:52px;height:52px;border-radius:50%;border:3px solid rgba(196,98,45,0.2);border-top-color:var(--terra-500);animation:spin .9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.calc-title{font-family:var(--font-display);font-size:21px;color:var(--white);}
+.calc-sub{font-size:13px;color:var(--grey-400);}
+/* MISC */
+.info-tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(255,255,255,0.08);font-size:9px;color:var(--grey-600);cursor:help;margin-left:5px;flex-shrink:0;}
+@media(max-width:640px){
+  /* Layout */
+  .screen{padding:20px 16px 16px;}
+  .nav{padding:0 16px;height:56px;}
+  .nav-brand-text{font-size:17px;}
+  .nav-badge{font-size:10px;padding:2px 8px;}
+  .nav-back{font-size:12px;}
+  .container{padding:0 12px 60px;}
+  .card{border-radius:16px;}
+  .progress-steps{padding:16px 16px 0;gap:0;}
+  .prog-label{font-size:9px;}
+  .prog-dot{width:22px;height:22px;font-size:9px;}
+
+  /* Hero */
+  .hero{padding:80px 16px 32px;}
+  .hero-title{font-size:28px;}
+  .hero-subtitle{font-size:13px;}
+  .hero-tags{gap:6px;}
+  .htag{font-size:10px;padding:3px 10px;}
+
+  /* Type grid — 1 col on mobile */
+  .type-grid{grid-template-columns:1fr;}
+  .type-card{padding:14px 16px;}
+  .type-icon{width:38px;height:38px;font-size:16px;}
+  .type-name{font-size:15px;}
+  .type-group-label{font-size:9px;}
+
+  /* Forms */
+  .form-row,.form-row-3{grid-template-columns:1fr;}
+  .form-input,.form-select{padding:11px 13px;font-size:14px;}
+  .toggle-group{gap:6px;}
+  .toggle-btn{padding:9px 10px;font-size:11px;min-width:70px;}
+  .screen-title{font-size:22px;}
+  .form-section-title{font-size:10px;}
+
+  /* Upload */
+  .upload-zone{padding:20px 14px;}
+  .upload-icon{font-size:24px;}
+  .ocr-fields{grid-template-columns:1fr;}
+
+  /* Result */
+  .result-value-range{font-size:26px;}
+  .metrics-grid{grid-template-columns:1fr 1fr;}
+  .metric-value{font-size:16px;}
+  .method-row{flex-wrap:wrap;gap:6px;}
+  .method-row-name{width:100%;font-size:11px;}
+  .method-row-bar-wrap{flex:1;}
+  .method-row-val{width:auto;}
+  .method-row-weight{width:auto;}
+
+  /* Modal — bottom sheet already handled in base CSS */
+  .modal-header{padding:16px 16px 0;}
+  .modal-body{padding:12px 16px 28px;}
+  .modal-title{font-size:18px;}
+  .pay-methods{grid-template-columns:1fr 1fr;gap:8px;}
+  .pay-method{padding:12px 8px;}
+  .pay-method-icon{font-size:20px;margin-bottom:6px;}
+  .pay-method-name{font-size:12px;}
+  .pay-method-desc{font-size:10px;line-height:1.3;}
+  .pay-method-price{font-size:12px;margin-top:4px;}
+  .bank-detail{font-size:11px;padding:10px 12px;}
+  .bank-row{flex-wrap:wrap;gap:2px;}
+  .bank-label{font-size:10px;}
+  .bank-val{font-size:11px;}
+  .qr-img-box{padding:10px;}
+  .qr-img-box img{width:110px;height:110px;}
+  .promo-input{font-size:13px;padding:9px 12px;}
+  .promo-btn{font-size:11px;padding:9px 12px;}
+
+  /* Buttons */
+  .btn{padding:13px 20px;font-size:13px;}
+  .btn-gold{font-size:13px;}
+
+  /* Payment */
+  .payment-amount{font-size:28px;}
+
+  /* Success */
+  .success-screen{padding:32px 16px;}
+  .success-title{font-size:22px;}
+}
+
+/* Extra small phones */
+@media(max-width:380px){
+  .hero-title{font-size:24px;}
+  .pay-methods{grid-template-columns:1fr;}
+  .screen{padding:16px 14px 14px;}
+}
+
+/* ── PAYMENT MODAL ─────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(7,16,30,0.88);
+  backdrop-filter:blur(10px);
+  display:none;
+  align-items:flex-end; /* bottom sheet on mobile */
+  justify-content:center;
+  padding:0;
+}
+.modal-overlay.active{display:flex;}
+.modal-box{
+  background:var(--navy-900);
+  border:1px solid rgba(196,98,45,0.25);
+  border-radius:20px 20px 0 0; /* bottom sheet style */
+  width:100%;
+  max-width:100%;
+  max-height:92vh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  position:relative;
+  box-shadow:0 -8px 40px rgba(0,0,0,0.6);
+  -webkit-overflow-scrolling:touch;
+}
+/* Drag handle */
+.modal-box::after {
+  content:'';
+  position:sticky;
+  top:0;
+  display:block;
+  width:40px; height:4px;
+  background:rgba(255,255,255,0.15);
+  border-radius:2px;
+  margin:10px auto 0;
+}
+@media(min-width:600px){
+  .modal-overlay{align-items:center;padding:20px;}
+  .modal-box{border-radius:var(--radius-xl);max-width:480px;max-height:88vh;}
+  .modal-box::after{display:none;}
+}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--terra-500),var(--amber-400),var(--terra-500),transparent);}
+.modal-header{padding:20px 20px 0;}
+.modal-title{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--grey-400);}
+.modal-body{padding:16px 20px 32px;}
+@media(min-width:600px){
+  .modal-header{padding:28px 28px 0;}
+  .modal-title{font-size:22px;}
+  .modal-body{padding:24px 28px 28px;}
+}
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.pay-method{background:rgba(255,255,255,0.03);border:2px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:14px 10px;cursor:pointer;transition:var(--transition);text-align:center;}
+.pay-method:hover{border-color:rgba(196,98,45,0.4);background:rgba(196,98,45,0.06);}
+.pay-method.selected{border-color:var(--terra-500);background:rgba(196,98,45,0.1);}
+.pay-method-icon{font-size:28px;margin-bottom:8px;}
+.pay-method-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.pay-method-desc{font-size:11px;color:var(--grey-400);line-height:1.4;}
+.pay-method-price{font-size:15px;font-weight:700;color:var(--amber-400);margin-top:6px;font-family:var(--font-display);}
+/* Promo */
+.promo-row{display:flex;gap:8px;margin-bottom:12px;}
+.promo-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:10px 14px;font-family:var(--font-body);font-size:13px;color:var(--white);outline:none;transition:var(--transition);text-transform:uppercase;letter-spacing:.08em;}
+.promo-input::placeholder{text-transform:none;letter-spacing:0;color:var(--grey-600);}
+.promo-input:focus{border-color:var(--terra-500);box-shadow:0 0 0 3px rgba(196,98,45,0.12);}
+.promo-btn{padding:10px 16px;border-radius:var(--radius-md);background:rgba(196,98,45,0.15);border:1px solid rgba(196,98,45,0.3);color:var(--terra-300);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);white-space:nowrap;font-family:var(--font-body);}
+.promo-btn:hover{background:rgba(196,98,45,0.25);}
+.promo-badge{display:none;font-size:12px;color:var(--success);background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:6px;padding:6px 12px;margin-bottom:14px;text-align:center;}
+.promo-badge.active{display:block;}
+/* SePay section */
+.sepay-section{display:none;}
+.sepay-section.active{display:block;}
+.qr-wrap{text-align:center;margin:10px 0;}
+.qr-img-box{display:inline-flex;flex-direction:column;align-items:center;gap:8px;background:var(--white);padding:14px;border-radius:var(--radius-lg);}
+.qr-img-box img{width:130px;height:130px;border-radius:6px;}
+@media(max-width:400px){.qr-img-box img{width:110px;height:110px;}}
+.bank-detail{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-md);padding:12px 14px;font-size:11px;line-height:1.7;}
+.bank-row{display:flex;justify-content:space-between;align-items:center;}
+.bank-label{color:var(--grey-600);}
+.bank-val{color:var(--white);font-weight:600;}
+.bank-val.highlight{color:var(--amber-400);}
+.copy-btn{background:rgba(196,98,45,0.12);border:1px solid rgba(196,98,45,0.2);border-radius:4px;padding:2px 8px;font-size:10px;color:var(--terra-300);cursor:pointer;font-family:var(--font-body);transition:var(--transition);}
+.copy-btn:hover{background:rgba(196,98,45,0.25);}
+.email-row{margin-top:16px;}
+.confirm-waiting{display:none;text-align:center;padding:12px;}
+.modal-close{position:sticky;top:0;float:right;margin:12px 12px 0 0;z-index:10;background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:30px;height:30px;color:var(--grey-400);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:var(--transition);}
+.modal-close:hover{background:rgba(255,255,255,0.12);color:var(--white);}
+
+/* LANG TOGGLE */
+.lang-toggle{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:3px;}
+.lang-btn{padding:4px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--grey-400);font-family:var(--font-body);transition:var(--transition);white-space:nowrap;}
+.lang-btn.active{background:var(--terra-500);color:var(--white);}
+/* Button text resilience for VN/EN length difference */
+.toggle-btn{flex:1;min-width:0;word-break:keep-all;hyphens:auto;}
+.btn-primary,.btn-gold,.btn-secondary{white-space:normal;text-align:center;padding:13px 16px;}
+.form-label{min-height:1.4em;}
+
+/* ── BILL UPLOAD FLOW ─────────────────────────────────────── */
+.verify-states { margin-top: 16px; }
+.verify-state  { display: none; }
+.verify-state.active { display: block; }
+
+/* State 1: Verifying spinner */
+.verify-checking {
+  text-align: center; padding: 20px 0;
+}
+.verify-spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid rgba(196,98,45,0.2);
+  border-top-color: var(--terra-500);
+  animation: spin .8s linear infinite;
+  margin: 0 auto 12px;
+}
+.verify-checking-text { font-size: 13px; color: var(--grey-400); line-height: 1.6; }
+.verify-countdown {
+  font-size: 22px; font-weight: 700;
+  color: var(--amber-400);
+  font-family: var(--font-display);
+  margin: 8px 0;
+}
+
+/* State 2: Not found — upload bill */
+.verify-upload-bill {
+  background: rgba(240,168,48,0.06);
+  border: 1px solid rgba(240,168,48,0.2);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.verify-upload-title {
+  font-size: 14px; font-weight: 600;
+  color: var(--white); margin-bottom: 4px;
+}
+.verify-upload-sub {
+  font-size: 12px; color: var(--grey-400);
+  margin-bottom: 16px; line-height: 1.5;
+}
+.bill-upload-zone {
+  border: 2px dashed rgba(240,168,48,0.3);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.bill-upload-zone:hover {
+  border-color: rgba(240,168,48,0.6);
+  background: rgba(240,168,48,0.04);
+}
+.bill-upload-zone.has-file {
+  border-color: var(--success);
+  background: rgba(46,204,113,0.06);
+}
+.bill-upload-zone.analyzing {
+  border-color: var(--amber-400);
+  background: rgba(240,168,48,0.08);
+}
+.bill-upload-zone input[type="file"] {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer;
+  width: 100%; height: 100%;
+}
+.bill-upload-icon { font-size: 28px; margin-bottom: 8px; }
+.bill-upload-text { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+.bill-upload-sub-text { font-size: 11px; color: var(--grey-600); }
+
+/* Bill analysis result */
+.bill-analysis {
+  display: none;
+  background: rgba(46,204,113,0.08);
+  border: 1px solid rgba(46,204,113,0.2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.bill-analysis.invalid {
+  background: rgba(231,76,60,0.08);
+  border-color: rgba(231,76,60,0.2);
+}
+.bill-analysis-title {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--success); margin-bottom: 8px;
+}
+.bill-analysis.invalid .bill-analysis-title { color: var(--danger); }
+.bill-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.bill-field { font-size: 11px; color: var(--grey-400); }
+.bill-field strong { color: var(--white); font-weight: 500; }
+
+/* State 3: Submitted */
+.verify-submitted {
+  text-align: center; padding: 16px 0;
+}
+.verify-submitted-icon {
+  font-size: 40px; margin-bottom: 12px;
+}
+.verify-submitted-title {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 600;
+  color: var(--white); margin-bottom: 6px;
+}
+.verify-submitted-desc {
+  font-size: 12px; color: var(--grey-400);
+  line-height: 1.6; margin-bottom: 16px;
+}
+
+/* Fallback contact */
+.fallback-contact {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.contact-btn {
+  flex: 1; padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none;
+  font-family: var(--font-body);
+  text-align: center;
+  text-decoration: none;
+  display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+  transition: var(--transition);
+}
+.contact-tele {
+  background: rgba(39,174,96,0.15);
+  border: 1px solid rgba(39,174,96,0.3);
+  color: var(--success);
+}
+.contact-tele:hover { background: rgba(39,174,96,0.25); }
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-brand">
+    <div class="nav-logo-icon">🏛</div>
+    <span class="nav-brand-text">Valuit<span>Biz</span></span>
+  </a>
+  <span class="nav-badge">BĐS · Real Estate</span>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-vi" onclick="setLang('vi')">🇻🇳 VN</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
+    <a href="/" class="nav-back" id="nav-back-link" data-i18n="nav.back">← Về trang chủ</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow" data-i18n="hero.eyebrow">Định Giá Bất Động Sản</div>
+  <h1 class="hero-title" data-i18n="[html]hero.title">Ước tính giá trị BĐS<br><em>chuẩn TĐGVN</em> trong 3 phút</h1>
+  <p class="hero-subtitle" data-i18n="hero.subtitle">Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận. Hỗ trợ trích xuất thông tin Sổ đỏ qua AI Vision.</p>
+  <div class="hero-tags">
+    <span class="htag a">So sánh trực tiếp</span>
+    <span class="htag a">Thu nhập (Income)</span>
+    <span class="htag a">Thặng dư</span>
+    <span class="htag a">Chi phí</span>
+    <span class="htag">AI Vision OCR</span>
+    <span class="htag">8 loại hình BĐS</span>
+  </div>
+</section>
+
+<div class="container">
+<div class="card">
+
+<!-- PROGRESS -->
+<div class="progress-steps" id="progressSteps">
+  <div class="prog-step active" id="prog-1"><div class="prog-dot">1</div><span class="prog-label">Loại hình</span></div>
+  <div class="prog-step" id="prog-2"><div class="prog-dot">2</div><span class="prog-label">Thông số</span></div>
+  <div class="prog-step" id="prog-3"><div class="prog-dot">3</div><span class="prog-label">Kết quả</span></div>
+  <div class="prog-step" id="prog-4"><div class="prog-dot">4</div><span class="prog-label">Báo cáo</span></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1: CHỌN LOẠI HÌNH
+     ══════════════════════════════════════ -->
+<div class="screen active" id="screen-1">
+  <div class="screen-step" data-i18n="step1.step">Bước 1 / 3</div>
+  <h2 class="screen-title" data-i18n="step1.title">Chọn loại hình bất động sản</h2>
+  <p class="screen-desc" data-i18n="step1.desc">Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.</p>
+
+  <div class="type-group-label" data-i18n="group.residential">🏡 Nhà ở & Đầu tư cá nhân</div>
+  <div class="type-grid">
+    <div class="type-card" onclick="selectType('apartment')" id="type-apartment">
+      <div class="type-icon">🏢</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.apartment.name">Chung cư / Căn hộ</div>
+        <div class="type-desc" data-i18n="type.apartment.desc">Căn hộ trong dự án có chủ đầu tư, condotel</div>
+        <span class="type-method">So sánh · Chi phí</span>
+      </div>
+    </div>
+    <div class="type-card" onclick="selectType('penthouse')" id="type-penthouse">
+      <div class="type-icon">👑</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.penthouse.name">Penthouse</div>
+        <div class="type-desc" data-i18n="type.penthouse.desc">Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh</div>
+        <span class="type-method">So sánh · Premium</span>
+      </div>
+    </div>
+    <div class="type-card" onclick="selectType('landed')" id="type-landed">
+      <div class="type-icon">🏠</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.landed.name">Nhà phố / Nhà liền kề</div>
+        <div class="type-desc" data-i18n="type.landed.desc">Nhà phố, nhà liền kề, số tầng xác định</div>
+        <span class="type-method">So sánh · Chi phí</span>
+      </div>
+    </div>
+    <div class="type-card" onclick="selectType('villa')" id="type-villa">
+      <div class="type-icon">🌿</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.villa.name">Biệt thự / Villa</div>
+        <div class="type-desc" data-i18n="type.villa.desc">Biệt thự đơn lập, song lập, liền kề cao cấp</div>
+        <span class="type-method">So sánh · Chi phí</span>
+      </div>
+    </div>
+    <div class="type-card" onclick="selectType('landplot')" id="type-landplot">
+      <div class="type-icon">🏡</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.landplot.name">Đất nền</div>
+        <div class="type-desc" data-i18n="type.landplot.desc">Đất thổ cư, đất nền dự án, đất vườn</div>
+        <span class="type-method">So sánh · Thặng dư</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="type-group-label" data-i18n="group.commercial">🏪 Thương mại & Đầu tư</div>
+  <div class="type-grid">
+    <div class="type-card" onclick="selectType('shophouse')" id="type-shophouse">
+      <div class="type-icon">🏪</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.shophouse.name">Shophouse chân đế</div>
+        <div class="type-desc" data-i18n="type.shophouse.desc">Tầng 1–3 tòa nhà, mặt tiền kinh doanh</div>
+        <span class="type-method">So sánh · Thu nhập</span>
+      </div>
+    </div>
+    <div class="type-card" onclick="selectType('income')" id="type-income">
+      <div class="type-icon">💼</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.income.name">BĐS Dòng tiền</div>
+        <div class="type-desc" data-i18n="type.income.desc">Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini</div>
+        <span class="type-method">Thu nhập · Gordon</span>
+      </div>
+    </div>
+    <div class="type-card" onclick="selectType('building')" id="type-building">
+      <div class="type-icon">🏗️</div>
+      <div class="type-info">
+        <div class="type-name" data-i18n="type.building.name">Cả tòa nhà</div>
+        <div class="type-desc" data-i18n="type.building.desc">Tòa nhà văn phòng, căn hộ dịch vụ, mix-use</div>
+        <span class="type-method">Thu nhập · Chi phí</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ══════════════════════════════════════
+     SCREEN 2A: CHUNG CƯ / CĂN HỘ
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-apartment">
+  <div class="screen-step" data-i18n="step.apt">Bước 2 / 3 · 🏢 Chung cư / Căn hộ</div>
+  <h2 data-i18n="screen.apt.title" class="screen-title">Thông số căn hộ</h2>
+  <p class="screen-desc">Nhập thông tin hoặc tải ảnh Sổ hồng để AI trích xuất tự động.</p>
+  <div class="form-group">
+    <label class="form-label">Tải ảnh Sổ hồng / Trang thông số <span>(AI tự điền)</span></label>
+    <div class="upload-zone" id="uz-apt">
+      <input type="file" accept="image/*" onchange="handleOCR(this,'apt')">
+      <div id="uc-apt"><div class="upload-icon">📄</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh</div><div class="upload-sub">JPG · PNG · HEIC · Tối đa 10MB</div></div>
+      <div class="upload-progress" id="up-apt"><div class="progress-bar"><div class="progress-fill" id="pf-apt"></div></div><div style="font-size:12px;color:var(--grey-400);margin-top:7px" id="us-apt">Đang phân tích...</div></div>
+      <div class="ocr-result" id="or-apt"><div class="ocr-result-title">✓ AI trích xuất xong</div><div class="ocr-fields" id="of-apt"></div></div>
+    </div>
+  </div>
+  <div class="divider">hoặc nhập thủ công</div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.project">Thông tin dự án & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.project">Tên dự án / Chủ đầu tư</label><input type="text" class="form-input" id="apt-project" placeholder="VD: Vinhomes Central Park"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="apt-province" onchange="updateDistricts('apt')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="apt-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.apt">Thông số căn hộ</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.net_area">Diện tích thông thủy (m²)</label><input type="number" class="form-input" id="apt-area" placeholder="VD: 75"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.floor">Tầng</label><input type="number" class="form-input" id="apt-floor" placeholder="VD: 12"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.bedrooms">Số phòng ngủ</label><select class="form-select" id="apt-bed"><option value="0">Studio</option><option value="1">1 PN</option><option value="2" selected>2 PN</option><option value="3">3 PN</option><option value="4">4+ PN</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.direction">Hướng ban công</label><select class="form-select" id="apt-direction"><option value="nam" selected>Nam</option>
+<option value="dong-nam">Đông Nam</option>
+<option value="dong">Đông</option>
+<option value="dong-bac">Đông Bắc</option>
+<option value="bac">Bắc</option>
+<option value="tay-bac">Tây Bắc</option>
+<option value="tay">Tây</option>
+<option value="tay-nam">Tây Nam</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.balcony">Diện tích ban công (m²)</label><input type="number" class="form-input" id="apt-balcony" placeholder="VD: 8" step="0.5"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.year">Năm bàn giao</label><input type="number" class="form-input" id="apt-year" placeholder="VD: 2019" min="1980" max="2030"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.interior">Tình trạng nội thất</label>
+      <div class="toggle-group" id="apt-interior"><button class="toggle-btn active" onclick="setToggle('apt-interior',this,'tho')" data-i18n="lbl.interior_raw" data-i18n="toggle.interior.bare">Thô (chưa hoàn thiện)</button><button class="toggle-btn" onclick="setToggle('apt-interior',this,'co-ban')" data-i18n="lbl.interior_basic" data-i18n="toggle.amenity.basic">Cơ bản</button><button class="toggle-btn" onclick="setToggle('apt-interior',this,'full')" data-i18n="lbl.interior_full" data-i18n="toggle.interior.full">Full nội thất cao cấp</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
+      <div class="toggle-group" id="apt-legal"><button class="toggle-btn active" onclick="setToggle('apt-legal',this,'so-hong')" data-i18n="lbl.so_hong" data-i18n="toggle.legal.pink">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('apt-legal',this,'so-do')" data-i18n="lbl.so_do" data-i18n="toggle.legal.red">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('apt-legal',this,'hop-dong')" data-i18n="lbl.hdmb" data-i18n="toggle.legal.spc">HĐMB</button><button class="toggle-btn" onclick="setToggle('apt-legal',this,'chua-co')" data-i18n="lbl.no_doc" data-i18n="toggle.legal.none">Chưa có sổ</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.mgmt_fee">Phí quản lý (nghìn đồng/m²/tháng) <span>(nếu biết)</span></label><input type="number" class="form-input" id="apt-mgmt-fee" placeholder="VD: 18" step="0.5"><div class="form-hint">Phí quản lý cao ảnh hưởng đến giá trị cho thuê và thanh khoản</div></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2B: PENTHOUSE
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-penthouse">
+  <div class="screen-step" data-i18n="step.pth">Bước 2 / 3 · 👑 Penthouse</div>
+  <h2 data-i18n="screen.pth.title" class="screen-title">Thông số Penthouse</h2>
+  <p class="screen-desc">Penthouse được định giá với premium đặc biệt theo view, diện tích sân thượng và vị trí tầng đỉnh.</p>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.project">Thông tin dự án & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.building">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="pth-project" placeholder="VD: Landmark 81, The Metropole..."></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="pth-province" onchange="updateDistricts('pth')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="pth-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.pth">Thông số Penthouse</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.indoor_area">Diện tích sàn trong nhà (m²)</label><input type="number" class="form-input" id="pth-area" placeholder="VD: 200"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.rooftop_area">Diện tích sân thượng riêng (m²)</label><input type="number" class="form-input" id="pth-rooftop" placeholder="VD: 80"><div class="form-hint">Sân thượng riêng tính 40–60% giá sàn</div></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.floor">Tầng (tầng đỉnh tòa)</label><input type="number" class="form-input" id="pth-floor" placeholder="VD: 75"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.total_floors">Tổng số tầng tòa nhà</label><input type="number" class="form-input" id="pth-total-floors" placeholder="VD: 81"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.structure">Cấu trúc</label>
+      <div class="toggle-group" id="pth-type"><button class="toggle-btn active" onclick="setToggle('pth-type',this,'simplex')" data-i18n="lbl.simplex" data-i18n="toggle.pth.simplex">Simplex (1 tầng)</button><button class="toggle-btn" onclick="setToggle('pth-type',this,'duplex')" data-i18n="lbl.duplex" data-i18n="toggle.pth.duplex">Duplex (2 tầng)</button><button class="toggle-btn" onclick="setToggle('pth-type',this,'triplex')" data-i18n="lbl.triplex" data-i18n="toggle.pth.triplex">Triplex (3 tầng)</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.view">View chủ đạo</label>
+      <div class="toggle-group" id="pth-view"><button class="toggle-btn active" onclick="setToggle('pth-view',this,'song')" data-i18n="toggle.pth.river">Sông / Biển</button><button class="toggle-btn" onclick="setToggle('pth-view',this,'thanh-pho')" data-i18n="toggle.pth.city">Thành phố</button><button class="toggle-btn" onclick="setToggle('pth-view',this,'noi-khu')" data-i18n="toggle.view.internal">Nội khu</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.private_pool">Có hồ bơi riêng không?</label>
+      <div class="toggle-group" id="pth-pool"><button class="toggle-btn active" onclick="setToggle('pth-pool',this,'khong')" data-i18n="lbl.no" data-i18n="toggle.pth.nopool">Không</button><button class="toggle-btn" onclick="setToggle('pth-pool',this,'co')" data-i18n="toggle.pth.pool">Có hồ bơi riêng (+15%)</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
+      <div class="toggle-group" id="pth-legal"><button class="toggle-btn active" onclick="setToggle('pth-legal',this,'so-hong')" data-i18n="lbl.so_hong" data-i18n="toggle.legal.pink">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('pth-legal',this,'hop-dong')" data-i18n="lbl.hdmb" data-i18n="toggle.legal.spc">HĐMB</button><button class="toggle-btn" onclick="setToggle('pth-legal',this,'chua-co')" data-i18n="lbl.no_doc" data-i18n="toggle.legal.none">Chưa có sổ</button></div></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2C: NHÀ PHỐ / NHÀ LIỀN KỀ
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-landed">
+  <div class="screen-step" data-i18n="step.land">Bước 2 / 3 · 🏠 Nhà phố / Nhà liền kề</div>
+  <h2 data-i18n="screen.land.title" class="screen-title">Thông số nhà phố</h2>
+  <p class="screen-desc">Tải ảnh Sổ đỏ để AI trích xuất thông tin, hoặc nhập thủ công.</p>
+  <div class="form-group">
+    <label class="form-label">Tải ảnh Sổ đỏ <span>(AI tự điền)</span></label>
+    <div class="upload-zone" id="uz-land">
+      <input type="file" accept="image/*" onchange="handleOCR(this,'land')">
+      <div id="uc-land"><div class="upload-icon">📋</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh Sổ đỏ</div><div class="upload-sub">AI trích xuất diện tích, địa chỉ, mục đích sử dụng</div></div>
+      <div class="upload-progress" id="up-land"><div class="progress-bar"><div class="progress-fill" id="pf-land"></div></div><div style="font-size:12px;color:var(--grey-400);margin-top:7px" id="us-land">Đang phân tích...</div></div>
+      <div class="ocr-result" id="or-land"><div class="ocr-result-title">✓ AI trích xuất xong</div><div class="ocr-fields" id="of-land"></div></div>
+    </div>
+  </div>
+  <div class="divider">hoặc nhập thủ công</div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.road">Vị trí & đường tiếp giáp</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="land-province" onchange="updateDistricts('land')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="land-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.road_type">Loại đường tiếp giáp</label>
+      <div class="toggle-group" id="land-road-type"><button class="toggle-btn active" onclick="setToggle('land-road-type',this,'mat-tien')" data-i18n="lbl.main_road" data-i18n="toggle.road.main">Mặt tiền đường lớn</button><button class="toggle-btn" onclick="setToggle('land-road-type',this,'hem-xe-ho')" data-i18n="lbl.car_lane" data-i18n="toggle.road.car">Hẻm xe hơi</button><button class="toggle-btn" onclick="setToggle('land-road-type',this,'hem-nho')" data-i18n="lbl.narrow_lane" data-i18n="toggle.road.small">Hẻm nhỏ</button></div></div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title">Thông số thửa đất & công trình</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.land_area">Diện tích đất (m²)</label><input type="number" class="form-input" id="land-area" placeholder="VD: 80"><div class="form-hint">Theo sổ đỏ</div></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.frontage">Mặt tiền (m)</label><input type="number" class="form-input" id="land-front" placeholder="VD: 5" step="0.1"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.depth">Chiều sâu (m)</label><input type="number" class="form-input" id="land-depth" placeholder="VD: 16" step="0.1"></div>
+      <div class="form-group"><label class="form-label">Đường trước rộng (m)</label><input type="number" class="form-input" id="land-road-width" placeholder="VD: 8" step="0.5"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.floors">Số tầng xây dựng</label><input type="number" class="form-input" id="land-floors" placeholder="VD: 4" min="1" max="10"><div class="form-hint">Bao gồm tầng trệt</div></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.bedrooms">Số phòng ngủ</label><input type="number" class="form-input" id="land-bedrooms" placeholder="VD: 5" min="1"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.gfa_built">Diện tích sàn xây dựng (m²) <span>(nếu biết)</span></label><input type="number" class="form-input" id="land-floor-area" placeholder="VD: 320"><div class="form-hint">Tổng diện tích các sàn = diện tích đất × số tầng (ước tính)</div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.interior">Tình trạng nội thất</label>
+      <div class="toggle-group" id="land-interior"><button class="toggle-btn active" onclick="setToggle('land-interior',this,'tho')" data-i18n="toggle.interior.bare">Thô / Xây thô</button><button class="toggle-btn" onclick="setToggle('land-interior',this,'co-ban')" data-i18n="toggle.interior.basic">Hoàn thiện cơ bản</button><button class="toggle-btn" onclick="setToggle('land-interior',this,'full')" data-i18n="toggle.interior.full">Full nội thất</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.fengshui">Phong thủy / Vị trí đặc biệt</label>
+      <div class="toggle-group" id="land-feng">
+        <button class="toggle-btn active" onclick="setToggle('land-feng',this,'none')" data-i18n="toggle.feng.none">Bình thường</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'goc')" data-i18n="toggle.feng.corner">Lô góc 2 MT (+12%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'no-hau')" data-i18n="toggle.feng.wider">Nở hậu (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'view-song')" data-i18n="toggle.feng.river">View sông/hồ (+15%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'gan-truong')" data-i18n="toggle.feng.school">Gần trường tốt (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'dam-duong')" data-i18n="toggle.feng.tdam">Đâm đường (-10%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'top-hau')" data-i18n="toggle.feng.narrow">Tóp hậu (-7%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'gan-chua')" data-i18n="toggle.feng.temple">Gần chùa/nghĩa trang (-12%)</button>
+        <button class="toggle-btn" onclick="setToggle('land-feng',this,'tay-nang')" data-i18n="toggle.feng.west">Hướng Tây nắng (-4%)</button>
+      </div>
+      <div class="form-hint">Các yếu tố phong thủy ảnh hưởng 4–20% giá trị thị trường theo tâm lý người mua VN</div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
+      <div class="toggle-group" id="land-legal"><button class="toggle-btn active" onclick="setToggle('land-legal',this,'so-do')" data-i18n="lbl.so_do" data-i18n="toggle.legal.red">Sổ đỏ đầy đủ</button><button class="toggle-btn" onclick="setToggle('land-legal',this,'so-hong')" data-i18n="lbl.so_hong" data-i18n="toggle.legal.pink">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('land-legal',this,'giay-tay')" data-i18n="lbl.private_doc" data-i18n="toggle.legal.hand">Giấy tờ tay</button></div></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2D: BIỆT THỰ / VILLA
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-villa">
+  <div class="screen-step" data-i18n="step.villa">Bước 2 / 3 · 🌿 Biệt thự / Villa</div>
+  <h2 data-i18n="screen.villa.title" class="screen-title">Thông số biệt thự</h2>
+  <p class="screen-desc">Biệt thự định giá theo phương pháp So sánh + Chi phí, có phân biệt biệt thự dự án và biệt thự độc lập.</p>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.classify">Phân loại & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.villa_type">Loại biệt thự</label>
+      <div class="toggle-group" id="villa-type"><button class="toggle-btn active" onclick="setToggle('villa-type',this,'don-lap')" data-i18n="toggle.vtype.detached">Đơn lập</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'song-lap')" data-i18n="toggle.vtype.semi">Song lập</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'lien-ke')" data-i18n="toggle.vtype.linked">Liền kề cao cấp</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'du-an')" data-i18n="toggle.vtype.project">Biệt thự dự án</button></div></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="villa-province" onchange="updateDistricts('villa')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="villa-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.proj_name">Tên dự án <span>(nếu là biệt thự dự án)</span></label><input type="text" class="form-input" id="villa-project" placeholder="VD: Vinhomes Riverside, Ecopark..."></div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.landwork">Thông số đất & công trình</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.land_area">Diện tích đất (m²)</label><input type="number" class="form-input" id="villa-land-area" placeholder="VD: 300"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.built_area">Diện tích xây dựng (m²)</label><input type="number" class="form-input" id="villa-built-area" placeholder="VD: 250"><div class="form-hint">Tổng diện tích sàn xây dựng</div></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.floors">Số tầng</label><input type="number" class="form-input" id="villa-floors" placeholder="VD: 2" min="1" max="5"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.bedrooms">Số phòng ngủ</label><input type="number" class="form-input" id="villa-bedrooms" placeholder="VD: 4" min="1"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.amenities">Tiện ích đặc biệt</label>
+      <div class="toggle-group" id="villa-amenity"><button class="toggle-btn active" onclick="setToggle('villa-amenity',this,'none')" data-i18n="lbl.interior_basic" data-i18n="toggle.amenity.basic">Cơ bản</button><button class="toggle-btn" onclick="setToggle('villa-amenity',this,'pool')" data-i18n="toggle.amenity.pool">Có hồ bơi (+12%)</button><button class="toggle-btn" onclick="setToggle('villa-amenity',this,'pool-garden')" data-i18n="toggle.amenity.poolg">Hồ bơi + Sân vườn lớn (+18%)</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.view">View / Cảnh quan</label>
+      <div class="toggle-group" id="villa-view"><button class="toggle-btn active" onclick="setToggle('villa-view',this,'noi-khu')" data-i18n="toggle.view.internal">Nội khu</button><button class="toggle-btn" onclick="setToggle('villa-view',this,'song-ho')" data-i18n="toggle.view.river">Sông / Hồ</button><button class="toggle-btn" onclick="setToggle('villa-view',this,'bien')" data-i18n="toggle.view.sea">Biển</button><button class="toggle-btn" onclick="setToggle('villa-view',this,'golf')" data-i18n="toggle.view.golf">Golf</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.year_built">Năm xây dựng</label><input type="number" class="form-input" id="villa-year" placeholder="VD: 2018" min="1980" max="2030"></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
+      <div class="toggle-group" id="villa-legal"><button class="toggle-btn active" onclick="setToggle('villa-legal',this,'so-do')" data-i18n="lbl.so_do" data-i18n="toggle.legal.red">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('villa-legal',this,'so-hong')" data-i18n="lbl.so_hong" data-i18n="toggle.legal.pink">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('villa-legal',this,'chua-co')" data-i18n="lbl.no_doc" data-i18n="toggle.legal.none">Chưa có sổ</button></div></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2E: ĐẤT NỀN
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-landplot">
+  <div class="screen-step" data-i18n="step.lp">Bước 2 / 3 · 🏡 Đất nền</div>
+  <h2 data-i18n="screen.lp.title" class="screen-title">Thông số đất nền</h2>
+  <p class="screen-desc">Tải ảnh Sổ đỏ để AI trích xuất thông tin.</p>
+  <div class="form-group">
+    <label class="form-label">Tải ảnh Sổ đỏ <span>(AI tự điền)</span></label>
+    <div class="upload-zone" id="uz-lp">
+      <input type="file" accept="image/*" onchange="handleOCR(this,'lp')">
+      <div id="uc-lp"><div class="upload-icon">📋</div><div class="upload-title">Kéo thả hoặc bấm để tải ảnh</div><div class="upload-sub">AI trích xuất diện tích, địa chỉ, mục đích sử dụng</div></div>
+      <div class="upload-progress" id="up-lp"><div class="progress-bar"><div class="progress-fill" id="pf-lp"></div></div><div style="font-size:12px;color:var(--grey-400);margin-top:7px" id="us-lp">Đang phân tích...</div></div>
+      <div class="ocr-result" id="or-lp"><div class="ocr-result-title">✓ AI trích xuất xong</div><div class="ocr-fields" id="of-lp"></div></div>
+    </div>
+  </div>
+  <div class="divider">hoặc nhập thủ công</div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.road">Vị trí & đường tiếp giáp</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="lp-province" onchange="updateDistricts('lp')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="lp-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.road_type">Loại đường tiếp giáp</label>
+      <div class="toggle-group" id="lp-road-type"><button class="toggle-btn active" onclick="setToggle('lp-road-type',this,'mat-tien')" data-i18n="lbl.main_road" data-i18n="toggle.road.main">Mặt tiền đường lớn</button><button class="toggle-btn" onclick="setToggle('lp-road-type',this,'hem-xe-ho')" data-i18n="lbl.car_lane" data-i18n="toggle.road.car">Hẻm xe hơi</button><button class="toggle-btn" onclick="setToggle('lp-road-type',this,'hem-nho')" data-i18n="lbl.narrow_lane" data-i18n="toggle.road.small">Hẻm nhỏ</button></div></div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.plot">Thông số thửa đất</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.land_area">Diện tích đất (m²)</label><input type="number" class="form-input" id="lp-area" placeholder="VD: 120"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.frontage">Mặt tiền (m)</label><input type="number" class="form-input" id="lp-front" placeholder="VD: 6" step="0.1"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.depth">Chiều sâu (m)</label><input type="number" class="form-input" id="lp-depth" placeholder="VD: 20" step="0.1"></div>
+      <div class="form-group"><label class="form-label">Đường trước rộng (m)</label><input type="number" class="form-input" id="lp-road-width" placeholder="VD: 8" step="0.5"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.land_use">Mục đích sử dụng đất</label>
+      <div class="toggle-group" id="lp-purpose"><button class="toggle-btn active" onclick="setToggle('lp-purpose',this,'dat-o')" data-i18n="toggle.purpose.urban">Đất ở đô thị</button><button class="toggle-btn" onclick="setToggle('lp-purpose',this,'dat-vuon')" data-i18n="toggle.purpose.garden">Đất vườn (CLN)</button><button class="toggle-btn" onclick="setToggle('lp-purpose',this,'dat-nn')" data-i18n="toggle.purpose.agri">Đất nông nghiệp</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.zoning">Quy hoạch 1/500</label>
+      <div class="toggle-group" id="lp-qh"><button class="toggle-btn active" onclick="setToggle('lp-qh',this,'da-phe-duyet')" data-i18n="toggle.qh.approved">Đã phê duyệt</button><button class="toggle-btn" onclick="setToggle('lp-qh',this,'chua-phe-duyet')" data-i18n="toggle.qh.pending">Chưa phê duyệt</button><button class="toggle-btn" onclick="setToggle('lp-qh',this,'khong-ro')" data-i18n="toggle.qh.unknown">Không rõ</button></div><div class="form-hint">Quy hoạch 1/500 đã phê duyệt tăng giá trị đáng kể</div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.infra">Hạ tầng kỹ thuật</label>
+      <div class="toggle-group" id="lp-infra"><button class="toggle-btn active" onclick="setToggle('lp-infra',this,'day-du')" data-i18n="toggle.infra.full">Đầy đủ (điện + nước + đường nhựa)</button><button class="toggle-btn" onclick="setToggle('lp-infra',this,'co-ban')" data-i18n="lbl.interior_basic" data-i18n="toggle.amenity.basic">Cơ bản</button><button class="toggle-btn" onclick="setToggle('lp-infra',this,'thieu')" data-i18n="toggle.infra.lack">Thiếu hạ tầng</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.fengshui">Phong thủy / Vị trí đặc biệt</label>
+      <div class="toggle-group" id="lp-feng">
+        <button class="toggle-btn active" onclick="setToggle('lp-feng',this,'none')" data-i18n="toggle.feng.none">Bình thường</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'goc')" data-i18n="toggle.feng.corner">Lô góc 2 MT (+12%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'no-hau')" data-i18n="toggle.feng.wider">Nở hậu (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'view-song')" data-i18n="toggle.feng.river">View sông/hồ (+15%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'gan-truong')" data-i18n="toggle.feng.school">Gần trường tốt (+4%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'dam-duong')" data-i18n="toggle.feng.tdam">Đâm đường (-10%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'top-hau')" data-i18n="toggle.feng.narrow">Tóp hậu (-7%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'gan-chua')" data-i18n="toggle.feng.temple">Gần chùa/nghĩa trang (-12%)</button>
+        <button class="toggle-btn" onclick="setToggle('lp-feng',this,'tay-nang')" data-i18n="toggle.feng.west">Hướng Tây nắng (-4%)</button>
+      </div>
+      <div class="form-hint">Các yếu tố phong thủy ảnh hưởng 4–20% giá trị thị trường theo tâm lý người mua VN</div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
+      <div class="toggle-group" id="lp-legal"><button class="toggle-btn active" onclick="setToggle('lp-legal',this,'so-do')" data-i18n="lbl.so_do" data-i18n="toggle.legal.red">Sổ đỏ</button><button class="toggle-btn" onclick="setToggle('lp-legal',this,'so-hong')" data-i18n="lbl.so_hong" data-i18n="toggle.legal.pink">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('lp-legal',this,'giay-tay')" data-i18n="lbl.private_doc" data-i18n="toggle.legal.hand">Giấy tờ tay</button></div></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+<!-- ══════════════════════════════════════
+     SCREEN 2F: SHOPHOUSE CHÂN ĐẾ
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-shophouse">
+  <div class="screen-step" data-i18n="step.sh">Bước 2 / 3 · 🏪 Shophouse chân đế</div>
+  <h2 data-i18n="screen.sh.title" class="screen-title">Thông số Shophouse</h2>
+  <p class="screen-desc">Shophouse định giá kết hợp So sánh trực tiếp và Thu nhập thương mại. Premium thương mại thường +40–80% so với chung cư cùng tầng.</p>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.project">Thông tin dự án & vị trí</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.building">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="sh-project" placeholder="VD: Masteri Thảo Điền, Vinhomes..."></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="sh-province" onchange="updateDistricts('sh')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="sh-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.sh">Thông số Shophouse</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.use_area">Diện tích sử dụng (m²)</label><input type="number" class="form-input" id="sh-area" placeholder="VD: 80"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.use_floors">Số tầng sử dụng</label><input type="number" class="form-input" id="sh-floors" placeholder="VD: 2" min="1" max="4"><div class="form-hint">Tầng 1 + lửng/tầng 2</div></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.frontage">Mặt tiền (m)</label><input type="number" class="form-input" id="sh-front" placeholder="VD: 6" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.road_width">Chiều rộng đường trước (m)</label><input type="number" class="form-input" id="sh-road-width" placeholder="VD: 12" step="0.5"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.complex_pos">Vị trí trong khu phức hợp</label>
+      <div class="toggle-group" id="sh-position"><button class="toggle-btn active" onclick="setToggle('sh-position',this,'goc-chinh')" data-i18n="toggle.sh.corner">Góc chính (2 mặt tiền)</button><button class="toggle-btn" onclick="setToggle('sh-position',this,'mat-tien-chinh')" data-i18n="toggle.sh.front">Mặt tiền chính</button><button class="toggle-btn" onclick="setToggle('sh-position',this,'noi-khu')" data-i18n="toggle.view.internal">Nội khu</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.biz_type">Ngành kinh doanh phù hợp</label>
+      <div class="toggle-group" id="sh-biz"><button class="toggle-btn active" onclick="setToggle('sh-biz',this,'fb')" data-i18n="toggle.sh.fb">F&B / Nhà hàng</button><button class="toggle-btn" onclick="setToggle('sh-biz',this,'retail')" data-i18n="toggle.sh.retail">Bán lẻ thời trang</button><button class="toggle-btn" onclick="setToggle('sh-biz',this,'bank')" data-i18n="toggle.sh.bank">Ngân hàng / Dịch vụ</button><button class="toggle-btn" onclick="setToggle('sh-biz',this,'mixed')" data-i18n="toggle.sh.mixed">Đa ngành</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.current_rent">Doanh thu cho thuê hiện tại / tháng (VNĐ) <span>(nếu đang cho thuê)</span></label><input type="number" class="form-input" id="sh-rent" placeholder="VD: 80000000"><div class="form-hint">Để trống nếu chưa có tenant — hệ thống tự ước tính theo khu vực</div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.legal">Tình trạng pháp lý</label>
+      <div class="toggle-group" id="sh-legal"><button class="toggle-btn active" onclick="setToggle('sh-legal',this,'so-hong')" data-i18n="lbl.so_hong" data-i18n="toggle.legal.pink">Sổ hồng</button><button class="toggle-btn" onclick="setToggle('sh-legal',this,'hop-dong')" data-i18n="lbl.hdmb" data-i18n="toggle.legal.spc">HĐMB</button><button class="toggle-btn" onclick="setToggle('sh-legal',this,'chua-co')" data-i18n="lbl.no_doc" data-i18n="toggle.legal.none">Chưa có sổ</button></div></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2G: BĐS DÒNG TIỀN
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-income">
+  <div class="screen-step" data-i18n="step.inc">Bước 2 / 3 · 💼 BĐS Dòng tiền</div>
+  <h2 data-i18n="screen.inc.title" class="screen-title">Thông số tài sản & dòng tiền</h2>
+  <p class="screen-desc">Định giá theo phương pháp Thu nhập (Income Approach) — chuẩn TĐGVN 06.</p>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.asset">Thông tin tài sản</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.income_type">Loại BĐS dòng tiền</label><select class="form-select" id="inc-subtype"><option value="nha-tro">Nhà trọ / Phòng cho thuê</option><option value="can-ho-cho-thue">Căn hộ cho thuê (Airbnb)</option><option value="khach-san-mini">Khách sạn mini</option><option value="mat-bang">Mặt bằng thương mại</option><option value="van-phong">Văn phòng cho thuê</option><option value="nha-xuong">Nhà xưởng / Kho</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="inc-province" onchange="updateDistricts('inc')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.total_area">Tổng diện tích (m²)</label><input type="number" class="form-input" id="inc-area" placeholder="VD: 200"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.units">Tổng số đơn vị khai thác</label><input type="number" class="form-input" id="inc-units" placeholder="VD: 10 phòng"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.op_year">Năm đưa vào khai thác</label><input type="number" class="form-input" id="inc-start-year" placeholder="VD: 2020" min="1990" max="2026"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.lease_remain">Hợp đồng thuê còn lại (tháng)</label><input type="number" class="form-input" id="inc-lease-remain" placeholder="VD: 24"><div class="form-hint">Nếu đang có tenant dài hạn</div></div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.cashflow">Dữ liệu dòng tiền thực tế</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.monthly_rev">Doanh thu cho thuê / tháng (VNĐ)</label><input type="number" class="form-input" id="inc-revenue" placeholder="VD: 50000000"><div class="form-hint">Trung bình 3–6 tháng gần nhất</div></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.occupancy">Tỷ lệ lấp đầy trung bình (%)</label><input type="number" class="form-input" id="inc-occupancy" placeholder="VD: 85" min="0" max="100"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.opex">Chi phí vận hành / tháng (VNĐ)</label><input type="number" class="form-input" id="inc-opex" placeholder="VD: 10000000"><div class="form-hint">Điện, nước, quản lý, bảo trì...</div></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.deposit">Tiền đặt cọc đang giữ (VNĐ) <span>(nếu có)</span></label><input type="number" class="form-input" id="inc-deposit" placeholder="VD: 100000000"></div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.finance">Thông số tài chính</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.cap_rate">Cap Rate tham chiếu vùng (%) <span class="info-tip" title="Để trống = tự động theo khu vực">?</span></label><input type="number" class="form-input" id="inc-cap-rate" placeholder="Tự động" step="0.1"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.rent_growth">Tăng trưởng thuê dự kiến (%/năm)</label><input type="number" class="form-input" id="inc-growth" placeholder="VD: 5" step="0.5"></div>
+    </div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2H: CẢ TÒA NHÀ
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-building">
+  <div class="screen-step" data-i18n="step.bld">Bước 2 / 3 · 🏗️ Cả tòa nhà</div>
+  <h2 data-i18n="screen.bld.title" class="screen-title">Thông số tòa nhà</h2>
+  <p class="screen-desc">Định giá cả tòa nhà theo Thu nhập (Income) kết hợp Chi phí tái tạo. Phù hợp văn phòng, căn hộ dịch vụ, mix-use.</p>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.bldinfo">Thông tin tòa nhà</div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.bld_name">Tên tòa nhà</label><input type="text" class="form-input" id="bld-name" placeholder="VD: Tòa nhà ABC, Saigon Center..."></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.bld_type">Loại hình tòa nhà</label>
+      <div class="toggle-group" id="bld-type"><button class="toggle-btn active" onclick="setToggle('bld-type',this,'van-phong')" data-i18n="toggle.bld.office">Văn phòng</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'can-ho-dv')" data-i18n="toggle.bld.serviced">Căn hộ dịch vụ</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'mix-use')" data-i18n="toggle.bld.mix">Mix-use</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'khach-san')" data-i18n="toggle.bld.hotel">Khách sạn</button></div></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="bld-province" onchange="updateDistricts('bld')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="bld-district"><option value="">Chọn quận huyện</option></select></div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.physical">Thông số vật lý</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.gfa">Tổng diện tích sàn GFA (m²)</label><input type="number" class="form-input" id="bld-gfa" placeholder="VD: 5000"><div class="form-hint">Gross Floor Area — tổng các sàn</div></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.total_floors">Tổng số tầng</label><input type="number" class="form-input" id="bld-floors" placeholder="VD: 12" min="1"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.land_area">Diện tích đất (m²)</label><input type="number" class="form-input" id="bld-land-area" placeholder="VD: 600"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.year_built">Năm xây dựng</label><input type="number" class="form-input" id="bld-year" placeholder="VD: 2015" min="1970" max="2026"></div>
+    </div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.bld_grade">Hạng tòa nhà</label>
+      <div class="toggle-group" id="bld-grade"><button class="toggle-btn active" onclick="setToggle('bld-grade',this,'A')" data-i18n="lbl.grade_a" data-i18n="toggle.grade.a">Hạng A</button><button class="toggle-btn" onclick="setToggle('bld-grade',this,'B')" data-i18n="lbl.grade_b" data-i18n="toggle.grade.b">Hạng B</button><button class="toggle-btn" onclick="setToggle('bld-grade',this,'C')" data-i18n="lbl.grade_c" data-i18n="toggle.grade.c">Hạng C</button></div></div>
+    <div class="form-group"><label class="form-label" data-i18n="lbl.systems">Thang máy, PCCC</label>
+      <div class="toggle-group" id="bld-systems"><button class="toggle-btn active" onclick="setToggle('bld-systems',this,'day-du')" data-i18n="toggle.sys.full">Đầy đủ, cập nhật</button><button class="toggle-btn" onclick="setToggle('bld-systems',this,'co-ban')" data-i18n="lbl.interior_basic" data-i18n="toggle.amenity.basic">Cơ bản</button><button class="toggle-btn" onclick="setToggle('bld-systems',this,'cu')" data-i18n="toggle.sys.old">Cũ, cần nâng cấp</button></div></div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title" data-i18n="section.ops">Dữ liệu vận hành</div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.monthly_rev">Doanh thu cho thuê / tháng (VNĐ)</label><input type="number" class="form-input" id="bld-revenue" placeholder="VD: 500000000"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.occ_pct">Tỷ lệ lấp đầy (%)</label><input type="number" class="form-input" id="bld-occupancy" placeholder="VD: 90" min="0" max="100"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label" data-i18n="lbl.opex">Chi phí vận hành / tháng (VNĐ)</label><input type="number" class="form-input" id="bld-opex" placeholder="VD: 80000000"></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.rebuild_cost">Chi phí xây dựng lại ước tính (triệu/m²) <span>(nếu biết)</span></label><input type="number" class="form-input" id="bld-rebuild-cost" placeholder="VD: 12" step="0.5"></div>
+    </div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" onclick="goToResult()" data-i18n="btn.calculate">Tính giá trị ước tính →</button>
+    <button class="btn-back" onclick="goBack()" data-i18n="btn.back">← Chọn lại loại hình</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3: KẾT QUẢ
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-result">
+  <div class="result-header">
+    <div class="result-badge" data-i18n="result.badge">🏠 Kết quả định giá sơ bộ</div>
+    <div class="result-property-name" id="resultPropertyName">—</div>
+    <div class="result-value-range"><span id="resultLow">—</span> – <span id="resultHigh">—</span></div>
+    <div class="result-unit" data-i18n="result.unit">Tỷ đồng (VNĐ)</div>
+  </div>
+  <div class="method-breakdown">
+    <div class="method-breakdown-title" data-i18n="result.methods">Phân tích theo phương pháp</div>
+    <div id="methodRows"></div>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="metric-label">Giá / m²</div><div class="metric-value" id="metricPerSqm">—</div><div class="metric-unit">triệu/m²</div></div>
+    <div class="metric-card"><div class="metric-label">Phương pháp chính</div><div class="metric-value" style="font-size:13px" id="metricMethod">—</div></div>
+    <div class="metric-card"><div class="metric-label">Mức tin cậy</div><div class="metric-value" id="metricConfidence">—</div><div class="metric-unit">/ 5 sao</div></div>
+  </div>
+  <div class="freemium-section">
+    <div class="report-preview-items freemium-blur">
+      <div class="report-item">📊 Phân tích chi tiết từng phương pháp với căn cứ tính toán đầy đủ</div>
+      <div class="report-item">📍 So sánh 3–5 BĐS tương đồng giao dịch gần nhất trong vùng</div>
+      <div class="report-item">⚖️ Đánh giá rủi ro pháp lý và thanh khoản tài sản</div>
+      <div class="report-item">📈 Kịch bản đầu tư: ROI, thời gian hoàn vốn, Rental Yield</div>
+      <div class="report-item">📄 Báo cáo PDF chuẩn TĐGVN — xuất file ngay lập tức</div>
+    </div>
+    <div class="freemium-overlay">
+      <div class="freemium-lock">🔒</div>
+      <div class="freemium-title">Báo cáo Định giá Chuyên sâu</div>
+      <div class="freemium-desc">Phân tích đầy đủ · So sánh thị trường · PDF xuất ngay</div>
+      <div class="freemium-price">$15 USD</div>
+    </div>
+  </div>
+  <div class="disclaimer" data-i18n="[html]result.disclaimer"><strong>Miễn trừ trách nhiệm:</strong> Kết quả chỉ mang tính tham khảo dựa trên AVM và dữ liệu thị trường. <strong>Không thay thế</strong> Chứng thư thẩm định giá chính thức theo quy định Bộ Tài chính. Tham vấn đơn vị thẩm định độc lập trước khi giao dịch.</div>
+  <div class="btn-actions">
+    <button class="btn btn-gold" onclick="goToPayment()" data-i18n="btn.unlock">🔓 Mở khóa báo cáo đầy đủ — $15 USD</button>
+    <button class="btn-back" onclick="goBack()">← Chỉnh sửa thông số</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4: THANH TOÁN
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-payment">
+  <div class="screen-step">Bước 4 / 4 · Thanh toán</div>
+  <h2 class="screen-title">Mở khóa báo cáo định giá</h2>
+  <p class="screen-desc">Báo cáo PDF gửi về email trong 3–5 phút sau khi xác nhận thanh toán.</p>
+  <div class="payment-summary">
+    <div style="font-family:var(--font-display);font-size:13px;color:var(--grey-400);margin-bottom:10px;font-style:italic">Bạn đang mở khóa:</div>
+    <div class="payment-amount">$15 <span style="font-size:18px">USD</span></div>
+    <div class="payment-amount-vnd">≈ 390,000 VNĐ</div>
+    <div class="payment-includes">
+      <div class="payment-include-item">Báo cáo định giá BĐS PDF chuyên nghiệp (TĐGVN)</div>
+      <div class="payment-include-item">Phân tích chi tiết 2–4 phương pháp định giá</div>
+      <div class="payment-include-item">So sánh 3–5 BĐS tương đồng giao dịch thực tế</div>
+      <div class="payment-include-item">Đánh giá rủi ro pháp lý & thanh khoản</div>
+      <div class="payment-include-item">Kịch bản ROI và thời gian hoàn vốn</div>
+    </div>
+  </div>
+  <div class="form-group"><label class="form-label">Email nhận báo cáo <span>*</span></label><input type="email" class="form-input" id="paymentEmail" placeholder="tenemail@gmail.com"></div>
+  <div class="qr-area">
+    <div class="qr-box">
+      <div class="qr-placeholder">📱 QR Code<br>MBBank<br>9688666686<br>SCF Investment JSC<br><br>(SePay live)</div>
+      <div style="font-size:12px;color:#333;font-weight:600">Quét để thanh toán</div>
+    </div>
+    <div class="qr-bank-info"><strong>Chuyển khoản:</strong> MBBank · STK: 9688666686<br>Chủ TK: SCF INVESTMENT JS CO<br>Nội dung: <span id="paymentRef">BDSV-000000</span></div>
+  </div>
+  <div class="waiting-indicator" id="waitingIndicator">
+    <div class="waiting-dots"><div class="waiting-dot"></div><div class="waiting-dot"></div><div class="waiting-dot"></div></div>
+    <div class="waiting-text">Đang chờ xác nhận thanh toán...<br><span style="font-size:11px;color:var(--grey-600)">Tự động xác nhận trong 60 giây</span></div>
+  </div>
+  <div class="btn-actions">
+    <button class="btn btn-primary" id="btnConfirmPayment" onclick="confirmPayment()">✓ Tôi đã chuyển khoản</button>
+    <button class="btn-back" onclick="goBack()">← Quay lại kết quả</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5: THÀNH CÔNG
+     ══════════════════════════════════════ -->
+<div class="screen" id="screen-success">
+  <div class="success-screen">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title" data-i18n="success.title">Đang tạo báo cáo!</h2>
+    <p class="success-desc">Báo cáo định giá BĐS chuyên sâu đang được AI xử lý và sẽ gửi về email <strong id="successEmail"></strong> trong 3–5 phút.</p>
+    <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);border-radius:12px;padding:14px;margin-bottom:22px;font-size:12px;color:var(--grey-400);line-height:1.8">
+      📄 Báo cáo PDF định giá chuẩn TĐGVN<br>
+      📊 So sánh thị trường & BĐS tương đồng<br>
+      ⚖️ Đánh giá rủi ro & khuyến nghị đầu tư
+    </div>
+    <div id="pdfSection" style="margin-bottom:16px">
+      <div id="pdfPending" style="background:rgba(240,168,48,0.08);border:1px solid rgba(240,168,48,0.2);border-radius:10px;padding:14px;margin-bottom:12px;text-align:center">
+        <div style="font-size:18px;margin-bottom:6px">🤖</div>
+        <div style="font-size:12px;color:var(--amber-400);font-weight:600">Đang tạo báo cáo AI...</div>
+        <div style="font-size:11px;color:var(--grey-600);margin-top:3px">Vui lòng chờ 15–30 giây</div>
+        <div style="margin-top:8px"><div class="verify-spinner" style="margin:auto;width:24px;height:24px;border-width:2px"></div></div>
+      </div>
+      <button class="btn btn-gold" id="btnDownloadPDF" onclick="downloadReport()" style="width:100%;font-size:14px;padding:16px;display:none">
+        📄 Tải báo cáo PDF ngay →
+      </button>
+    </div>
+    <button class="btn btn-secondary" onclick="resetApp()" style="width:auto;padding:12px 28px" data-i18n="btn.reset">Định giá BĐS khác →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     PAYMENT MODAL (overlay)
+     ══════════════════════════════════════ -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="modal.title">Chọn phương thức thanh toán</div>
+      <div class="modal-sub" data-i18n="modal.sub">Mở khóa Báo cáo Định giá BĐS chuyên sâu</div>
+    </div>
+    <div class="modal-body">
+
+      <!-- PROMO CODE -->
+      <div class="promo-row">
+        <input class="promo-input" id="promoInput" placeholder="Nhập mã giảm giá (nếu có)" maxlength="20">
+        <button class="promo-btn" onclick="applyPromo()">Áp dụng</button>
+      </div>
+      <div class="promo-badge" id="promoBadge">✓ Mã hợp lệ — Chỉ thanh toán <strong id="promoPrice"></strong></div>
+
+      <!-- PAYMENT METHOD SELECT -->
+      <div class="pay-methods" id="payMethods">
+        <div class="pay-method selected" id="pm-polar" onclick="selectPayMethod('polar')">
+          <div class="pay-method-icon">💳</div>
+          <div class="pay-method-name" data-i18n="pay.intl.name">Thẻ quốc tế</div>
+          <div class="pay-method-desc">Visa · Mastercard<br>Khách nước ngoài / VN ở nước ngoài</div>
+          <div class="pay-method-price" id="polarPrice">$15 USD</div>
+        </div>
+        <div class="pay-method" id="pm-sepay" onclick="selectPayMethod('sepay')">
+          <div class="pay-method-icon">🏦</div>
+          <div class="pay-method-name" data-i18n="pay.vn.name">Chuyển khoản VN</div>
+          <div class="pay-method-desc">MBBank · SePay<br>Khách trong nước</div>
+          <div class="pay-method-price" id="sepayPrice">420,000 VND</div>
+        </div>
+      </div>
+
+      <!-- SEPAY SECTION -->
+      <div class="sepay-section" id="sepaySec">
+        <div class="qr-wrap">
+          <div class="qr-img-box">
+            <img id="qrImg" src="" alt="QR Code MBBank">
+            <div style="font-size:11px;color:#333;font-weight:600">Quét thanh toán · MBBank</div>
+          </div>
+        </div>
+        <div class="bank-detail">
+          <div class="bank-row"><span class="bank-label">Ngân hàng</span><span class="bank-val">MBBank</span></div>
+          <div class="bank-row"><span class="bank-label">Số tài khoản</span><span class="bank-val">9688666686 <button class="copy-btn" onclick="copyText('9688666686')">Copy</button></span></div>
+          <div class="bank-row"><span class="bank-label">Chủ tài khoản</span><span class="bank-val">SCF INVESTMENT JS CO</span></div>
+          <div class="bank-row"><span class="bank-label">Số tiền</span><span class="bank-val highlight" id="sepayAmount">420,000 VND</span></div>
+          <div class="bank-row"><span class="bank-label">Nội dung</span><span class="bank-val highlight" id="sepayRef">Valuit15-000000 <button class="copy-btn" onclick="copyRef()">Copy</button></span></div>
+        </div>
+
+        <!-- Email input -->
+        <div class="form-group" style="margin-top:14px;margin-bottom:12px;">
+          <label class="form-label">Email nhận báo cáo <span>*</span></label>
+          <input type="email" class="form-input" id="sepayEmail" placeholder="email@gmail.com">
+        </div>
+
+        <!-- CK button -->
+        <button class="btn btn-primary" id="btnSepayCK" onclick="confirmSepay()" style="margin-top:0">✓ Tôi đã chuyển khoản</button>
+
+        <!-- VERIFY STATES -->
+        <div class="verify-states" id="verifyStates">
+
+          <!-- State 1: Auto-checking -->
+          <div class="verify-state" id="vs-checking">
+            <div class="verify-checking">
+              <div class="verify-spinner"></div>
+              <div class="verify-countdown" id="verifyCountdown">10</div>
+              <div class="verify-checking-text">
+                Đang xác nhận giao dịch tự động...<br>
+                <span style="font-size:11px;color:var(--grey-600)">Kiểm tra hệ thống ngân hàng, vui lòng chờ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 2: Not found — upload bill -->
+          <div class="verify-state" id="vs-upload">
+            <div class="verify-upload-bill">
+              <div class="verify-upload-title">⚠️ Chưa xác nhận được giao dịch tự động</div>
+              <div class="verify-upload-sub">
+                Giao dịch có thể mất 1–3 phút để cập nhật. Bạn có thể upload ảnh bill chuyển khoản để chúng tôi xử lý ngay.
+              </div>
+
+              <!-- Bill upload zone -->
+              <div class="bill-upload-zone" id="billUploadZone">
+                <input type="file" accept="image/*" id="billFileInput" onchange="handleBillUpload(this)">
+                <div id="billUploadContent">
+                  <div class="bill-upload-icon">📸</div>
+                  <div class="bill-upload-text">Chụp hoặc tải ảnh bill chuyển khoản</div>
+                  <div class="bill-upload-sub-text">Screenshot VCB · MB · TCB · BIDV · bất kỳ ngân hàng nào</div>
+                </div>
+                <div id="billAnalyzingContent" style="display:none">
+                  <div class="bill-upload-icon">🤖</div>
+                  <div class="bill-upload-text">AI đang đọc bill...</div>
+                  <div class="bill-upload-sub-text">Claude Vision đang phân tích ảnh</div>
+                </div>
+              </div>
+
+              <!-- AI analysis result -->
+              <div class="bill-analysis" id="billAnalysis">
+                <div class="bill-analysis-title" id="billAnalysisTitle">✓ AI đã đọc bill thành công</div>
+                <div class="bill-fields" id="billFields"></div>
+              </div>
+
+              <!-- Submit bill button -->
+              <button class="btn btn-primary" id="btnSubmitBill" onclick="submitBill()" style="display:none;margin-top:8px">
+                📤 Gửi bill để xác nhận thủ công
+              </button>
+
+              <!-- Fallback contact -->
+              <div style="margin-top:14px;text-align:center">
+                <div style="font-size:11px;color:var(--grey-600);margin-bottom:8px">Hoặc liên hệ trực tiếp:</div>
+                <div class="fallback-contact">
+                  <a href="https://t.me/sandboxstartup" target="_blank" class="contact-btn contact-tele">
+                    ✈️ Telegram Support
+                  </a>
+                  <button class="contact-btn contact-tele" onclick="retryVerify()" style="background:rgba(196,98,45,0.12);border-color:rgba(196,98,45,0.3);color:var(--terra-300)">
+                    🔄 Kiểm tra lại
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 3: Bill submitted -->
+          <div class="verify-state" id="vs-submitted">
+            <div class="verify-submitted">
+              <div class="verify-submitted-icon">📨</div>
+              <div class="verify-submitted-title">Đã nhận bill của bạn!</div>
+              <div class="verify-submitted-desc">
+                Admin đang xác nhận giao dịch. Báo cáo sẽ được gửi về email trong <strong style="color:var(--white)">5–15 phút</strong>.
+                <br><br>
+                Nếu sau 30 phút chưa nhận được, reply email xác nhận hoặc liên hệ Telegram.
+              </div>
+              <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.15);border-radius:10px;padding:12px;font-size:12px;color:var(--grey-400)">
+                🔑 Mã giao dịch: <strong style="color:var(--white)" id="submittedRef"></strong>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.verify-states -->
+      </div>
+
+      <!-- POLAR SECTION -->
+      <div id="polarSec" style="margin-top:4px;">
+        <button class="btn btn-gold" onclick="goPolar()" id="btnPolar">💳 Thanh toán bằng thẻ quốc tế →</button>
+        <div style="font-size:11px;color:var(--grey-600);text-align:center;margin-top:8px">Visa · Mastercard · Bảo mật bởi Polar & Stripe</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- /.card -->
+</div><!-- /.container -->
+
+<!-- LOADING OVERLAY -->
+<div class="calculating-overlay" id="calcOverlay">
+  <div class="calc-spinner"></div>
+  <div class="calc-title">Đang tính giá trị...</div>
+  <div class="calc-sub" id="calcSubText">Áp dụng phương pháp TĐGVN</div>
+</div>
+<script>
+'use strict';
+
+// ─── CONSTANTS ────────────────────────────────────────────────
+var GSHEET_URL = 'https://script.google.com/macros/s/AKfycbwFgAVDNRxAe7D2f3NFLoSDAfmrGSgc9-rnVa9cRP1DZ5MTP6lGI_TkHLGOHaf-gK32/exec';
+
+var PROVINCE_HTML = '<option value="">Chọn tỉnh thành</option><option value="HCM">TP. Hồ Chí Minh</option><option value="HN">Hà Nội</option><option value="DN">Đà Nẵng</option><option value="BD">Bình Dương</option><option value="BRV">Bà Rịa - Vũng Tàu</option><option value="other">Tỉnh khác</option>';
+
+var DIRECTION_HTML = '<option value="nam" selected>Nam</option><option value="dong-nam">Đông Nam</option><option value="dong">Đông</option><option value="dong-bac">Đông Bắc</option><option value="bac">Bắc</option><option value="tay-bac">Tây Bắc</option><option value="tay">Tây</option><option value="tay-nam">Tây Nam</option>';
+
+var DISTRICTS = {
+  HCM:[{v:'Q1',l:'Quận 1'},{v:'Q2',l:'Quận 2 (Thủ Đức)'},{v:'Q3',l:'Quận 3'},{v:'Q4',l:'Quận 4'},{v:'Q7',l:'Quận 7'},{v:'Q9',l:'Quận 9 (Thủ Đức)'},{v:'Q10',l:'Quận 10'},{v:'Q11',l:'Quận 11'},{v:'Q12',l:'Quận 12'},{v:'BT',l:'Bình Thạnh'},{v:'GV',l:'Gò Vấp'},{v:'TD',l:'Thủ Đức'},{v:'HB',l:'Hóc Môn / Bình Chánh'}],
+  HN:[{v:'HK',l:'Hoàn Kiếm'},{v:'DD',l:'Đống Đa'},{v:'BD',l:'Ba Đình'},{v:'TH',l:'Tây Hồ'},{v:'CG',l:'Cầu Giấy'},{v:'TL',l:'Hà Đông / Thanh Xuân'}],
+  DN:[{v:'HC',l:'Hải Châu'},{v:'SH',l:'Sơn Trà'},{v:'NGH',l:'Ngũ Hành Sơn'}],
+  BD:[{v:'TDM',l:'Thủ Dầu Một'},{v:'TL',l:'Thuận An'},{v:'DAN',l:'Dĩ An'}],
+  BRV:[{v:'VT',l:'Vũng Tàu'},{v:'BR',l:'Bà Rịa'}],
+  other:[{v:'other',l:'Trung tâm tỉnh'}]
+};
+
+// ─── BENCHMARK DB ─────────────────────────────────────────────
+var BM = {
+  apartment:{
+    HCM:{Q1:{p:180,y:3.2},Q2:{p:120,y:3.8},Q3:{p:65,y:4.2},Q4:{p:55,y:4.5},Q7:{p:85,y:4.0},Q9:{p:45,y:5.1},Q10:{p:60,y:4.3},Q11:{p:52,y:4.6},Q12:{p:42,y:5.2},BT:{p:90,y:3.9},GV:{p:50,y:4.8},TD:{p:38,y:5.5},HB:{p:35,y:5.8},def:{p:60,y:4.5}},
+    HN:{HK:{p:85,y:3.5},DD:{p:90,y:3.3},BD:{p:65,y:4.0},TH:{p:78,y:3.6},CG:{p:55,y:4.2},TL:{p:42,y:4.8},def:{p:55,y:4.2}},
+    DN:{HC:{p:55,y:4.8},SH:{p:48,y:5.0},NGH:{p:45,y:5.2},def:{p:45,y:5.2}},
+    BD:{TDM:{p:32,y:5.5},TL:{p:28,y:5.8},def:{p:30,y:5.6}},
+    def:{p:40,y:5.0}
+  },
+  landed:{
+    HCM:{Q1:{p:600,sm:0.85},Q2:{p:350,sm:0.80},Q3:{p:220,sm:0.78},Q4:{p:180,sm:0.75},Q7:{p:200,sm:0.78},Q9:{p:80,sm:0.70},Q10:{p:160,sm:0.75},BT:{p:280,sm:0.80},GV:{p:95,sm:0.72},TD:{p:60,sm:0.68},def:{p:100,sm:0.70}},
+    HN:{HK:{p:280,sm:0.80},DD:{p:300,sm:0.82},BD:{p:200,sm:0.76},CG:{p:160,sm:0.74},TL:{p:85,sm:0.68},def:{p:120,sm:0.70}},
+    DN:{def:{p:90,sm:0.68}},
+    BD:{def:{p:45,sm:0.62}},
+    def:{p:60,sm:0.65}
+  },
+  villa:{
+    HCM:{Q2:{p:550,sm:0.88},Q7:{p:380,sm:0.83},BT:{p:420,sm:0.85},def:{p:320,sm:0.78}},
+    HN:{TH:{p:450,sm:0.85},DD:{p:500,sm:0.87},def:{p:350,sm:0.78}},
+    def:{p:200,sm:0.72}
+  },
+  shophouse:{
+    HCM:{Q1:{p:350,cr:5.2},Q2:{p:220,cr:5.5},Q7:{p:180,cr:5.8},Q9:{p:90,cr:6.5},BT:{p:200,cr:5.6},def:{p:160,cr:6.0}},
+    HN:{HK:{p:280,cr:5.0},DD:{p:260,cr:5.2},CG:{p:160,cr:5.8},def:{p:180,cr:5.5}},
+    def:{p:120,cr:6.5}
+  },
+  income_cap:{
+    HCM:{'nha-tro':7.5,'can-ho-cho-thue':5.2,'khach-san-mini':8.0,'mat-bang':5.8,'van-phong':6.5,'nha-xuong':9.0,def:6.5},
+    HN:{'nha-tro':7.0,'can-ho-cho-thue':5.0,'khach-san-mini':7.5,'mat-bang':5.5,'van-phong':6.0,'nha-xuong':8.5,def:6.2},
+    def:{def:7.0}
+  },
+  building:{
+    HCM:{van_phong:{cr:6.0,rebuild:12},can_ho_dv:{cr:5.5,rebuild:11},mix_use:{cr:6.5,rebuild:11},khach_san:{cr:7.5,rebuild:14},def:{cr:6.5,rebuild:12}},
+    HN:{def:{cr:6.0,rebuild:11}},
+    def:{def:{cr:7.0,rebuild:10}}
+  }
+};
+
+function getBM(type, prov, dist) {
+  var t = BM[type];
+  if (!t) return {};
+  var p = t[prov] || t['def'] || {};
+  if (dist && p[dist]) return p[dist];
+  if (p['def']) return p['def'];
+  return p;
+}
+
+// ─── MULTIPLIERS ──────────────────────────────────────────────
+var MUL = {
+  direction:{nam:1.03,'dong-nam':1.02,dong:1.0,'dong-bac':0.99,bac:0.97,'tay-bac':0.97,tay:0.98,'tay-nam':1.01},
+  feng:{none:1.0,'dam-duong':0.90,'top-hau':0.93,'no-hau':1.04,goc:1.12,'gan-chua':0.88,'gan-truong':1.04,'view-song':1.15,'tay-nang':0.96},
+  legal:{'so-do':1.0,'so-hong':1.0,'giay-tay':0.78,'chua-co':0.80,'hop-dong':0.93},
+  road:{'mat-tien':1.0,'hem-xe-ho':0.80,'hem-nho':0.65},
+  purpose:{'dat-o':1.0,'dat-vuon':0.55,'dat-nn':0.35},
+  qh:{'da-phe-duyet':1.08,'chua-phe-duyet':1.0,'khong-ro':0.97},
+  infra:{'day-du':1.0,'co-ban':0.94,'thieu':0.85},
+  interior:{tho:1.0,'co-ban':1.05,'full':1.12},
+  villa_type:{'don-lap':1.0,'song-lap':0.93,'lien-ke':0.88,'du-an':0.95},
+  villa_view:{'noi-khu':1.0,'song-ho':1.12,'bien':1.18,'golf':1.10},
+  villa_amenity:{none:1.0,pool:1.12,'pool-garden':1.18},
+  pth_type:{simplex:1.0,duplex:1.08,triplex:1.14},
+  pth_view:{song:1.20,'thanh-pho':1.10,'noi-khu':1.0},
+  pth_pool:{khong:1.0,co:1.15},
+  sh_position:{'goc-chinh':1.25,'mat-tien-chinh':1.0,'noi-khu':0.75},
+  bld_grade:{A:1.0,B:0.85,C:0.72},
+  bld_systems:{'day-du':1.0,'co-ban':0.95,cu:0.88}
+};
+
+function floorMul(f) {
+  f = parseInt(f)||5;
+  if(f===1)  return 0.86;  // Tầng 1: mất an ninh, ẩm, ồn
+  if(f<=3)   return 0.93;  // Tầng 2-3: thiếu view
+  if(f<=6)   return 1.00;  // Tầng 4-6: chuẩn tham chiếu
+  if(f<=15)  return 1.05;  // Tầng 7-15: view tốt
+  if(f<=25)  return 1.09;  // Tầng 16-25: premium view
+  if(f<=35)  return 1.11;  // Tầng 26-35: high premium
+  return 1.07;             // Tầng 36+: giảm nhẹ (thang máy chờ, áp lực nước)
+}
+function depreciationMul(year) {
+  var age = 2026 - (parseInt(year)||2018);
+  return Math.max(0.55, 1 - age*0.015);
+}
+function frontageMul(f) { return Math.min(1.30, 0.82 + (parseFloat(f)||5)/5*0.18); }
+function roadWidthMul(w) { return Math.min(1.20, 0.88 + (parseFloat(w)||6)/20*0.32); }
+function getVal(id) { var el=document.getElementById(id); return el?el.value:''; }
+function getNum(id) { return parseFloat(getVal(id))||0; }
+function tog(id) { return STATE.toggleValues[id]||''; }
+
+// ─── STATE ────────────────────────────────────────────────────
+var STATE = {
+  type:null, screen:'screen-1', toggleValues:{}, result:null, paymentId:null,
+  defaults:{
+    'apt-interior':'tho','apt-legal':'so-hong',
+    'pth-type':'simplex','pth-view':'song','pth-pool':'khong','pth-legal':'so-hong',
+    'land-road-type':'mat-tien','land-interior':'tho','land-feng':'none','land-legal':'so-do',
+    'villa-type':'don-lap','villa-amenity':'none','villa-view':'noi-khu','villa-legal':'so-do',
+    'lp-road-type':'mat-tien','lp-purpose':'dat-o','lp-qh':'da-phe-duyet','lp-infra':'day-du','lp-feng':'none','lp-legal':'so-do','land-feng':'none',
+    'sh-position':'mat-tien-chinh','sh-biz':'fb','sh-legal':'so-hong',
+    'bld-type':'van-phong','bld-grade':'B','bld-systems':'day-du'
+  }
+};
+Object.assign(STATE.toggleValues, STATE.defaults);
+
+// ─── NAV ──────────────────────────────────────────────────────
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var t=document.getElementById(id);
+  if(t) t.classList.add('active');
+  STATE.screen=id;
+  updateProgress(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(typeof applyTranslations==='function') applyTranslations();
+}
+function updateProgress(id) {
+  var m={'screen-1':1,'screen-apartment':2,'screen-penthouse':2,'screen-landed':2,'screen-villa':2,'screen-landplot':2,'screen-shophouse':2,'screen-income':2,'screen-building':2,'screen-result':3,'screen-payment':4,'screen-success':4};
+  var step=m[id]||1;
+  for(var i=1;i<=4;i++){
+    var el=document.getElementById('prog-'+i);
+    if(!el) continue;
+    el.classList.remove('active','done');
+    var dot=el.querySelector('.prog-dot');
+    if(i<step){el.classList.add('done');if(dot)dot.textContent='✓';}
+    else if(i===step){el.classList.add('active');if(dot)dot.textContent=i;}
+    else{if(dot)dot.textContent=i;}
+  }
+}
+function selectType(type) {
+  STATE.type=type;
+  document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('selected');});
+  var sel=document.getElementById('type-'+type);
+  if(sel) sel.classList.add('selected');
+  setTimeout(function(){goTo('screen-'+type);},180);
+}
+function goBack() {
+  var prev={'screen-apartment':'screen-1','screen-penthouse':'screen-1','screen-landed':'screen-1','screen-villa':'screen-1','screen-landplot':'screen-1','screen-shophouse':'screen-1','screen-income':'screen-1','screen-building':'screen-1','screen-result':'screen-'+(STATE.type||'apartment'),'screen-payment':'screen-result'};
+  goTo(prev[STATE.screen]||'screen-1');
+}
+function updateDistricts(prefix) {
+  var pEl=document.getElementById(prefix+'-province');
+  var dEl=document.getElementById(prefix+'-district');
+  if(!pEl||!dEl) return;
+  var dists=DISTRICTS[pEl.value]||[];
+  dEl.innerHTML='<option value="">Chọn quận huyện</option>';
+  dists.forEach(function(d){
+    var o=document.createElement('option');o.value=d.v;o.textContent=d.l;dEl.appendChild(o);
+  });
+}
+function setToggle(gid,btn,val) {
+  var g=document.getElementById(gid);
+  if(!g) return;
+  g.querySelectorAll('.toggle-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  STATE.toggleValues[gid]=val;
+}
+
+// ─── OCR ──────────────────────────────────────────────────────
+function handleOCR(input, pfx) {
+  var file=input.files[0]; if(!file) return;
+  var zone=document.getElementById('uz-'+pfx);
+  var uc=document.getElementById('uc-'+pfx);
+  var up=document.getElementById('up-'+pfx);
+  var pf=document.getElementById('pf-'+pfx);
+  var us=document.getElementById('us-'+pfx);
+  var orEl=document.getElementById('or-'+pfx);
+  var ofEl=document.getElementById('of-'+pfx);
+  uc.style.display='none'; up.style.display='block'; zone.classList.add('processing');
+  setTimeout(function(){pf.style.width='40%';},100);
+  us.textContent='Đang mã hóa ảnh...';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var b64=e.target.result.split(',')[1];
+    pf.style.width='65%'; us.textContent='AI đang phân tích Sổ đỏ...';
+    // Note: Direct API calls require server proxy for CORS
+    // Fallback: show manual entry
+    up.style.display='none'; uc.style.display='block';
+    zone.classList.remove('processing');
+    zone.classList.add('has-file');
+    uc.querySelector('.upload-icon').textContent='✅';
+    uc.querySelector('.upload-title').textContent='Ảnh đã tải — nhập thủ công bên dưới';
+  };
+  reader.readAsDataURL(file);
+}
+function autoFill(data, pfx) {
+  var area=parseFloat((data['dien_tich']||data['diện_tích']||'').toString().replace(/[^0-9.]/g,''));
+  var areaMap={'apt':'apt-area','land':'land-area','lp':'lp-area'};
+  var aEl=document.getElementById(areaMap[pfx]);
+  if(aEl&&area>0) aEl.value=area;
+}
+
+// ─── VALUATION ENGINE ─────────────────────────────────────────
+function goToResult() {
+  var ov=document.getElementById('calcOverlay');ov.classList.add('active');
+  setTimeout(function(){
+    var r=compute();STATE.result=r;renderResult(r);
+    ov.classList.remove('active');goTo('screen-result');
+    // Track lead immediately — user has seen result, may not pay
+    trackLead();
+  },1600);
+}
+
+function trackLead() {
+  if(!GSHEET_URL) return;
+  // Collect form data
+  var province = '', district = '', area = 0;
+  var t = STATE.type || '';
+  var provEl = document.getElementById(t+'-province') ||
+               document.getElementById('lp-province') ||
+               document.getElementById('inc-province') ||
+               document.getElementById('bld-province');
+  var distEl = document.getElementById(t+'-district') ||
+               document.getElementById('lp-district');
+  var areaEl = document.getElementById(t+'-area') ||
+               document.getElementById('land-area') ||
+               document.getElementById('lp-area') ||
+               document.getElementById('inc-area') ||
+               document.getElementById('bld-gfa');
+  if(provEl) province = provEl.value || '';
+  if(distEl) district = distEl.value || '';
+  if(areaEl) area = parseFloat(areaEl.value) || 0;
+
+  var r = STATE.result || {};
+  var payload = {
+    action: 'save_lead',
+    email: '',
+    propertyType: t,
+    paymentId: STATE.paymentId || '',
+    province: province,
+    district: district,
+    area: area,
+    status: 'Chưa thanh toán',
+    result: {
+      label: r.label || '',
+      low:   Math.round(r.low  || 0),
+      mid:   Math.round(r.mid  || 0),
+      high:  Math.round(r.high || 0),
+      psm:   r.psm || 0
+    },
+    timestamp: new Date().toISOString()
+  };
+  fetch(GSHEET_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(function(){});
+}
+
+function compute() {
+  var t=STATE.type;
+  if(t==='apartment') return compApt();
+  if(t==='penthouse') return compPth();
+  if(t==='landed')    return compLanded();
+  if(t==='villa')     return compVilla();
+  if(t==='landplot')  return compLandplot();
+  if(t==='shophouse') return compShophouse();
+  if(t==='income')    return compIncome();
+  if(t==='building')  return compBuilding();
+  return {low:2e9,high:3e9,mid:2.5e9,methods:[],label:'BĐS',psm:50,conf:3};
+}
+
+function compApt() {
+  var prov=getVal('apt-province')||'HCM', dist=getVal('apt-district')||'def';
+  var area=getNum('apt-area')||70, floor=getNum('apt-floor')||8;
+  var year=getNum('apt-year')||2018;
+  var bm=getBM('apartment',prov,dist)||{p:60,y:4.5};
+  var base=bm.p*1e6;
+  var dm=MUL.direction[getVal('apt-direction')]||1;
+  var fm=floorMul(floor), lm=MUL.legal[tog('apt-legal')]||1;
+  var depr=depreciationMul(year), im=MUL.interior[tog('apt-interior')]||1;
+  var balcony=(getNum('apt-balcony')||0)*0.4*base; // ban công tính 40% giá sàn
+  var compare=(base*area*dm*fm*lm*depr*im)+balcony;
+  var cost=(base*area*0.55)+(8e6*area*depr*im);
+  var methods=[{n:'So sánh trực tiếp',v:compare,w:0.60},{n:'Chi phí',v:cost,w:0.40}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng','BD':'Bình Dương','BRV':'Vũng Tàu'}[prov]||prov;
+  return mk(methods,mid,getVal('apt-project')||'Chung cư',prov_label,area,base/1e6,3.5,'So sánh trực tiếp');
+}
+
+function compPth() {
+  var prov=getVal('pth-province')||'HCM', dist=getVal('pth-district')||'def';
+  var area=getNum('pth-area')||200, rooftop=getNum('pth-rooftop')||60;
+  var floor=getNum('pth-floor')||50, total=getNum('pth-total-floors')||55;
+  var bm=getBM('apartment',prov,dist)||{p:120};
+  var base=bm.p*1e6;
+  // Penthouse premium: tầng đỉnh + view + type
+  var topFloorPremium=Math.min(1.5,1.2+(floor/total)*0.3);
+  var vm=MUL.pth_view[tog('pth-view')]||1;
+  var tm=MUL.pth_type[tog('pth-type')]||1;
+  var pm=MUL.pth_pool[tog('pth-pool')]||1;
+  var lm=MUL.legal[tog('pth-legal')]||1;
+  var mainArea=base*area*topFloorPremium*vm*tm*pm*lm;
+  var rooftopVal=rooftop*base*0.45*vm; // sân thượng 45% giá sàn
+  var compare=mainArea+rooftopVal;
+  var cost=(base*area*0.55*topFloorPremium)+(12e6*area); // penthouse xây dựng cao cấp hơn
+  var methods=[{n:'So sánh trực tiếp (Penthouse)',v:compare,w:0.65},{n:'Chi phí cao cấp',v:cost,w:0.35}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng'}[prov]||prov;
+  return mk(methods,mid,'Penthouse · '+prov_label,null,area+rooftop*0.4,base*topFloorPremium/1e6,4.0,'So sánh trực tiếp (Penthouse)');
+}
+
+function compLanded() {
+  var prov=getVal('land-province')||'HCM', dist=getVal('land-district')||'def';
+  var area=getNum('land-area')||80, front=getNum('land-front')||5;
+  var depth=getNum('land-depth')||16, rw=getNum('land-road-width')||6;
+  var floors=Math.max(1,getNum('land-floors')||1);
+  var bedrooms=getNum('land-bedrooms')||0;
+  var floorArea=getNum('land-floor-area')||area*floors;
+  var bm=getBM('landed',prov,dist)||{p:100,sm:0.70};
+  var base=bm.p*1e6;
+  var rm=MUL.road[tog('land-road-type')]||1;
+  var lm=MUL.legal[tog('land-legal')]||1;
+  var fm2=MUL.feng[tog('land-feng')]||1;
+  var im=MUL.interior[tog('land-interior')]||1;
+  var fm=frontageMul(front), rwm=roadWidthMul(rw);
+  // Giá trị đất
+  var landVal=base*area*rm*fm*rwm*lm*fm2;
+  // Giá trị công trình: diện tích sàn × đơn giá xây dựng
+  var buildCost=floorArea*7e6*im; // 7tr/m² xây dựng trung bình
+  var compare=landVal+buildCost;
+  // Thặng dư: GDV - chi phí phát triển
+  var surplus_w=(rm>=1.0)?0.30:0.15;
+  var gdv=base*area*fm*1.35;
+  var devCost=base*area*(1-bm.sm);
+  var surplus=((gdv-devCost)*lm*fm2)+buildCost;
+  var methods=[{n:'So sánh trực tiếp',v:compare,w:1-surplus_w},{n:'Thặng dư',v:surplus,w:surplus_w}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng','BD':'Bình Dương'}[prov]||prov;
+  var label='Nhà phố '+(floors>1?floors+' tầng':'')+' · '+prov_label;
+  return mk(methods,mid,label,null,area,base/1e6,3.8,'So sánh trực tiếp');
+}
+
+function compVilla() {
+  var prov=getVal('villa-province')||'HCM', dist=getVal('villa-district')||'def';
+  var landArea=getNum('villa-land-area')||300, builtArea=getNum('villa-built-area')||250;
+  var floors=getNum('villa-floors')||2, year=getNum('villa-year')||2018;
+  var bm=getBM('villa',prov,dist)||{p:250,sm:0.80};
+  var base=bm.p*1e6;
+  var vtm=MUL.villa_type[tog('villa-type')]||1;
+  var vvm=MUL.villa_view[tog('villa-view')]||1;
+  var vam=MUL.villa_amenity[tog('villa-amenity')]||1;
+  var lm=MUL.legal[tog('villa-legal')]||1;
+  var depr=depreciationMul(year);
+  var landVal=base*landArea*vtm*vvm*lm;
+  var buildCost=builtArea*(10e6+(floors-1)*1.5e6)*depr*vam; // tiêu chuẩn cao hơn nhà phố
+  var compare=landVal+buildCost;
+  // Chi phí thuần
+  var cost=(base*landArea*0.55)+(12e6*builtArea*depr*vam*vtm);
+  var methods=[{n:'So sánh trực tiếp',v:compare,w:0.60},{n:'Chi phí',v:cost,w:0.40}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng'}[prov]||prov;
+  var typeLabel={'don-lap':'Đơn lập','song-lap':'Song lập','lien-ke':'Liền kề','du-an':'Dự án'}[tog('villa-type')]||'';
+  return mk(methods,mid,'Biệt thự '+typeLabel+' · '+prov_label,null,landArea,base/1e6,3.8,'So sánh trực tiếp');
+}
+
+function compLandplot() {
+  var prov=getVal('lp-province')||'HCM', dist=getVal('lp-district')||'def';
+  var area=getNum('lp-area')||120, front=getNum('lp-front')||6;
+  var depth=getNum('lp-depth')||20, rw=getNum('lp-road-width')||8;
+  var bm=getBM('landed',prov,dist)||{p:100,sm:0.70};
+  var base=bm.p*1e6;
+  var rm=MUL.road[tog('lp-road-type')]||1;
+  var pm=MUL.purpose[tog('lp-purpose')]||1;
+  var fm2=MUL.feng[tog('lp-feng')]||1;
+  var lm=MUL.legal[tog('lp-legal')]||1;
+  var qhm=MUL.qh[tog('lp-qh')]||1;
+  var im2=MUL.infra[tog('lp-infra')]||1;
+  var fm=frontageMul(front), rwm=roadWidthMul(rw);
+  var compare=base*area*rm*pm*fm2*lm*qhm*im2*fm*rwm;
+  var surplus_w=(tog('lp-road-type')==='mat-tien'&&tog('lp-purpose')==='dat-o')?0.35:0.15;
+  var gdv=base*area*fm*1.40, devCost=base*area*(1-bm.sm);
+  var surplus=(gdv-devCost)*lm*fm2*qhm;
+  var methods=[{n:'So sánh trực tiếp',v:compare,w:1-surplus_w},{n:'Thặng dư',v:surplus,w:surplus_w}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng','BD':'Bình Dương'}[prov]||prov;
+  return mk(methods,mid,'Đất nền · '+prov_label,null,area,base/1e6,3.8,'So sánh trực tiếp');
+}
+
+function compShophouse() {
+  var prov=getVal('sh-province')||'HCM', dist=getVal('sh-district')||'def';
+  var area=getNum('sh-area')||80, floors=Math.max(1,getNum('sh-floors')||2);
+  var front=getNum('sh-front')||5, rw=getNum('sh-road-width')||10;
+  var rent=getNum('sh-rent')||0;
+  var bm=getBM('shophouse',prov,dist)||{p:160,cr:6.0};
+  var base=bm.p*1e6;
+  var pm=MUL.sh_position[tog('sh-position')]||1;
+  var lm=MUL.legal[tog('sh-legal')]||1;
+  var fm=frontageMul(front), rwm=roadWidthMul(rw);
+  var totalArea=area*floors;
+  // Method 1: So sánh — shophouse premium 50–80% vs apartment cùng tầng
+  var compare=base*totalArea*1.6*pm*fm*rwm*lm; // 1.6 = thương mại premium
+  // Method 2: Thu nhập
+  var monthlyRent=rent>0?rent:(totalArea*base*0.006*pm*fm); // ước tính 0.6%/tháng nếu ko có số thực
+  var noi=monthlyRent*12*0.90-(totalArea*500000*12); // 90% occupancy, 500k/m²/năm OpEx
+  var capRate=bm.cr/100;
+  var income=noi/capRate;
+  var methods=[{n:'So sánh thương mại',v:compare,w:0.55},{n:'Thu nhập (Income)',v:income,w:0.45}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng'}[prov]||prov;
+  return mk(methods,mid,'Shophouse chân đế · '+prov_label,null,totalArea,base/1e6,3.6,'So sánh thương mại');
+}
+
+function compIncome() {
+  var prov=getVal('inc-province')||'HCM';
+  var subtype=getVal('inc-subtype')||'nha-tro';
+  var area=getNum('inc-area')||200;
+  var rev=getNum('inc-revenue')||50e6;
+  var occ=(getNum('inc-occupancy')||85)/100;
+  var opex=getNum('inc-opex')||10e6;
+  var growth=(getNum('inc-growth')||5)/100;
+  var capRateData=BM.income_cap[prov]||BM.income_cap['def'];
+  var customCR=getNum('inc-cap-rate');
+  var cr=(customCR>0)?customCR/100:((capRateData[subtype]||capRateData['def'])/100);
+  var egi=rev*12*occ;
+  var noi=Math.max(egi*0.5,egi-(opex*12));
+  var income=noi/cr;
+  var disc=cr+0.02;
+  var gordon=(disc>growth)?(noi*(1+growth))/(disc-growth):income*1.1;
+  var methods=[{n:'Thu nhập (Vốn hóa)',v:income,w:0.65},{n:'Gordon Growth (DCF)',v:gordon,w:0.35}];
+  var mid=wmid(methods);
+  var ry=(noi/mid*100).toFixed(1);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng'}[prov]||prov;
+  return mk(methods,mid,'BĐS Dòng tiền · '+prov_label+' · Yield ~'+ry+'%',null,area,mid/area/1e6,4.0,'Thu nhập (Income)');
+}
+
+function compBuilding() {
+  var prov=getVal('bld-province')||'HCM';
+  var btype=tog('bld-type')||'van_phong';
+  var bkey=btype.replace('-','_');
+  var gfa=getNum('bld-gfa')||3000;
+  var landArea=getNum('bld-land-area')||400;
+  var year=getNum('bld-year')||2015;
+  var rev=getNum('bld-revenue')||200e6;
+  var occ=(getNum('bld-occupancy')||85)/100;
+  var opex=getNum('bld-opex')||40e6;
+  var rebuildCustom=getNum('bld-rebuild-cost')*1e6||0;
+  var bm_data=BM.building[prov]||BM.building['def'];
+  var bm_sub=bm_data[bkey]||bm_data['def'];
+  var grm=MUL.bld_grade[tog('bld-grade')]||1;
+  var sym=MUL.bld_systems[tog('bld-systems')]||1;
+  var cr=bm_sub.cr/100;
+  var depr=depreciationMul(year);
+  var noi=Math.max((rev*12*occ)*0.4,(rev*12*occ)-(opex*12));
+  var income=noi/cr*grm;
+  var rebuildCost=(rebuildCustom>0?rebuildCustom:bm_sub.rebuild*1e6)*gfa*depr*sym;
+  // Landed benchmark cho đất
+  var landBM=getBM('landed',prov,'def')||{p:100};
+  var landVal=landBM.p*1e6*landArea;
+  var cost=landVal+rebuildCost;
+  var methods=[{n:'Thu nhập (Vốn hóa)',v:income,w:0.60},{n:'Chi phí tái tạo',v:cost,w:0.40}];
+  var mid=wmid(methods);
+  var prov_label={'HCM':'TP.HCM','HN':'Hà Nội','DN':'Đà Nẵng'}[prov]||prov;
+  var typeLabel={'van-phong':'Văn phòng','can-ho-dv':'Căn hộ DV','mix-use':'Mix-use','khach-san':'Khách sạn'}[btype]||'';
+  return mk(methods,mid,'Tòa nhà '+typeLabel+' · '+prov_label,null,gfa,mid/gfa/1e6,3.5,'Thu nhập (Vốn hóa)');
+}
+
+function wmid(methods) {
+  return methods.reduce(function(s,m){return s+m.v*m.w;},0);
+}
+function mk(methods,mid,l1,l2,area,psm,conf,pm) {
+  var label=l1+(l2?' · '+l2:'');
+  return {low:mid*0.91,mid:mid,high:mid*1.10,methods:methods,label:label,area:area,psm:psm,conf:conf,pm:pm};
+}
+
+// ─── RENDER RESULT ────────────────────────────────────────────
+function renderResult(r) {
+  document.getElementById('resultPropertyName').textContent=r.label;
+  document.getElementById('resultLow').textContent=(r.low/1e9).toFixed(2);
+  document.getElementById('resultHigh').textContent=(r.high/1e9).toFixed(2);
+  var maxV=Math.max.apply(null,r.methods.map(function(m){return m.v;}));
+  var rows='';
+  r.methods.forEach(function(m){
+    var bw=Math.round(m.v/maxV*100);
+    rows+='<div class="method-row"><div class="method-row-name">'+m.n+'</div><div class="method-row-bar-wrap"><div class="method-row-bar" style="width:'+bw+'%"></div></div><div class="method-row-val">'+(m.v/1e9).toFixed(2)+' tỷ</div><div class="method-row-weight">'+Math.round(m.w*100)+'%</div></div>';
+  });
+  document.getElementById('methodRows').innerHTML=rows;
+  document.getElementById('metricPerSqm').textContent=r.psm.toFixed(1);
+  document.getElementById('metricMethod').textContent=r.pm;
+  var stars=Math.floor(r.conf); var half=(r.conf%1>=0.5)?'½':'';
+  document.getElementById('metricConfidence').textContent='★'.repeat(stars)+half;
+  var ref='BDS'+Date.now().toString().slice(-6);
+  STATE.paymentId=ref;
+  document.getElementById('paymentRef').textContent=ref;
+}
+
+// ─── PAYMENT ──────────────────────────────────────────────────
+// ── PAYMENT CONFIG ────────────────────────────────────────
+var POLAR_URL   = 'https://buy.polar.sh/polar_cl_MGyIvdrC29kcXTTSFKXxwJkEnGRm1OfdhJFPs3n0i23';
+var SEPAY_WEBHOOK = 'https://saigonmia.tino.page/webhook/globalvaluate/webhook';
+var MBBANK_ACC  = '9688666686';
+var USD_VND     = 26000;
+var VAT         = 1.08;
+var BASE_VND    = Math.round(15 * USD_VND * VAT / 1000) * 1000; // 421,200 → 421,000
+var PROMO_CODES = { 'JAMELA10K': 10000, 'JAMELA100': 0 }; // code: VND amount
+
+var PAY = { method: 'polar', promoCode: '', promoAmount: 0 };
+
+// ── MODAL ─────────────────────────────────────────────────
+function goToPayment() {
+  // Reset state
+  PAY.method = 'polar'; PAY.promoCode = ''; PAY.promoAmount = 0;
+  document.getElementById('promoInput').value = '';
+  document.getElementById('promoBadge').classList.remove('active');
+  selectPayMethod('polar');
+  // Update ref
+  var ref = STATE.paymentId || ('BDS' + Date.now().toString().slice(-6));
+  STATE.paymentId = ref;
+  document.getElementById('sepayRef').innerHTML = 'Valuit15-' + ref +
+    ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
+  // Generate QR (VietQR standard)
+  updateQR(BASE_VND, 'Valuit15-' + ref);
+  document.getElementById('sepayAmount').textContent = fmtVND(BASE_VND);
+  document.getElementById('sepayPrice').textContent = fmtVND(BASE_VND);
+  // Show modal
+  document.getElementById('paymentModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('paymentModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function selectPayMethod(method) {
+  PAY.method = method;
+  document.getElementById('pm-polar').classList.toggle('selected', method === 'polar');
+  document.getElementById('pm-sepay').classList.toggle('selected', method === 'sepay');
+  document.getElementById('sepaySec').classList.toggle('active', method === 'sepay');
+  document.getElementById('polarSec').style.display = (method === 'polar') ? 'block' : 'none';
+}
+
+// ── PROMO CODE ────────────────────────────────────────────
+function applyPromo() {
+  var code = document.getElementById('promoInput').value.trim().toUpperCase();
+  var badge = document.getElementById('promoBadge');
+  var promoPrice = document.getElementById('promoPrice');
+  if (PROMO_CODES[code] !== undefined) {
+    PAY.promoCode = code;
+    PAY.promoAmount = PROMO_CODES[code];
+    promoPrice.textContent = fmtVND(PAY.promoAmount);
+    badge.classList.add('active');
+    // Update amounts
+    var finalVND = PAY.promoAmount;
+    document.getElementById('sepayAmount').textContent = fmtVND(finalVND);
+    document.getElementById('sepayPrice').textContent = fmtVND(finalVND);
+    document.getElementById('sepayRef').innerHTML = 'Valuit15-' + STATE.paymentId +
+      ' <button class="copy-btn" onclick="copyRef()">Copy</button>';
+    updateQR(finalVND, 'Valuit15-' + STATE.paymentId);
+    // Polar price label
+    document.getElementById('polarPrice').textContent = 'TEST MODE';
+    document.getElementById('btnPolar').textContent = '🧪 Test — ' + fmtVND(finalVND);
+  } else {
+    badge.classList.remove('active');
+    promoPrice.textContent = '';
+    alert('Mã không hợp lệ');
+  }
+}
+
+// ── QR CODE (VietQR) ──────────────────────────────────────
+function updateQR(amount, content) {
+  // VietQR API: bank=MB, account=9688666686
+  var qrUrl = 'https://img.vietqr.io/image/MB-9688666686-compact2.png'
+    + '?amount=' + amount
+    + '&addInfo=' + encodeURIComponent(content)
+    + '&accountName=' + encodeURIComponent('SCF INVESTMENT JS CO');
+  document.getElementById('qrImg').src = qrUrl;
+}
+
+// ── COPY HELPERS ──────────────────────────────────────────
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    // brief feedback handled by browser
+  }).catch(function() {});
+}
+function copyRef() {
+  var ref = 'Valuit15-' + STATE.paymentId;
+  copyText(ref);
+}
+
+// ── SEPAY CONFIRM (with real polling) ────────────────────
+var POLL_COUNT = 0;
+var POLL_MAX   = 6;   // 6 × 10s = 60s max
+var POLL_TIMER = null;
+var N8N_VERIFY = 'https://saigonmia.tino.page/webhook/globalvaluate/payment-verify';
+
+// ── SEPAY CONFIRM — 3-LAYER VERIFY ────────────────────────
+var VERIFY = { timer: null, attempts: 0, maxAttempts: 3, billData: null, billImageB64: null };
+
+function showVerifyState(id) {
+  document.querySelectorAll('.verify-state').forEach(function(s){ s.classList.remove('active'); });
+  var el = document.getElementById('vs-'+id);
+  if (el) el.classList.add('active');
+}
+
+function confirmSepay() {
+  var email = document.getElementById('sepayEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('sepayEmail').style.borderColor = 'var(--danger)';
+    document.getElementById('sepayEmail').focus();
+    return;
+  }
+  document.getElementById('sepayEmail').style.borderColor = '';
+  var btn = document.getElementById('btnSepayCK');
+  btn.disabled = true; btn.textContent = 'Đang xác nhận...';
+  saveLead(email);
+  // JAMELA100 = 0 VND → skip verify, go straight to success
+  if (PAY.promoAmount === 0 && PAY.promoCode === 'JAMELA100') {
+    // Notify admin via GSheet + Telegram
+    fetch(GSHEET_URL, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'payment', paymentId:STATE.paymentId,
+        email:email, amount:0, currency:'VND', gateway:'SePay-Free',
+        status:'confirmed-promo', timestamp:new Date().toISOString() })
+    }).catch(function(){});
+    saveLead(email, 'paid');
+    setTimeout(function() {
+      closeModal();
+      document.getElementById('successEmail').textContent = email;
+      document.getElementById('reportEmail').textContent = email;
+      goTo('screen-success');
+      // Generate PDF immediately
+      setTimeout(generateReportPDF, 800);
+    }, 1500);
+    return;
+  }
+  var vs = document.getElementById('verifyStates');
+  if (vs) vs.style.display = 'block';
+  VERIFY.attempts = 0; VERIFY.billData = null; VERIFY.billImageB64 = null;
+  startAutoVerify(email);
+}
+
+function startAutoVerify(email) {
+  showVerifyState('checking');
+  var countdown = 10;
+  var cdEl = document.getElementById('verifyCountdown');
+  if (cdEl) cdEl.textContent = countdown;
+  VERIFY.timer = setInterval(function() {
+    countdown--;
+    if (cdEl) cdEl.textContent = countdown;
+    if (countdown <= 0) { clearInterval(VERIFY.timer); autoVerifyNow(email); }
+  }, 1000);
+}
+
+function autoVerifyNow(email) {
+  VERIFY.attempts++;
+  fetch(SEPAY_VERIFY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      paymentId: STATE.paymentId, email: email,
+      amountVND: PAY.promoAmount || BASE_VND,
+      referenceCode: 'Valuit15-' + STATE.paymentId
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data.verified) {
+      clearInterval(VERIFY.timer);
+      var vs = document.getElementById('verifyStates');
+      if (vs) vs.style.display = 'none';
+      closeModal();
+      document.getElementById('successEmail').textContent = email;
+      document.getElementById('reportEmail').textContent = email;
+      goTo('screen-success');
+      // Generate PDF immediately
+      setTimeout(generateReportPDF, 800);
+    } else if (VERIFY.attempts < VERIFY.maxAttempts) {
+      startAutoVerify(email);
+    } else {
+      showVerifyState('upload');
+    }
+  })
+  .catch(function() {
+    if (VERIFY.attempts < VERIFY.maxAttempts) startAutoVerify(email);
+    else showVerifyState('upload');
+  });
+}
+
+function retryVerify() {
+  VERIFY.attempts = 0;
+  var email = document.getElementById('sepayEmail').value.trim();
+  startAutoVerify(email);
+}
+
+function handleBillUpload(input) {
+  var file = input.files[0]; if (!file) return;
+  var zone = document.getElementById('billUploadZone');
+  var uc = document.getElementById('billUploadContent');
+  var ua = document.getElementById('billAnalyzingContent');
+  var ab = document.getElementById('billAnalysis');
+  var fb = document.getElementById('billFields');
+  var sb = document.getElementById('btnSubmitBill');
+  zone.classList.add('analyzing');
+  uc.style.display = 'none'; ua.style.display = 'block';
+  ab.style.display = 'none'; sb.style.display = 'none';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result.split(',')[1];
+    VERIFY.billImageB64 = b64;
+    // Bill uploaded - show submit button directly (no AI analysis needed)
+    zone.classList.remove('analyzing'); zone.classList.add('has-file');
+    ua.style.display = 'none'; uc.style.display = 'block';
+    uc.querySelector('.bill-upload-icon').textContent = '✅';
+    uc.querySelector('.bill-upload-text').textContent = 'Bill đã tải lên';
+    VERIFY.billData = { noi_dung: 'Valuit15-' + STATE.paymentId, uploaded: true };
+    sb.style.display = 'block';
+    sb.textContent = '📤 Gửi bill xác nhận → Nhận báo cáo';
+  };
+  reader.readAsDataURL(file);
+}
+
+function submitBill() {
+  var email = document.getElementById('sepayEmail').value.trim();
+  var btn = document.getElementById('btnSubmitBill');
+  btn.disabled = true; btn.textContent = '⏳ Đang gửi...';
+  var payload = {
+    action: 'bill_submit', email: email,
+    paymentId: STATE.paymentId,
+    ref: 'Valuit15-' + STATE.paymentId,
+    billData: VERIFY.billData || {},
+    label: STATE.result ? STATE.result.label : '',
+    amountVND: PAY.promoAmount || BASE_VND,
+    promoCode: PAY.promoCode || null,
+    timestamp: new Date().toISOString()
+  };
+  if (VERIFY.billImageB64) payload.billImageB64 = VERIFY.billImageB64.substring(0, 30000);
+  fetch(SEPAY_WEBHOOK, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function(){});
+  fetch(GSHEET_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'support', email: email,
+      paymentId: STATE.paymentId,
+      issue: 'Bill submitted — pending manual confirm',
+      message: JSON.stringify(VERIFY.billData||{}).substring(0,200) })
+  }).catch(function(){});
+  document.getElementById('submittedRef').textContent = 'Valuit15-' + STATE.paymentId;
+  showVerifyState('submitted');
+}
+
+
+// ── POLAR CHECKOUT ────────────────────────────────────────
+function goPolar() {
+  var ref = STATE.paymentId || 'BDSV000';
+  // Save lead + notify via GSheet
+  var emailEl = document.getElementById('sepayEmail');
+  var em = emailEl ? emailEl.value.trim() : '';
+  if(em) {
+    saveLead(em, 'paid');
+    fetch(GSHEET_URL, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'payment', paymentId:STATE.paymentId,
+        email:em, amount:15, currency:'USD', gateway:'Polar',
+        status:'checkout-initiated', timestamp:new Date().toISOString() })
+    }).catch(function(){});
+  }
+  var url = POLAR_URL + '?ref=' + ref;
+  if (STATE.result) {
+    url += '&metadata[type]='  + encodeURIComponent(STATE.type||'')
+         + '&metadata[label]=' + encodeURIComponent((STATE.result.label||'').substring(0,60))
+         + '&metadata[mid]='   + Math.round((STATE.result.mid||0)/1e6);
+  }
+  if (PAY.promoCode) url += '&metadata[promo]=' + PAY.promoCode;
+  window.open(url, '_blank'); // open in new tab — user stays on page
+}
+
+// ── FORMAT ────────────────────────────────────────────────
+function fmtVND(n) {
+  return n.toLocaleString('vi-VN') + ' ₫';
+}
+// confirmPayment legacy — replaced by modal flow
+function saveLead(email, paymentStatus) {
+  if(!GSHEET_URL) return;
+  var t = STATE.type || '';
+
+  // Collect all form data based on property type
+  function getVal(id) { var el=document.getElementById(id); return el?el.value:''; }
+  function getNum(id) { return parseFloat(getVal(id))||0; }
+
+  var formData = {
+    province: getVal(t+'-province') || getVal('lp-province') || getVal('inc-province') || getVal('bld-province') || '',
+    district: getVal(t+'-district') || '',
+    area: getNum(t+'-area') || getNum('lp-area') || getNum('inc-area') || getNum('bld-gfa') || 0,
+    floors: getNum(t+'-floor') || getNum(t+'-floors') || 0,
+    bedrooms: getNum(t+'-bed') || getNum(t+'-bedrooms') || 0,
+    legal: STATE.toggleValues[t+'-legal'] || STATE.toggleValues['lp-legal'] || '',
+    interior: STATE.toggleValues[t+'-interior'] || '',
+    road_type: STATE.toggleValues[t+'-road-type'] || STATE.toggleValues['lp-road-type'] || '',
+    feng: STATE.toggleValues[t+'-feng'] || STATE.toggleValues['lp-feng'] || '',
+    project: getVal(t+'-project') || getVal('bld-name') || ''
+  };
+
+  var payload = {
+    action: 'save_lead',
+    email: email || '',
+    propertyType: t,
+    paymentId: STATE.paymentId || '',
+    paymentStatus: paymentStatus || 'pending', // 'pending' | 'paid'
+    formData: formData,
+    toggleValues: STATE.toggleValues,
+    timestamp: new Date().toISOString()
+  };
+
+  if(STATE.result) {
+    payload.result = {
+      label: STATE.result.label || '',
+      low:   Math.round(STATE.result.low || 0),
+      mid:   Math.round(STATE.result.mid || 0),
+      high:  Math.round(STATE.result.high || 0),
+      psm:   STATE.result.psm || 0,
+      primaryMethod: STATE.result.primaryMethod || ''
+    };
+  }
+
+  fetch(GSHEET_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  }).catch(function(){});
+}
+function resetApp(){
+  STATE.type=null;STATE.result=null;STATE.paymentId=null;
+  STATE.toggleValues=Object.assign({},STATE.defaults);
+  document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('selected');});
+  goTo('screen-1');
+}
+
+
+// ─── LANGUAGE ─────────────────────────────────────────────
+var LANG = 'vi';
+// ── i18next CONFIGURATION ────────────────────────────────────
+var I18N_RESOURCES = {
+  vi: { translation: {
+    hero: {
+      eyebrow: 'Định Giá Bất Động Sản',
+      title: 'Ước tính giá trị BĐS<br><em>chuẩn TĐGVN</em> trong 3 phút',
+      subtitle: 'Hệ thống AVM tự động — 8 loại hình BĐS, 4 phương pháp thẩm định giá được Bộ Tài chính công nhận. Hỗ trợ trích xuất thông tin Sổ đỏ qua AI Vision.'
+    },
+    nav: { back: '← Về trang chủ' },
+    step1: {
+      step: 'Bước 1 / 3',
+      title: 'Chọn loại hình bất động sản',
+      desc: 'Hệ thống áp dụng phương pháp định giá phù hợp nhất theo từng loại hình tài sản.'
+    },
+    screen: {
+      apt:   { title:'Thông số căn hộ' },
+      pth:   { title:'Thông số Penthouse' },
+      land:  { title:'Thông số nhà phố' },
+      villa: { title:'Thông số biệt thự' },
+      lp:    { title:'Thông số đất nền' },
+      sh:    { title:'Thông số Shophouse' },
+      inc:   { title:'Thông số tài sản & dòng tiền' },
+      bld:   { title:'Thông số tòa nhà' }
+    },
+    step: {
+      apt:  'Bước 2 / 3 · 🏢 Chung cư / Căn hộ',
+      pth:  'Bước 2 / 3 · 👑 Penthouse',
+      land: 'Bước 2 / 3 · 🏠 Nhà phố / Nhà liền kề',
+      villa:'Bước 2 / 3 · 🌿 Biệt thự / Villa',
+      lp:   'Bước 2 / 3 · 🏡 Đất nền',
+      sh:   'Bước 2 / 3 · 🏪 Shophouse chân đế',
+      inc:  'Bước 2 / 3 · 💼 BĐS Dòng tiền',
+      bld:  'Bước 2 / 3 · 🏗️ Cả tòa nhà'
+    },
+    group: {
+      residential: '🏡 Nhà ở & Đầu tư cá nhân',
+      commercial:  '🏪 Thương mại & Đầu tư'
+    },
+    type: {
+      apartment: { name:'Chung cư / Căn hộ',      desc:'Căn hộ trong dự án có chủ đầu tư, condotel' },
+      penthouse:  { name:'Penthouse',               desc:'Căn đỉnh tòa nhà, sân thượng riêng, view toàn cảnh' },
+      landed:     { name:'Nhà phố / Nhà liền kề',  desc:'Nhà phố, nhà liền kề, số tầng xác định' },
+      villa:      { name:'Biệt thự / Villa',        desc:'Biệt thự đơn lập, song lập, liền kề cao cấp' },
+      landplot:   { name:'Đất nền',                 desc:'Đất thổ cư, đất nền dự án, đất vườn' },
+      shophouse:  { name:'Shophouse chân đế',       desc:'Tầng 1–3 tòa nhà, mặt tiền kinh doanh' },
+      income:     { name:'BĐS Dòng tiền',           desc:'Nhà trọ, căn hộ cho thuê, mặt bằng, khách sạn mini' },
+      building:   { name:'Cả tòa nhà',              desc:'Tòa nhà văn phòng, căn hộ dịch vụ, mix-use' }
+    },
+    section: {
+      project: 'Thông tin dự án & vị trí', projinfo: 'Thông tin dự án',
+      apt: 'Thông số căn hộ', pth: 'Thông số Penthouse',
+      land: 'Thông số nhà phố', lp: 'Thông số thửa đất',
+      sh: 'Thông số Shophouse', asset: 'Thông tin tài sản',
+      cashflow: 'Dữ liệu dòng tiền thực tế', finance: 'Thông số tài chính',
+      bldinfo: 'Thông tin tòa nhà', physical: 'Thông số vật lý',
+      ops: 'Dữ liệu vận hành', location: 'Vị trí tài sản',
+      road: 'Vị trí & đường tiếp giáp', plot: 'Thông số thửa đất',
+      classify: 'Phân loại & vị trí', landwork: 'Thông số đất & công trình',
+      amenity: 'Tiện ích đặc biệt', legal: 'Pháp lý'
+    },
+    lbl: {
+      province:'Tỉnh / Thành phố', district:'Quận / Huyện',
+      project:'Tên dự án / Chủ đầu tư', building:'Tên tòa nhà / Dự án',
+      bedrooms:'Số phòng ngủ', direction:'Hướng ban công',
+      year:'Năm bàn giao', year_built:'Năm xây dựng',
+      interior:'Tình trạng nội thất', legal:'Tình trạng pháp lý',
+      floors:'Số tầng xây dựng', total_floors:'Tổng số tầng',
+      frontage:'Mặt tiền (m)', depth:'Chiều sâu (m)',
+      road_type:'Loại đường tiếp giáp', land_use:'Mục đích sử dụng đất',
+      infra:'Hạ tầng kỹ thuật', fengshui:'Phong thủy / Vị trí đặc biệt',
+      villa_type:'Loại biệt thự', view:'View / Cảnh quan',
+      income_type:'Loại BĐS dòng tiền', bld_type:'Loại hình tòa nhà',
+      bld_grade:'Hạng tòa nhà', bld_name:'Tên tòa nhà',
+      net_area:'Diện tích thông thủy (m²)', floor:'Tầng',
+      balcony:'Diện tích ban công (m²)', year_handover:'Năm bàn giao',
+      mgmt_fee:'Phí quản lý (nghìn đồng/m²/tháng)',
+      indoor_area:'Diện tích sàn trong nhà (m²)', rooftop_area:'Diện tích sân thượng riêng (m²)',
+      structure:'Cấu trúc', main_view:'View chủ đạo',
+      land_area:'Diện tích đất (m²)', road_width:'Chiều rộng đường trước (m)',
+      floors_built:'Số tầng xây dựng', gfa_built:'Diện tích sàn xây dựng (m²)',
+      zoning:'Quy hoạch 1/500', built_area:'Diện tích xây dựng (m²)',
+      amenities:'Tiện ích đặc biệt', total_area:'Tổng diện tích (m²)',
+      units:'Tổng số đơn vị khai thác', op_year:'Năm đưa vào khai thác',
+      lease_remain:'Hợp đồng thuê còn lại (tháng)',
+      monthly_rev:'Doanh thu cho thuê / tháng (VNĐ)', occupancy:'Tỷ lệ lấp đầy trung bình (%)',
+      opex:'Chi phí vận hành / tháng (VNĐ)', deposit:'Tiền đặt cọc đang giữ (VNĐ)',
+      cap_rate:'Cap Rate tham chiếu vùng (%)', rent_growth:'Tăng trưởng thuê dự kiến (%/năm)',
+      gfa:'Tổng diện tích sàn GFA (m²)', total_floors_bld:'Tổng số tầng',
+      systems:'Thang máy, PCCC', occ_pct:'Tỷ lệ lấp đầy (%)',
+      rebuild_cost:'Chi phí xây dựng lại ước tính (triệu/m²)',
+      use_area:'Diện tích sử dụng (m²)', use_floors:'Số tầng sử dụng',
+      complex_pos:'Vị trí trong khu phức hợp', biz_type:'Ngành kinh doanh phù hợp',
+      current_rent:'Doanh thu cho thuê hiện tại / tháng (VNĐ)', private_pool:'Có hồ bơi riêng không?',
+      proj_name:'Tên dự án', bld_name_field:'Tên tòa nhà',
+      interior_raw:'Thô (chưa hoàn thiện)', interior_basic:'Cơ bản', interior_full:'Full nội thất cao cấp',
+      so_hong:'Sổ hồng', so_do:'Sổ đỏ', hdmb:'HĐMB', no_doc:'Chưa có sổ', private_doc:'Giấy tờ tay',
+      main_road:'Mặt tiền đường lớn', car_lane:'Hẻm xe hơi', narrow_lane:'Hẻm nhỏ',
+      simplex:'Simplex (1 tầng)', duplex:'Duplex (2 tầng)', triplex:'Triplex (3 tầng)',
+      no:'Không', grade_a:'Hạng A', grade_b:'Hạng B', grade_c:'Hạng C',
+      legal_status:'Tình trạng pháp lý', total_floors:'Tổng số tầng tòa nhà',
+    },
+    btn: {
+      calculate: 'Tính giá trị ước tính →',
+      unlock: '🔓 Mở khóa báo cáo đầy đủ — $15 USD',
+      back: '← Chọn lại loại hình',
+      ck: '✓ Tôi đã chuyển khoản',
+      polar: '💳 Thanh toán bằng thẻ quốc tế →',
+      reset: 'Định giá BĐS khác →'
+    },
+    metric: { psm:'Giá / m²', method:'Phương pháp chính', conf:'Mức tin cậy' },
+    result: {
+      badge: '🏠 Kết quả định giá sơ bộ',
+      unit: 'Tỷ đồng (VNĐ)',
+      methods: 'Phân tích theo phương pháp',
+      disclaimer: '<strong>Miễn trừ trách nhiệm:</strong> Kết quả chỉ mang tính tham khảo dựa trên AVM và dữ liệu thị trường. <strong>Không thay thế</strong> Chứng thư thẩm định giá chính thức theo quy định Bộ Tài chính. Tham vấn đơn vị thẩm định độc lập trước khi giao dịch.'
+    },
+    modal: {
+      title: 'Chọn phương thức thanh toán',
+      sub: 'Mở khóa Báo cáo Định giá BĐS chuyên sâu'
+    },
+    pay: {
+      intl: { name:'Thẻ quốc tế', desc:'Visa · Mastercard', subdesc:'Khách nước ngoài / VN ở nước ngoài' },
+      vn:   { name:'Chuyển khoản VN', desc:'MBBank · SePay', subdesc:'Khách trong nước' }
+    },
+    promo: { placeholder:'Nhập mã giảm giá (nếu có)', apply:'Áp dụng' },
+    email: { label:'Email nhận báo cáo' },
+    verify: {
+      checking: 'Đang xác nhận giao dịch tự động...',
+      checking_sub: 'Kiểm tra hệ thống ngân hàng, vui lòng chờ',
+      not_found_title: '⚠️ Chưa xác nhận được giao dịch tự động',
+      not_found_desc: 'Giao dịch có thể mất 1–3 phút để cập nhật. Bạn có thể upload ảnh bill chuyển khoản để chúng tôi xử lý ngay.',
+      bill_title: 'Chụp hoặc tải ảnh bill chuyển khoản',
+      bill_sub: 'Screenshot VCB · MB · TCB · BIDV · bất kỳ ngân hàng nào',
+      submit_valid: '📤 Gửi bill xác nhận → Nhận báo cáo',
+      submit_manual: '📤 Gửi bill (admin xác nhận thủ công)',
+      submitted_title: 'Đã nhận bill của bạn!',
+      submitted_desc: 'Admin đang xác nhận. Báo cáo sẽ gửi về email trong 5–15 phút.',
+      retry: '🔄 Kiểm tra lại',
+      telegram: '✈️ Telegram Support'
+    },
+    prog: { step1:'Loại hình', step2:'Thông số', step3:'Kết quả', step4:'Báo cáo' },
+    success: {
+      title: 'Đang tạo báo cáo!',
+      desc: 'Báo cáo định giá BĐS chuyên sâu đang được AI xử lý và sẽ gửi về email trong 3–5 phút.'
+    },
+
+    toggle: {
+      interior: { bare:'Thô (chưa hoàn thiện)', basic:'Cơ bản', full:'Full nội thất cao cấp' },
+      legal:    { pink:'Sổ hồng', red:'Sổ đỏ', spc:'HĐMB', none:'Chưa có sổ', hand:'Giấy tờ tay' },
+      road:     { main:'Mặt tiền đường lớn', car:'Hẻm xe hơi', small:'Hẻm nhỏ' },
+      purpose:  { urban:'Đất ở đô thị', garden:'Đất vườn (CLN)', agri:'Đất nông nghiệp' },
+      qh:       { approved:'Đã phê duyệt', pending:'Chưa phê duyệt', unknown:'Không rõ' },
+      infra:    { full:'Đầy đủ (điện + nước + đường nhựa)', basic:'Cơ bản', lack:'Thiếu hạ tầng' },
+      feng:     { none:'Bình thường', corner:'Lô góc 2 MT (+12%)', wider:'Nở hậu (+4%)', river:'View sông/hồ (+15%)', school:'Gần trường tốt (+4%)', tdam:'Đâm đường (-10%)', narrow:'Tóp hậu (-7%)', temple:'Gần chùa/nghĩa trang (-12%)', west:'Hướng Tây nắng (-4%)' },
+      struct:   { land:'Đất trống', grade4:'Nhà cấp 4', town:'Nhà phố', villa:'Biệt thự' },
+      vtype:    { detached:'Đơn lập', semi:'Song lập', linked:'Liền kề cao cấp', project:'Biệt thự dự án' },
+      amenity:  { basic:'Cơ bản', pool:'Có hồ bơi (+12%)', poolg:'Hồ bơi + Sân vườn lớn (+18%)' },
+      view:     { internal:'Nội khu', river:'Sông / Hồ', sea:'Biển', golf:'Golf' },
+      pth:      { simplex:'Simplex (1 tầng)', duplex:'Duplex (2 tầng)', triplex:'Triplex (3 tầng)', river:'Sông / Biển', city:'Thành phố', pool:'Có hồ bơi riêng (+15%)', nopool:'Không' },
+      sh:       { corner:'Góc chính (2 mặt tiền)', front:'Mặt tiền chính', internal:'Nội khu', fb:'F&B / Nhà hàng', retail:'Bán lẻ thời trang', bank:'Ngân hàng / Dịch vụ', mixed:'Đa ngành' },
+      bld:      { office:'Văn phòng', serviced:'Căn hộ dịch vụ', mix:'Mix-use', hotel:'Khách sạn' },
+      grade:    { a:'Hạng A', b:'Hạng B', c:'Hạng C' },
+      sys:      { full:'Đầy đủ, cập nhật', basic:'Cơ bản', old:'Cũ, cần nâng cấp' }
+    },
+    payment: {
+      title: 'Mở khóa báo cáo định giá',
+      desc: 'Báo cáo PDF gửi về email trong 3–5 phút sau khi xác nhận thanh toán.'
+    }
+  }},
+  en: { translation: {
+    hero: {
+      eyebrow: 'Real Estate Valuation',
+      title: 'Estimate your property value<br><em>Vietnam standard · 3 minutes</em>',
+      subtitle: 'Automated AVM platform — 8 property types, 4 valuation methods recognized by the Ministry of Finance. AI-powered Land Certificate extraction supported.'
+    },
+    nav: { back: '← Back to Home' },
+    step1: {
+      step: 'Step 1 of 3',
+      title: 'Select property type',
+      desc: 'The system applies the most appropriate valuation methodology for each asset class.'
+    },
+    screen: {
+      apt:   { title:'Apartment specifications' },
+      pth:   { title:'Penthouse specifications' },
+      land:  { title:'Property specifications' },
+      villa: { title:'Villa specifications' },
+      lp:    { title:'Land plot details' },
+      sh:    { title:'Shophouse specifications' },
+      inc:   { title:'Asset & cash flow details' },
+      bld:   { title:'Building specifications' }
+    },
+    step: {
+      apt:  'Step 2 of 3 · 🏢 Apartment / Condo',
+      pth:  'Step 2 of 3 · 👑 Penthouse',
+      land: 'Step 2 of 3 · 🏠 Townhouse / Row house',
+      villa:'Step 2 of 3 · 🌿 Villa / Detached House',
+      lp:   'Step 2 of 3 · 🏡 Land Plot',
+      sh:   'Step 2 of 3 · 🏪 Podium Shophouse',
+      inc:  'Step 2 of 3 · 💼 Income-generating Property',
+      bld:  'Step 2 of 3 · 🏗️ Entire Building'
+    },
+    group: {
+      residential: '🏡 Residential & Personal Investment',
+      commercial:  '🏪 Commercial & Investment'
+    },
+    type: {
+      apartment: { name:'Apartment / Condo',          desc:'Units within a developer project, condotel' },
+      penthouse:  { name:'Penthouse',                  desc:'Top-floor unit with private rooftop & panoramic views' },
+      landed:     { name:'Townhouse / Row house',      desc:'Terraced house, shophouse, defined number of floors' },
+      villa:      { name:'Villa / Detached House',     desc:'Detached, semi-detached or high-end linked villa' },
+      landplot:   { name:'Land Plot',                  desc:'Residential land, project site, agricultural land' },
+      shophouse:  { name:'Podium Shophouse',           desc:'Ground-floor retail unit, street-facing commercial space' },
+      income:     { name:'Income-generating Property', desc:'Rental units, serviced apartments, F&B / retail space' },
+      building:   { name:'Entire Building',            desc:'Office tower, serviced apartment building, mixed-use' }
+    },
+    section: {
+      project:'Project & Location', projinfo:'Project Information',
+      apt:'Apartment Specifications', pth:'Penthouse Specifications',
+      land:'Property Specifications', lp:'Plot Specifications',
+      sh:'Shophouse Specifications', asset:'Asset Information',
+      cashflow:'Actual Cash Flow Data', finance:'Financial Parameters',
+      bldinfo:'Building Information', physical:'Physical Specifications',
+      ops:'Operating Data', location:'Asset Location',
+      road:'Location & Road Access', plot:'Land Plot Details',
+      classify:'Classification & Location', landwork:'Land & Structure Details',
+      amenity:'Special Amenities', legal:'Legal Status'
+    },
+    lbl: {
+      province:'Province / City', district:'District',
+      project:'Project Name / Developer', building:'Building Name / Project',
+      bedrooms:'Bedrooms', direction:'Primary balcony orientation',
+      year:'Year of completion', year_built:'Year of construction',
+      interior:'Interior condition', legal:'Legal status',
+      floors:'Number of floors', total_floors:'Total building floors',
+      frontage:'Frontage width (m)', depth:'Plot depth (m)',
+      road_type:'Road access type', land_use:'Land use purpose',
+      infra:'Technical infrastructure', fengshui:'Feng shui / Special location factors',
+      villa_type:'Villa type', view:'View / Landscape',
+      income_type:'Income property type', bld_type:'Building type',
+      bld_grade:'Building grade', bld_name:'Building name',
+      net_area:'Net floor area (sqm)', floor:'Floor',
+      balcony:'Balcony area (sqm)', year_handover:'Year of completion',
+      mgmt_fee:'Management fee (thousand VND/sqm/month)',
+      indoor_area:'Indoor floor area (sqm)', rooftop_area:'Private rooftop area (sqm)',
+      structure:'Structure type', main_view:'Primary view',
+      land_area:'Land area (sqm)', frontage:'Frontage (m)', depth:'Plot depth (m)',
+      road_width:'Road width (m)', floors_built:'Number of floors',
+      gfa_built:'Built floor area (sqm)', zoning:'1/500 Planning approval',
+      built_area:'Built-up area (sqm)', amenities:'Special amenities',
+      total_area:'Total area (sqm)', units:'Total operating units',
+      op_year:'Year of operation', lease_remain:'Remaining lease (months)',
+      monthly_rev:'Monthly rental revenue (VND)', occupancy:'Avg. occupancy rate (%)',
+      opex:'Monthly operating expenses (VND)', deposit:'Security deposit (VND)',
+      cap_rate:'Reference Cap Rate (%)', rent_growth:'Expected rental growth (%/yr)',
+      gfa:'Gross Floor Area — GFA (sqm)', total_floors_bld:'Total floors',
+      year_built:'Year of construction', systems:'Lifts & Fire safety',
+      occ_pct:'Occupancy rate (%)', rebuild_cost:'Replacement cost (mil. VND/sqm)',
+      use_area:'Usable floor area (sqm)', use_floors:'Occupied floors',
+      complex_pos:'Position within complex', biz_type:'Suitable business category',
+      current_rent:'Current monthly rental (VND)', private_pool:'Private swimming pool?',
+      proj_name:'Project name', bld_name_field:'Building name',
+      interior_raw:'Shell (unfinished)', interior_basic:'Basic fit-out', interior_full:'Full premium fit-out',
+      so_hong:'Pink Book', so_do:'Red Book', hdmb:'Sales & Purchase Agreement', no_doc:'No certificate yet', private_doc:'Unofficial paperwork',
+      main_road:'Main road frontage', car_lane:'Car-accessible lane', narrow_lane:'Narrow lane',
+      simplex:'Simplex (1 level)', duplex:'Duplex (2 levels)', triplex:'Triplex (3 levels)',
+      no:'No', grade_a:'Grade A', grade_b:'Grade B', grade_c:'Grade C',
+      road_type:'Road access type', land_use:'Land use purpose', villa_type:'Villa type',
+      view:'View / Landscape', income_type:'Income property type',
+      bld_type:'Building type', bld_grade:'Building grade', bld_name:'Building name',
+      bedrooms:'Bedrooms', direction:'Balcony orientation', interior:'Interior condition',
+      legal_status:'Legal status', total_floors:'Total building floors',
+      infra:'Technical infrastructure', fengshui:'Feng shui / Special factors',
+      proj_name:'Project name',
+    },
+    btn: {
+      calculate: 'Calculate estimated value →',
+      unlock: '🔓 Unlock full report — $15 USD',
+      back: '← Back to property types',
+      ck: '✓ I have transferred',
+      polar: '💳 Pay with international card →',
+      reset: 'Valuate another property →'
+    },
+    metric: { psm:'Price / sqm', method:'Primary Method', conf:'Confidence' },
+    result: {
+      badge: '🏠 Preliminary Valuation Result',
+      unit: 'Billion VND',
+      methods: 'Breakdown by valuation method',
+      disclaimer: '<strong>Disclaimer:</strong> Results are indicative only, based on our Automated Valuation Model (AVM) and market data. This report does <strong>not</strong> constitute an official Valuation Certificate under Vietnam Ministry of Finance regulations (Law on Prices No. 16/2023/QH15). Please consult a licensed appraiser before transacting.'
+    },
+    modal: {
+      title: 'Select payment method',
+      sub: 'Unlock your In-Depth Real Estate Valuation Report'
+    },
+    pay: {
+      intl: { name:'International Card', desc:'Visa · Mastercard', subdesc:'Overseas customers / Vietnamese abroad' },
+      vn:   { name:'Bank Transfer (Vietnam)', desc:'MBBank · SePay', subdesc:'Domestic customers' }
+    },
+    promo: { placeholder:'Enter discount code (if any)', apply:'Apply' },
+    email: { label:'Email for report delivery' },
+    verify: {
+      checking: 'Verifying your transaction automatically...',
+      checking_sub: 'Checking bank records, please wait',
+      not_found_title: '⚠️ Unable to confirm transaction automatically',
+      not_found_desc: 'Transactions may take 1–3 minutes to process. You can upload a screenshot of your transfer receipt for immediate manual processing.',
+      bill_title: 'Upload transfer receipt screenshot',
+      bill_sub: 'Screenshots from any bank app accepted: VCB · MB · TCB · BIDV',
+      submit_valid: '📤 Submit receipt → Receive report',
+      submit_manual: '📤 Submit receipt (manual review required)',
+      submitted_title: 'Receipt received!',
+      submitted_desc: 'Our team is reviewing your payment. Your report will be delivered to your email within 5–15 minutes.',
+      retry: '🔄 Check again',
+      telegram: '✈️ Telegram Support'
+    },
+    prog: { step1:'Property type', step2:'Details', step3:'Results', step4:'Report' },
+    success: {
+      title: 'Generating your report!',
+      desc: 'Your in-depth Real Estate Valuation Report is being processed by our AI engine and will be delivered to your email within 3–5 minutes.'
+    },
+
+    toggle: {
+      interior: { bare:'Bare shell (unfinished)', basic:'Basic fit-out', full:'Premium full fit-out' },
+      legal:    { pink:'Pink Book (Condo title)', red:'Red Book (Land title)', spc:'Sales & Purchase Contract', none:'No title deed yet', hand:'Informal documents only' },
+      road:     { main:'Main road frontage', car:'Car-accessible lane', small:'Narrow alley' },
+      purpose:  { urban:'Urban residential land', garden:'Garden / perennial crop land', agri:'Agricultural land' },
+      qh:       { approved:'1/500 plan approved', pending:'1/500 plan pending', unknown:'Unknown / unverified' },
+      infra:    { full:'Full (power · water · paved road)', basic:'Basic utilities', lack:'Incomplete infrastructure' },
+      feng:     { none:'No special factors', corner:'Corner lot, 2 frontages (+12%)', wider:'Wider rear plot (+4%)', river:'River / lake view (+15%)', school:'Near good school (+4%)', tdam:'T-junction facing (-10%)', narrow:'Tapering rear plot (-7%)', temple:'Near temple / cemetery (-12%)', west:'West-facing, harsh sun (-4%)' },
+      struct:   { land:'Vacant land', grade4:'Grade-4 house', town:'Townhouse', villa:'Villa' },
+      vtype:    { detached:'Detached villa', semi:'Semi-detached villa', linked:'High-end linked villa', project:'Project villa' },
+      amenity:  { basic:'Standard', pool:'Private pool (+12%)', poolg:'Pool + large garden (+18%)' },
+      view:     { internal:'Internal courtyard', river:'River / lake', sea:'Sea view', golf:'Golf course' },
+      pth:      { simplex:'Simplex (single-floor)', duplex:'Duplex (two floors)', triplex:'Triplex (three floors)', river:'River / sea view', city:'City skyline view', pool:'Private pool (+15%)', nopool:'No private pool' },
+      sh:       { corner:'Prime corner (2 frontages)', front:'Main frontage', internal:'Internal unit', fb:'F&B / Restaurant', retail:'Fashion retail', bank:'Banking / Services', mixed:'Mixed-use' },
+      bld:      { office:'Office', serviced:'Serviced apartment', mix:'Mixed-use', hotel:'Hotel' },
+      grade:    { a:'Grade A', b:'Grade B', c:'Grade C' },
+      sys:      { full:'Full & up to code', basic:'Basic systems', old:'Outdated, needs upgrade' }
+    },
+    payment: {
+      title: 'Unlock valuation report',
+      desc: 'Your PDF report will be delivered to your email within 3–5 minutes of payment confirmation.'
+    }
+  }}
+};
+
+// ── INIT i18next ───────────────────────────────────────────
+var LANG = localStorage.getItem('valuitbiz_lang') || 'vi';
+
+function initI18n(callback) {
+  i18next.init({
+    lng: LANG,
+    fallbackLng: 'vi',
+    resources: I18N_RESOURCES,
+    interpolation: { escapeValue: false }
+  }, function(err) {
+    if (err) console.warn('i18next init error:', err);
+    if (callback) callback();
+  });
+}
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (key.startsWith('[html]')) {
+      key = key.replace('[html]','');
+      var val = i18next.t(key);
+      if (val && val !== key) el.innerHTML = val;
+    } else {
+      var val = i18next.t(key);
+      if (val && val !== key) el.textContent = val;
+    }
+  });
+
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-placeholder');
+    var val = i18next.t(key);
+    if (val && val !== key) el.setAttribute('placeholder', val);
+  });
+
+  // Dynamic elements not easily tagged
+  var t = i18next.t.bind(i18next);
+
+  // Metric card labels
+  var metricKeys = ['metric.psm','metric.method','metric.conf'];
+  document.querySelectorAll('.metric-label').forEach(function(el, i) {
+    if (metricKeys[i]) {
+      var val = t(metricKeys[i]);
+      if (val && !val.includes('.')) el.textContent = val;
+    }
+  });
+
+  // All "Calculate" buttons
+  document.querySelectorAll('.btn.btn-primary[onclick="goToResult()"]').forEach(function(b){
+    b.textContent = t('btn.calculate');
+  });
+  // All "Unlock" buttons
+  document.querySelectorAll('.btn.btn-gold[onclick="goToPayment()"]').forEach(function(b){
+    b.textContent = t('btn.unlock');
+  });
+  // All "Back" buttons
+  document.querySelectorAll('.btn-back[onclick="goBack()"]').forEach(function(b){
+    b.textContent = t('btn.back');
+  });
+  // Promo
+  var promoInput = document.getElementById('promoInput');
+  if (promoInput) promoInput.placeholder = t('promo.placeholder');
+  var promoBtn = document.querySelector('.promo-btn');
+  if (promoBtn) promoBtn.textContent = t('promo.apply');
+  // Pay method descriptions
+  var pmDescs = document.querySelectorAll('.pay-method-desc');
+  if (pmDescs[0]) pmDescs[0].innerHTML = t('pay.intl.desc')+'<br><span style="font-size:10px;color:var(--grey-600)">'+t('pay.intl.subdesc')+'</span>';
+  if (pmDescs[1]) pmDescs[1].innerHTML = t('pay.vn.desc')+'<br><span style="font-size:10px;color:var(--grey-600)">'+t('pay.vn.subdesc')+'</span>';
+  // Polar button
+  var btnPolar = document.getElementById('btnPolar');
+  if (btnPolar) btnPolar.textContent = t('btn.polar');
+  // CK button (only if not disabled)
+  var btnCK = document.getElementById('btnSepayCK');
+  if (btnCK && !btnCK.disabled) btnCK.textContent = t('btn.ck');
+  // Email labels
+  document.querySelectorAll('.form-label').forEach(function(el){
+    if (el.textContent.trim().startsWith('Email')) {
+      var span = el.querySelector('span');
+      el.textContent = t('email.label') + ' ';
+      if (span) el.appendChild(span);
+    }
+  });
+  // Reset button
+  document.querySelectorAll('[onclick="resetApp()"]').forEach(function(b){
+    b.textContent = t('btn.reset');
+  });
+  // Verify states
+  var vChecking = document.querySelector('.verify-checking-text');
+  if (vChecking) vChecking.innerHTML = t('verify.checking')+'<br><span style="font-size:11px;color:var(--grey-600)">'+t('verify.checking_sub')+'</span>';
+  var vUpTitle = document.querySelector('.verify-upload-title');
+  if (vUpTitle) vUpTitle.textContent = t('verify.not_found_title');
+  var vUpSub = document.querySelector('.verify-upload-sub');
+  if (vUpSub) vUpSub.textContent = t('verify.not_found_desc');
+  var billTitle = document.querySelector('.bill-upload-text');
+  if (billTitle) billTitle.textContent = t('verify.bill_title');
+  var billSub = document.querySelector('.bill-upload-sub-text');
+  if (billSub) billSub.textContent = t('verify.bill_sub');
+  var subTitle = document.querySelector('.verify-submitted-title');
+  if (subTitle) subTitle.textContent = t('verify.submitted_title');
+  var subDesc = document.querySelector('.verify-submitted-desc');
+  if (subDesc) subDesc.innerHTML = t('verify.submitted_desc');
+  // Contact buttons
+  document.querySelectorAll('[onclick="retryVerify()"]').forEach(function(b){ b.textContent = t('verify.retry'); });
+}
+
+function setLang(lang) {
+  LANG = lang;
+  localStorage.setItem('valuitbiz_lang', lang);
+  document.getElementById('btn-vi').classList.toggle('active', lang==='vi');
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.documentElement.lang = lang;
+  i18next.changeLanguage(lang, function() {
+    applyTranslations();
+  });
+}
+
+
+
+// ── PDF GENERATION — jsPDF (same as Unapathway) ──────────────
+function generateReportPDF() {
+  var pending = document.getElementById('pdfPending');
+  var btn = document.getElementById('btnDownloadPDF');
+  if(pending) pending.style.display = 'block';
+  if(btn) btn.style.display = 'none';
+
+  // Use jsPDF directly — creates real downloadable PDF
+  setTimeout(function() {
+    try {
+      var r = STATE.result || {};
+      var t = STATE.type || 'apartment';
+      var lowB  = r.low  ? (r.low/1e9).toFixed(2)  : '0';
+      var midB  = r.mid  ? (r.mid/1e9).toFixed(2)  : '0';
+      var highB = r.high ? (r.high/1e9).toFixed(2) : '0';
+      var label = r.label || 'Bat dong san';
+      var pid   = STATE.paymentId || 'UNKNOWN';
+      var email = (document.getElementById('successEmail') || {}).textContent || '';
+      var date  = new Date().toLocaleDateString('vi-VN');
+      var psmV  = r.psm ? r.psm.toFixed(1) : '0';
+
+      // Init jsPDF
+      var doc = new window.jspdf.jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      var W = 210, M = 15;
+
+      // === PAGE 1 ===
+      // Top accent bar
+      doc.setFillColor(196, 98, 45);
+      doc.rect(0, 0, W, 3, 'F');
+
+      // Dark background
+      doc.setFillColor(7, 16, 30);
+      doc.rect(0, 3, W, 297, 'F');
+
+      // Header
+      doc.setFontSize(22);
+      doc.setTextColor(240, 168, 48);
+      doc.text('ValuitBiz', M, 18);
+
+      doc.setFontSize(9);
+      doc.setTextColor(196, 98, 45);
+      doc.text('Dinh gia Bat dong san  GlobalValuate  SCF Investment JSC', M, 24);
+
+      // Divider
+      doc.setDrawColor(196, 98, 45);
+      doc.setLineWidth(0.5);
+      doc.line(M, 27, W - M, 27);
+
+      // Report title
+      doc.setFontSize(16);
+      doc.setTextColor(255, 255, 255);
+      doc.text('BAO CAO DINH GIA BAT DONG SAN', M, 35);
+
+      doc.setFontSize(9);
+      doc.setTextColor(154, 149, 144);
+      doc.text('He thong AVM  4 phuong phap TDGVN  Chuan Bo Tai chinh', M, 41);
+
+      // Value box
+      doc.setFillColor(26, 50, 86);
+      doc.roundedRect(M, 46, W - M*2, 38, 3, 3, 'F');
+      doc.setDrawColor(196, 98, 45);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(M, 46, W - M*2, 38, 3, 3, 'S');
+
+      // Property label (ASCII safe)
+            // Convert Vietnamese to ASCII-safe for jsPDF
+      var vnMap = {'à':'a','á':'a','â':'a','ã':'a','ä':'a','å':'a','è':'e','é':'e','ê':'e','ë':'e','ì':'i','í':'i','î':'i','ï':'i','ò':'o','ó':'o','ô':'o','õ':'o','ö':'o','ù':'u','ú':'u','û':'u','ü':'u','ý':'y','ÿ':'y','À':'A','Á':'A','Â':'A','Ã':'A','È':'E','É':'E','Ê':'E','Ì':'I','Í':'I','Ò':'O','Ó':'O','Ô':'O','Õ':'O','Ù':'U','Ú':'U','Ý':'Y','ă':'a','Ă':'A','ơ':'o','Ơ':'O','ư':'u','Ư':'U','đ':'d','Đ':'D','ạ':'a','ả':'a','ấ':'a','ầ':'a','ẩ':'a','ẫ':'a','ậ':'a','ắ':'a','ằ':'a','ẳ':'a','ẵ':'a','ặ':'a','ẹ':'e','ẻ':'e','ẽ':'e','ế':'e','ề':'e','ể':'e','ễ':'e','ệ':'e','ỉ':'i','ị':'i','ọ':'o','ỏ':'o','ố':'o','ồ':'o','ổ':'o','ỗ':'o','ộ':'o','ớ':'o','ờ':'o','ở':'o','ỡ':'o','ợ':'o','ụ':'u','ủ':'u','ứ':'u','ừ':'u','ử':'u','ữ':'u','ự':'u','ỳ':'y','ỵ':'y','ỷ':'y','ỹ':'y'};
+      var labelSafe = label.split('').map(function(c){ return vnMap[c] || (c.charCodeAt(0) < 128 ? c : ''); }).join('');
+
+      doc.setFontSize(11);
+      doc.setTextColor(255, 255, 255);
+      doc.text(labelSafe.substring(0, 50), M + 4, 55);
+
+      doc.setFontSize(9);
+      doc.setTextColor(154, 149, 144);
+      doc.text('Khoang gia tri uoc tinh', M + 4, 62);
+
+      doc.setFontSize(26);
+      doc.setTextColor(240, 168, 48);
+      doc.text(lowB + ' - ' + highB + ' ty', M + 4, 72);
+
+      doc.setFontSize(9);
+      doc.setTextColor(196, 98, 45);
+      doc.text('Ty dong (VND)  Trung tam: ' + midB + ' ty', M + 4, 78);
+
+      // Info grid
+      var cards = [
+        ['Gia / m2', psmV + ' tr/m2'],
+        ['Phuong phap', (r.primaryMethod||'So sanh').substring(0,20)],
+        ['Ma bao cao', pid.substring(0,16)],
+        ['Ngay dinh gia', date]
+      ];
+      var cx = M, cy = 90;
+      cards.forEach(function(c, i) {
+        var col = i % 2, row = Math.floor(i/2);
+        var x = cx + col * 92, y = cy + row * 18;
+        doc.setFillColor(17, 34, 64);
+        doc.roundedRect(x, y, 87, 14, 2, 2, 'F');
+        doc.setFontSize(7);
+        doc.setTextColor(107, 101, 96);
+        doc.text(c[0], x + 3, y + 5);
+        doc.setFontSize(9);
+        doc.setTextColor(255, 255, 255);
+        doc.text(c[1], x + 3, y + 10);
+      });
+
+      // Methods
+      var methods = r.methods || [];
+      if(methods.length > 0) {
+        doc.setFontSize(8);
+        doc.setTextColor(196, 98, 45);
+        doc.text('PHAN TICH THEO PHUONG PHAP', M, 132);
+        doc.setDrawColor(196, 98, 45);
+        doc.line(M, 134, W - M, 134);
+
+        var maxV = Math.max.apply(null, methods.map(function(m){ return m.v||0; }));
+        methods.forEach(function(m, i) {
+          var y = 140 + i * 12;
+          doc.setFontSize(8);
+          doc.setTextColor(154, 149, 144);
+          doc.text((m.n||m.name||'Method').substring(0,25), M, y);
+          // Bar
+          var bx = M + 55, bw = 80;
+          doc.setFillColor(17, 34, 64);
+          doc.roundedRect(bx, y - 4, bw, 5, 1, 1, 'F');
+          var fillW = maxV > 0 ? (m.v||0)/maxV * bw : 0;
+          doc.setFillColor(196, 98, 45);
+          doc.roundedRect(bx, y - 4, Math.max(fillW,2), 5, 1, 1, 'F');
+          // Value
+          doc.setTextColor(240, 168, 48);
+          doc.text(((m.v||0)/1e9).toFixed(2) + 't', bx + bw + 2, y);
+          doc.setTextColor(107, 101, 96);
+          doc.text(Math.round((m.w||0)*100) + '%', bx + bw + 14, y);
+        });
+      }
+
+      // Features section
+      var featY = methods.length > 0 ? 140 + methods.length * 12 + 10 : 142;
+      doc.setFontSize(8);
+      doc.setTextColor(196, 98, 45);
+      doc.text('BAO CAO DAY DU BAO GOM', M, featY);
+      doc.setDrawColor(196, 98, 45);
+      doc.line(M, featY + 2, W - M, featY + 2);
+
+      var features = [
+        'Phan tich 2-4 phuong phap dinh gia TDGVN (So sanh, Thu nhap, Thang du, Chi phi)',
+        'So sanh 3-5 BDS tuong dong giao dich thuc te gan nhat trong khu vuc',
+        'Danh gia rui ro phap ly theo tinh trang so do / so hong / quy hoach',
+        'Kich ban dau tu: ROI, Rental Yield, thoi gian hoan von chi tiet',
+        'Du lieu benchmark: CBRE · Savills · DKRA Analytics Q1/2026'
+      ];
+      features.forEach(function(f, i) {
+        var fy = featY + 9 + i * 7;
+        doc.setFontSize(7);
+        doc.setTextColor(46, 204, 113);
+        doc.text('v', M, fy);
+        doc.setTextColor(154, 149, 144);
+        doc.text(f, M + 5, fy);
+      });
+
+      // Upsell
+      var uY = featY + 50;
+      doc.setFillColor(17, 34, 64);
+      doc.roundedRect(M, uY, W - M*2, 28, 2, 2, 'F');
+      doc.setFontSize(9);
+      doc.setTextColor(240, 168, 48);
+      doc.text('He sinh thai SandboxStartUp.VN', M + 3, uY + 7);
+      var services = [
+        ['SandboxMarket', 'Dang tin BDS chinh chu mien phi'],
+        ['ValuitBiz M&A', 'Dinh gia DN  Startup  SME  Enterprise'],
+        ['Build To Sell', 'Tu van Holding  M&A  IPO quoc te']
+      ];
+      services.forEach(function(s, i) {
+        var sx = M + 3 + i * 60;
+        doc.setFontSize(7);
+        doc.setTextColor(232, 149, 106);
+        doc.text(s[0], sx, uY + 14);
+        doc.setTextColor(107, 101, 96);
+        var words = s[1].split(' ');
+        doc.text(words.slice(0,4).join(' '), sx, uY + 19);
+        if(words.length > 4) doc.text(words.slice(4).join(' '), sx, uY + 23);
+      });
+
+      // Disclaimer
+      doc.setFontSize(7);
+      doc.setTextColor(107, 101, 96);
+      doc.text('Mien tru trach nhiem: Bao cao tao tu dong boi ValuitBiz AVM. Chi mang tinh tham khao.', M, uY + 34);
+      doc.text('Khong thay the Chung thu tham dinh gia chinh thuc theo Luat Gia 16/2023/QH15.', M, uY + 39);
+
+      // Footer
+      doc.setDrawColor(30, 51, 86);
+      doc.setLineWidth(0.3);
+      doc.line(M, 280, W - M, 280);
+      doc.setFontSize(7);
+      doc.setTextColor(107, 101, 96);
+      doc.text('ValuitBiz  globalvaluate.sandboxstartup.vn  SCF Investment JSC', M, 285);
+      doc.text('ID: ' + pid.substring(0,20) + '  ' + date, W - M - 60, 285);
+
+      // SAVE — tạo download link trực tiếp (cách Unapathway dùng)
+      var filename = 'ValuitBiz_BDS_' + pid.substring(0,8) + '_' + date.replace(/\//g,'-') + '.pdf';
+      doc.save(filename);
+
+      // Show done state
+      if(pending) pending.style.display = 'none';
+      if(btn) {
+        btn.style.display = 'block';
+        btn.textContent = '✅ Đã tải — Tải lại báo cáo';
+        btn.style.background = 'linear-gradient(135deg,#2ECC71,#27AE60)';
+      }
+      PDF_READY = true;
+    } catch(err) {
+      console.error('PDF error:', err);
+      var pending3 = document.getElementById('pdfPending');
+      if(pending3) {
+        pending3.innerHTML = '<div style="font-size:12px;color:var(--danger)">❌ Lỗi tạo PDF: ' + err.message + '</div>';
+      }
+    }
+  }, 800);
+}
+
+function downloadReport() {
+  generateReportPDF();
+}
+
+// ── INIT ──────────────────────────────────────────────────
+window.addEventListener('load', function() {
+  // Inject select options
+  document.querySelectorAll('select[id$="-province"]').forEach(function(s){
+    s.innerHTML = PROVINCE_HTML;
+  });
+  document.querySelectorAll('select[id="apt-direction"]').forEach(function(s){
+    s.innerHTML = DIRECTION_HTML;
+  });
+  // Restore saved language
+  var saved = localStorage.getItem('valuitbiz_lang') || 'vi';
+  LANG = saved;
+  var btnVi = document.getElementById('btn-vi');
+  var btnEn = document.getElementById('btn-en');
+  if (btnVi) btnVi.classList.toggle('active', saved === 'vi');
+  if (btnEn) btnEn.classList.toggle('active', saved === 'en');
+  document.documentElement.lang = saved;
+  // Init i18next then render
+  initI18n(function() {
+    applyTranslations();
+    goTo('screen-1');
+  });
+});
+
+
+// ── AI REPORT GENERATION + PDF DOWNLOAD ──────────────────────
+var REPORT_DATA = null;
+
+function generateAIReport(email) {
+  // Generate PDF directly — no API call needed
+  generateReportPDF();
+}
+
+function renderReportPreview(d) {
+  var html = '<div style="border-bottom:1px solid rgba(196,98,45,0.3);padding-bottom:10px;margin-bottom:12px">'+
+    '<div style="font-size:14px;font-weight:600;color:#F0A830;margin-bottom:2px">'+d.label+'</div>'+
+    '<div style="font-size:11px;color:#9A9590">'+d.province+' · '+d.date+' · Mã: '+d.paymentId+'</div>'+
+    '</div>'+
+    '<div style="background:rgba(196,98,45,0.08);border-radius:8px;padding:10px;margin-bottom:12px;text-align:center">'+
+    '<div style="font-size:10px;color:#9A9590;margin-bottom:2px">Khoảng giá trị ước tính</div>'+
+    '<div style="font-size:20px;font-weight:700;color:#F0A830">'+d.low+' – '+d.high+' tỷ VNĐ</div>'+
+    '<div style="font-size:11px;color:#9A9590">Trung tâm: '+d.mid+' tỷ · '+d.primaryMethod+'</div>'+
+    '</div>';
+
+  var sections = [
+    ['🏙️ Nhận định thị trường', d.ai.market],
+    ['📊 Cơ sở định giá', d.ai.basis],
+    ['⚠️ Đánh giá rủi ro', d.ai.risk],
+    ['📈 Kịch bản đầu tư', d.ai.investment],
+    ['💡 Khuyến nghị chuyên gia', d.ai.recommendation]
+  ];
+  sections.forEach(function(s) {
+    html += '<div style="margin-bottom:10px">'+
+      '<div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C4622D;margin-bottom:4px">'+s[0]+'</div>'+
+      '<div style="font-size:11px;color:#9A9590;line-height:1.7">'+s[1]+'</div>'+
+      '</div>';
+  });
+  document.getElementById('reportPreviewContent').innerHTML = html;
+}
+
+function downloadReport(mode) {
+  if(!REPORT_DATA) return;
+  var d = REPORT_DATA;
+
+  // Build PDF HTML
+  var pdfHtml = '<html><head><meta charset="UTF-8"><style>'+
+    'body{font-family:Arial,sans-serif;background:#07101E;color:#fff;margin:0;padding:40px;}'+
+    '.brand{font-size:24px;font-weight:700;color:#F0A830;margin-bottom:4px;}'+
+    '.brand-sub{font-size:11px;color:#C4622D;margin-bottom:20px;}'+
+    'h1{font-size:18px;color:#fff;margin-bottom:4px;}'+
+    '.sub{font-size:12px;color:#9A9590;margin-bottom:20px;}'+
+    '.val-box{background:rgba(196,98,45,0.1);border:1px solid rgba(196,98,45,0.3);border-radius:10px;padding:20px;margin-bottom:20px;text-align:center;}'+
+    '.val-range{font-size:28px;font-weight:700;color:#F0A830;}'+
+    '.val-mid{font-size:12px;color:#9A9590;margin-top:6px;}'+
+    '.section{margin-bottom:16px;}'+
+    '.sec-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#C4622D;border-bottom:1px solid rgba(196,98,45,0.3);padding-bottom:6px;margin-bottom:8px;}'+
+    '.sec-body{font-size:11px;color:#9A9590;line-height:1.7;}'+
+    '.footer{border-top:1px solid rgba(255,255,255,0.08);margin-top:24px;padding-top:12px;font-size:9px;color:#6B6560;display:flex;justify-content:space-between;}'+
+    '.disclaimer{font-size:9px;color:#6B6560;line-height:1.6;border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:10px;margin-bottom:16px;}'+
+    '<\/style><\/head><body>'+
+    '<div class="brand">ValuitBiz</div>'+
+    '<div class="brand-sub">Định giá Bất động sản · GlobalValuate · SCF Investment JSC</div>'+
+    '<h1>Báo cáo Định giá Bất động sản Chuyên sâu</h1>'+
+    '<div class="sub">'+d.label+' · '+d.province+' · AI Analysis · TĐGVN</div>'+
+    '<div class="val-box">'+
+    '<div style="font-size:11px;color:#9A9590;margin-bottom:4px">Khoảng giá trị ước tính</div>'+
+    '<div class="val-range">'+d.low+' – '+d.high+' tỷ VNĐ</div>'+
+    '<div class="val-mid">Giá trị trung tâm: '+d.mid+' tỷ · '+d.primaryMethod+'</div>'+
+    '</div>';
+
+  [['🏙️ Nhận định thị trường',d.ai.market],
+   ['📊 Cơ sở định giá',d.ai.basis],
+   ['⚠️ Đánh giá rủi ro',d.ai.risk],
+   ['📈 Kịch bản đầu tư',d.ai.investment],
+   ['💡 Khuyến nghị',d.ai.recommendation]].forEach(function(s){
+    pdfHtml += '<div class="section"><div class="sec-title">'+s[0]+'</div><div class="sec-body">'+s[1]+'</div></div>';
+  });
+
+  pdfHtml += '<div class=\'disclaimer\'>Kết quả chỉ mang tính tham khảo. Không thay thế Chứng thư thẩm định giá chính thức theo Luật Giá 16/2023/QH15.</div>'+
+    '<div class="footer"><span>ValuitBiz AVM · globalvaluate.sandboxstartup.vn</span><span>ID: '+d.paymentId+' · '+d.date+'</span></div>'+
+    '</body><'+'/html>';
+
+  if(mode === 'view') {
+    // Open in new tab
+    var win = window.open('','_blank');
+    win.document.write(pdfHtml);
+    win.document.close();
+    return;
+  }
+
+  // Download PDF using jsPDF + html2canvas
+  var btn = document.getElementById('btnDownloadPDF');
+  if(btn) { btn.disabled = true; btn.textContent = '⏳ Đang tạo PDF...'; }
+
+  var tempDiv = document.getElementById('pdfTemplate');
+  tempDiv.innerHTML = pdfHtml.replace(/<html[^>]*>|<\/html>|<head>[\s\S]*?<\/head>|<body[^>]*>|<\/body>/g,'');
+  tempDiv.style.display = 'block';
+
+  html2canvas(tempDiv, { scale:1.5, backgroundColor:'#07101E', useCORS:true, logging:false })
+  .then(function(canvas) {
+    tempDiv.style.display = 'none';
+    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+    var pdf = new window.jspdf.jsPDF({ orientation:'portrait', unit:'px', format:'a4' });
+    var pdfW = pdf.internal.pageSize.getWidth();
+    var pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfW, pdfH);
+    pdf.save('ValuitBiz_BDS_'+d.paymentId+'_'+d.date.replace(/\//g,'')+'.pdf');
+    if(btn) { btn.disabled = false; btn.textContent = '📥 Tải PDF'; }
+  })
+  .catch(function(err) {
+    tempDiv.style.display = 'none';
+    // Fallback: download as HTML
+    var blob = new Blob([pdfHtml], {type:'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'ValuitBiz_BDS_'+d.paymentId+'.html';
+    a.click(); URL.revokeObjectURL(url);
+    if(btn) { btn.disabled = false; btn.textContent = '📥 Tải báo cáo'; }
+  });
+}
+
+
+</script>
+</body>
+</html>
