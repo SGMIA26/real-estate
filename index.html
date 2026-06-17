@@ -2068,20 +2068,8 @@ function buildPDFReport(d){
   gvFont(doc,true,lang);doc.setFontSize(6.5);doc.setTextColor(240,168,48);doc.text(T.ai_badge,M+7,y+4.8);y+=10;
   var aiTxt=d.aiAnalysis||(
     lang==='vi'
-    ? 'Tài sản tọa lạc tại '+(d.province||'khu vực')+' là loại hình '+pLabel+', có diện tích '+(d.landArea||'—')+'m², tình trạng pháp lý '+(GV_LEGAL_LABELS.vi[d.legalStatus||'']||'—')+'.
-
-VỀ VỊ TRÍ & TIỀM NĂNG: Khu vực '+(d.district||d.province||'này')+' có nhu cầu giao dịch ổn định, thanh khoản tốt cho loại hình dân sinh và kinh doanh. Cơ sở hạ tầng hoàn thiện, kết nối tiện ích ở mức khả quan.
-
-VỀ RỦI RO: Cần kiểm tra quy hoạch chi tiết 1/500 khu vực và xác nhận nghĩa vụ tài chính còn lại với cơ quan có thẩm quyền.
-
-KHUYẾN NGHỊ: '+T.warning_box
-    : 'The subject property located in '+(d.province||'the area')+' is classified as '+pLabel+', with a land area of '+(d.landArea||'—')+'m² and legal status: '+(GV_LEGAL_LABELS.en[d.legalStatus||'']||'—')+'.
-
-LOCATION & POTENTIAL: The '+(d.district||d.province||'local')+' area demonstrates stable transaction demand with good liquidity for residential and commercial use. Infrastructure is well-developed with reasonable access to amenities.
-
-RISK FACTORS: Verify the local 1:500 zoning plan and confirm any outstanding financial obligations with the relevant authority.
-
-RECOMMENDATION: '+T.warning_box
+    ? 'Tài sản tọa lạc tại '+(d.province||'khu vực')+' là loại hình '+pLabel+', có diện tích '+(d.landArea||'—')+'m², tình trạng pháp lý '+(GV_LEGAL_LABELS.vi[d.legalStatus||'']||'—')+'.\n\nVỀ VỊ TRÍ & TIỀM NĂNG: Khu vực '+(d.district||d.province||'này')+' có nhu cầu giao dịch ổn định, thanh khoản tốt cho loại hình dân sinh và kinh doanh. Cơ sở hạ tầng hoàn thiện, kết nối tiện ích ở mức khả quan.\n\nVỀ RỦI RO: Cần kiểm tra quy hoạch chi tiết 1/500 khu vực và xác nhận nghĩa vụ tài chính còn lại với cơ quan có thẩm quyền.\n\nKHUYẾN NGHỊ: '+T.warning_box
+    : 'The subject property located in '+(d.province||'the area')+' is classified as '+pLabel+', with a land area of '+(d.landArea||'—')+'m² and legal status: '+(GV_LEGAL_LABELS.en[d.legalStatus||'']||'—')+'.\n\nLOCATION & POTENTIAL: The '+(d.district||d.province||'local')+' area demonstrates stable transaction demand with good liquidity for residential and commercial use. Infrastructure is well-developed with reasonable access to amenities.\n\nRISK FACTORS: Verify the local 1:500 zoning plan and confirm any outstanding financial obligations with the relevant authority.\n\nRECOMMENDATION: '+T.warning_box
   );
   y=gvBody(doc,aiTxt,M+4,y,CW-8,8,lang);
   gvFooter(doc,W,H,M,lang);
