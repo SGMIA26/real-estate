@@ -678,7 +678,7 @@ body{
         <span class="tick-sep">|</span>
       </div>
     </div>
-    <button class="mtb-submit-btn" onclick="document.getElementById('submitTxModal').style.display='flex'">
+    <button class="mtb-submit-btn" onclick="initStxProvinces();document.getElementById('submitTxModal').style.display='flex'">
       + Cập nhật giá của bạn
     </button>
   </div>
@@ -752,7 +752,7 @@ body{
       </table>
       <div class="mt-footer">
         Giá NN: Bảng giá đất UBND 2026 (Luật Đất đai 2024) · Giá TT: Giao dịch thực tế từ mạng lưới môi giới & người dùng · K = Giá TT / Giá NN
-        <span class="mt-share-link" onclick="document.getElementById('submitTxModal').style.display='flex'">
+        <span class="mt-share-link" onclick="initStxProvinces();document.getElementById('submitTxModal').style.display='flex'">
           📤 Chia sẻ giao dịch của bạn → Nhận mã giảm giá
         </span>
       </div>
@@ -785,15 +785,29 @@ body{
         </div>
       </div>
 
+      <div class="stx-group">
+        <label class="stx-label">SĐT Zalo / liên hệ <span class="req-star">*</span></label>
+        <input type="tel" class="stx-input" id="stxPhone" placeholder="0901 xxx xxx">
+      </div>
+
+      <!-- ĐỊA CHỈ HÀNH CHÍNH — 34 TỈNH SAU SÁP NHẬP -->
       <div class="stx-row">
         <div class="stx-group">
-          <label class="stx-label">SĐT Zalo / liên hệ <span class="req-star">*</span></label>
-          <input type="tel" class="stx-input" id="stxPhone" placeholder="0901 xxx xxx">
+          <label class="stx-label">Tỉnh / Thành phố <span class="req-star">*</span></label>
+          <select class="stx-input" id="stxProvince" onchange="loadStxWards()">
+            <option value="">Đang tải 34 tỉnh...</option>
+          </select>
         </div>
         <div class="stx-group">
-          <label class="stx-label">Khu vực giao dịch <span class="req-star">*</span></label>
-          <input type="text" class="stx-input" id="stxLocation" placeholder="VD: Dĩ An, Bình Dương">
+          <label class="stx-label">Xã / Phường / TT <span class="req-star">*</span></label>
+          <select class="stx-input" id="stxWard" disabled>
+            <option value="">Chọn tỉnh trước</option>
+          </select>
         </div>
+      </div>
+      <div class="stx-group">
+        <label class="stx-label">Địa chỉ chi tiết <span style="font-size:9px;color:rgba(255,255,255,0.25)">(tùy chọn — tên đường, số nhà)</span></label>
+        <input type="text" class="stx-input" id="stxLocation" placeholder="VD: 123 Đường Lê Văn Việt, KDC Him Lam">
       </div>
 
       <div class="stx-row">
@@ -806,6 +820,9 @@ body{
             <option value="landplot">Đất nền</option>
             <option value="villa">Biệt thự</option>
             <option value="shophouse">Shophouse</option>
+            <option value="income">BĐS dòng tiền</option>
+            <option value="building">Tòa nhà</option>
+            <option value="other">Khác</option>
           </select>
         </div>
         <div class="stx-group">
@@ -4732,6 +4749,31 @@ function toggleMarketTable() {
   btn.textContent = marketTableVisible ? '▼ Thu gọn' : '▶ Mở rộng';
 }
 
+// Load wards cho submit form
+function loadStxWards() {
+  var provSel = document.getElementById('stxProvince');
+  var wardSel = document.getElementById('stxWard');
+  if (!provSel || !wardSel) return;
+  var code = provSel.value;
+  if (!code) return;
+  loadWards(code, wardSel);
+}
+
+// Init province dropdown khi modal submit mở
+function initStxProvinces() {
+  var sel = document.getElementById('stxProvince');
+  if (!sel) return;
+  if (GV_PROVINCES_CACHE && GV_PROVINCES_CACHE.length > 0) {
+    var opts = '<option value="">Chọn tỉnh / thành phố</option>';
+    GV_PROVINCES_CACHE.forEach(function(p) {
+      opts += '<option value="'+p.code+'">'+p.name+'</option>';
+    });
+    sel.innerHTML = opts;
+  } else {
+    sel.innerHTML = PROVINCE_HTML;
+  }
+}
+
 var selectedRole = 'broker';
 function selectRole(el) {
   document.querySelectorAll('#roleChips .stx-chip').forEach(function(c){ c.classList.remove('active'); });
@@ -4751,81 +4793,74 @@ function generatePromoCode(phone) {
 
 function submitTransaction() {
   var phone    = (document.getElementById('stxPhone')    || {}).value || '';
+  var provSel  = document.getElementById('stxProvince');
+  var wardSel  = document.getElementById('stxWard');
+  var province = provSel && provSel.options[provSel.selectedIndex] ? provSel.options[provSel.selectedIndex].text : '';
+  var ward     = wardSel && wardSel.options[wardSel.selectedIndex] ? wardSel.options[wardSel.selectedIndex].text : '';
   var location = (document.getElementById('stxLocation') || {}).value || '';
   var type     = (document.getElementById('stxType')     || {}).value || '';
   var date     = (document.getElementById('stxDate')     || {}).value || '';
   var price    = parseFloat((document.getElementById('stxPrice') || {}).value || '0');
   var area     = parseFloat((document.getElementById('stxArea')  || {}).value || '0');
 
-  // Validate required
+  // Validate
   if (!phone || phone.length < 9) { alert('Vui lòng nhập SĐT/Zalo hợp lệ'); return; }
-  if (!location)  { alert('Vui lòng nhập khu vực giao dịch'); return; }
-  if (!type)      { alert('Vui lòng chọn loại hình BĐS'); return; }
-  if (!price || price < 0.1) { alert('Vui lòng nhập giá giao dịch'); return; }
-  if (!area  || area  < 10)  { alert('Vui lòng nhập diện tích'); return; }
+  if (!province || province === 'Chọn tỉnh / thành phố' || province === 'Đang tải 34 tỉnh...') {
+    alert('Vui lòng chọn Tỉnh / Thành phố'); return;
+  }
+  if (!type)                      { alert('Vui lòng chọn loại hình BĐS'); return; }
+  if (!price || price < 0.1)     { alert('Vui lòng nhập giá giao dịch (tỷ VNĐ)'); return; }
+  if (!area  || area  < 10)      { alert('Vui lòng nhập diện tích (m²)'); return; }
 
-  var roadVal  = '';
-  var activeRoad = document.querySelector('#roadChips .stx-chip.active');
-  if (activeRoad) roadVal = activeRoad.dataset.val;
-
-  var legalVal = '';
+  var activeRoad  = document.querySelector('#roadChips .stx-chip.active');
   var activeLegal = document.querySelector('#legalChips .stx-chip.active');
-  if (activeLegal) legalVal = activeLegal.dataset.val;
+  var roadVal  = activeRoad  ? activeRoad.dataset.val  : '';
+  var legalVal = activeLegal ? activeLegal.dataset.val : '';
 
   var unitPrice = Math.round(price * 1e9 / (area * 1e6));
   var promoCode = generatePromoCode(phone);
+  var wardClean = (ward && ward !== 'Chọn tỉnh trước' && ward !== 'Chọn xã / phường...') ? ward : '';
 
-  // Gửi lên GSheet/N8N
   var payload = {
-    action:        'market_transaction',
-    role:          selectedRole,
-    phone:         phone,
-    location:      location,
-    type:          type,
-    price:         price,
-    area:          area,
-    unitPrice:     unitPrice,
-    date:          date || new Date().toISOString().slice(0,10),
-    road:          roadVal,
-    legal:         legalVal,
-    promoCode:     promoCode,
-    source:        'submit_form',
-    timestamp:     new Date().toISOString()
+    action:       'market_transaction',
+    role:         selectedRole,
+    phone:        phone,
+    province:     province,
+    ward:         wardClean,
+    location:     location || province + (wardClean ? ' · ' + wardClean : ''),
+    type:         type,
+    propertyType: type,
+    price:        price,
+    area:         area,
+    unitPrice:    unitPrice,
+    date:         date || new Date().toISOString().slice(0,10),
+    road:         roadVal,
+    legal:        legalVal,
+    promoCode:    promoCode,
+    source:       'submit_form_v3',
+    timestamp:    new Date().toISOString()
   };
 
-  // Gửi Apps Script
   if (GSHEET_URL) {
-    fetch(GSHEET_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, action: 'market_transaction' })
-    }).catch(function(){});
+    fetch(GSHEET_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }).catch(function(){});
   }
-
-  // Gửi N8N notify
   fetch('https://globalvaluate.sandboxstartup.vn/webhook/tg-notify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      text: '📊 *Giao dịch mới từ người dùng*\n'
-        + '👤 ' + selectedRole + ' · ' + phone + '\n'
-        + '🏠 ' + type + ' · ' + location + '\n'
-        + '💰 ' + price + ' tỷ / ' + area + 'm² = ' + unitPrice + ' tr/m²\n'
-        + '📅 ' + (date || 'hôm nay') + '\n'
-        + '🎟️ Promo cấp: ' + promoCode
-    })
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ text: '📊 *Giao dịch mới — Trụ cột 2*\n'
+      + '👤 ' + selectedRole + ' · ' + phone + '\n'
+      + '📍 ' + province + (wardClean ? ' · ' + wardClean : '') + (location ? '\n📌 ' + location : '') + '\n'
+      + '🏠 ' + type + ' · ' + area + 'm²\n'
+      + '💰 ' + price + ' tỷ = ' + unitPrice + ' tr/m²\n'
+      + '📅 ' + (date || 'hôm nay') + '\n'
+      + '🎟️ Promo: ' + promoCode })
   }).catch(function(){});
 
-  // Hiện kết quả
   var codeEl = document.getElementById('promoCodeDisplay');
   var phoneEl = document.getElementById('refPhoneDisplay');
   if (codeEl) codeEl.textContent = promoCode;
   if (phoneEl) phoneEl.textContent = 'SĐT của bạn: ' + phone + ' → Dùng làm mã giới thiệu';
-
   document.getElementById('submitTxModal').style.display = 'none';
   document.getElementById('promoResultModal').style.display = 'flex';
-
-  // Lưu promo code để tự động điền khi mua báo cáo
   try { localStorage.setItem('gv_earned_promo', promoCode); } catch(e){}
 }
 
@@ -4839,17 +4874,15 @@ function copyPromoCode() {
   }
 }
 
-// Tự động điền promo đã kiếm được vào ô promo code khi vào payment
 function autoFillEarnedPromo() {
   try {
     var earned = localStorage.getItem('gv_earned_promo');
     if (earned) {
       var promoInput = document.getElementById('promoInput') || document.querySelector('[placeholder*="mã"]');
-      if (promoInput && !promoInput.value) { promoInput.value = earned; }
+      if (promoInput && !promoInput.value) promoInput.value = earned;
     }
   } catch(e) {}
 }
-
 function sendReportToN8N(propertyData, email) {
   if (!email || !propertyData) return;
   var payload = {
