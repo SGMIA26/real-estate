@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- GlobalValuate v2.1 | Build: 2026-06-10-fix -->
+<!-- GlobalValuate v2.2 | Build: 2026-06-14-gih-hub -->
 
 <html lang="vi">
 <head>
@@ -4103,20 +4103,19 @@ function fetchLivePrice() {
   var dist  = STATE.district || '';
   var addr  = STATE.address  || '';
   
-  var endpoint = 'https://globalvaluate.sandboxstartup.vn/market-price';
   var fetchOpts, fetchUrl;
   
-  if (addr && addr.length > 5) {
-    // POST: Claude AI live query
-    fetchUrl  = endpoint;
+  if (addr && addr.length >= 8) {
+    // POST: GIH Hub - Claude AI live valuation (tu dong fallback BM neu AI loi)
+    fetchUrl  = 'https://globalvaluate.sandboxstartup.vn/hub/valuation';
     fetchOpts = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ type:t, province:prov, district:dist, address:addr })
     };
   } else {
-    // GET: GSheet cache
-    fetchUrl  = endpoint + '?type=' + t + '&province=' + prov + '&district=' + (dist||'def');
+    // GET: GIH Hub - KV cache + BM static v2.1 fallback
+    fetchUrl  = 'https://globalvaluate.sandboxstartup.vn/hub/price?type=' + t + '&province=' + prov + '&district=' + (dist||'def');
     fetchOpts = { method: 'GET' };
   }
   
