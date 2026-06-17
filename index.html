@@ -543,6 +543,80 @@ body{
   color: var(--success);
 }
 .contact-tele:hover { background: rgba(39,174,96,0.25); }
+/* ─── MARKET TICKER & WIDGET ───────────────── */
+.market-ticker-wrap{background:rgba(7,16,30,0.97);border-bottom:1px solid rgba(240,168,48,0.12);position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.market-ticker-bar{display:flex;align-items:center;gap:12px;padding:7px 20px;overflow:hidden}
+.mtb-label{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--amber-400);white-space:nowrap;flex-shrink:0}
+.mtb-scroll{flex:1;overflow:hidden}
+.mtb-inner{display:inline-flex;align-items:center;gap:0;white-space:nowrap;animation:tickerScroll 50s linear infinite}
+.mtb-inner:hover{animation-play-state:paused}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{font-size:11px;color:rgba(255,255,255,0.75);padding:0 14px}
+.tick-item strong{color:#fff}
+.tick-item em{font-style:normal;font-size:10px;font-weight:700}
+.tick-item em.up{color:#27AE60}.tick-item em.dn{color:#E74C3C}.tick-item em.flat{color:#7F8C8D}
+.tick-sep{color:rgba(240,168,48,0.2)}
+.mtb-submit-btn{flex-shrink:0;background:rgba(240,168,48,0.15);border:1px solid rgba(240,168,48,0.3);color:var(--amber-400);padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s}
+.mtb-submit-btn:hover{background:rgba(240,168,48,0.25)}
+.market-table-wrap{border-top:1px solid rgba(255,255,255,0.04);padding:0 20px 10px}
+.mt-header{display:flex;align-items:center;gap:10px;padding:8px 0 6px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#27AE60;animation:livePulse 2s infinite;flex-shrink:0}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(39,174,96,.4)}50%{opacity:.7;box-shadow:0 0 0 4px rgba(39,174,96,0)}}
+.mt-title{font-size:11px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;flex:1}
+.mt-update{font-size:10px;color:#7F8C8D}
+.mt-toggle{background:none;border:1px solid rgba(255,255,255,.1);color:#7F8C8D;padding:3px 10px;border-radius:4px;font-size:10px;cursor:pointer}
+.mt-table-wrap{overflow-x:auto}
+.mt-table{width:100%;border-collapse:collapse;font-size:11px}
+.mt-table th{padding:6px 10px;background:rgba(0,0,0,.3);color:#7F8C8D;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;text-align:left;white-space:nowrap}
+.mt-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.65);white-space:nowrap}
+.mt-table tr:hover td{background:rgba(255,255,255,.02)}
+.mt-table .nn{color:#5DADE2;font-weight:600}.mt-table .tt{color:#58D68D;font-weight:700}.mt-table .kk{color:var(--amber-400);font-weight:700}.mt-table .up{color:#27AE60}.mt-table .dn{color:#E74C3C}.mt-table .flat{color:#7F8C8D}
+.zt{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.zt.inner{background:rgba(230,126,34,.2);color:#E67E22}.zt.sub{background:rgba(240,168,48,.2);color:var(--amber-400)}.zt.cbd{background:rgba(192,57,43,.2);color:#E74C3C}
+.mt-footer{font-size:9px;color:rgba(255,255,255,.2);padding:6px 0 0;border-top:1px solid rgba(255,255,255,.04)}
+.mt-share-link{color:var(--amber-400);cursor:pointer;margin-left:12px;font-weight:600}
+.mt-share-link:hover{text-decoration:underline}
+
+/* ─── SUBMIT TX MODAL ──────────────────────── */
+.stx-modal{max-width:540px;width:95%;max-height:92vh;overflow-y:auto;padding:0}
+.stx-header{background:linear-gradient(135deg,#07101E,#0D1B2E);padding:18px 22px;text-align:center;border-bottom:1px solid rgba(240,168,48,.1)}
+.stx-icon{font-size:26px;margin-bottom:5px}
+.stx-title{font-size:14px;font-weight:700;color:var(--amber-400);font-family:var(--font-display);margin-bottom:3px}
+.stx-sub{font-size:10px;color:#7F8C8D}
+.stx-incentive{background:rgba(39,174,96,.08);border:1px solid rgba(39,174,96,.2);border-radius:8px;padding:9px 14px;margin:14px 22px 0;font-size:11px;color:rgba(255,255,255,.8);text-align:center}
+.stx-body{padding:14px 22px 18px}
+.stx-group{margin-bottom:11px}
+.stx-label{font-size:10px;font-weight:700;color:#7F8C8D;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.req-star{color:#E74C3C}
+.stx-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:8px 12px;font-size:12px;color:#fff;outline:none;font-family:var(--font-body)}
+.stx-input:focus{border-color:rgba(240,168,48,.4)}
+.stx-input option{background:#0D1B2E}
+.stx-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stx-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.stx-chip{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);cursor:pointer;transition:all .15s}
+.stx-chip.active{background:rgba(240,168,48,.12);border-color:rgba(240,168,48,.35);color:var(--amber-400)}
+.stx-submit-btn{width:100%;background:linear-gradient(135deg,var(--amber-400),#D98E22);color:var(--navy-950);padding:11px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;margin-top:12px;border:none;font-family:var(--font-body)}
+.stx-note{font-size:9px;color:rgba(255,255,255,.2);text-align:center;margin-top:7px;line-height:1.5}
+
+/* ─── PROMO RESULT MODAL ───────────────────── */
+.promo-result-box{max-width:400px;width:92%;text-align:center;padding:26px 22px}
+.pr-icon{font-size:38px;margin-bottom:10px}
+.pr-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:5px}
+.pr-sub{font-size:11px;color:#7F8C8D;margin-bottom:14px}
+.pr-code{background:rgba(240,168,48,.1);border:2px solid rgba(240,168,48,.4);border-radius:10px;padding:13px;font-size:20px;font-weight:700;color:var(--amber-400);letter-spacing:.1em;font-family:monospace;margin-bottom:9px}
+.pr-desc{font-size:11px;color:rgba(255,255,255,.55);margin-bottom:14px;line-height:1.6}
+.pr-referral{background:rgba(39,174,96,.06);border:1px solid rgba(39,174,96,.2);border-radius:10px;padding:12px;margin-bottom:14px;text-align:left}
+.pr-ref-title{font-size:11px;font-weight:700;color:#58D68D;margin-bottom:5px}
+.pr-ref-desc{font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:7px}
+.pr-ref-phone{font-size:11px;background:rgba(0,0,0,.2);padding:5px 10px;border-radius:6px;color:var(--amber-400);font-family:monospace}
+.pr-copy-btn{width:100%;background:var(--amber-400);color:var(--navy-950);padding:10px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;border:none;margin-bottom:7px;font-family:var(--font-body)}
+.pr-close-btn{width:100%;background:rgba(255,255,255,.05);color:#7F8C8D;padding:10px;border-radius:8px;font-size:12px;cursor:pointer;border:1px solid rgba(255,255,255,.07);font-family:var(--font-body)}
+
+/* ─── REFERRAL FIELD IN PAYMENT ─────────────── */
+.pay-referral-section{margin-bottom:12px;padding:10px 12px;background:rgba(39,174,96,.05);border:1px solid rgba(39,174,96,.15);border-radius:8px}
+.pay-ref-label{font-size:10px;font-weight:700;color:#58D68D;display:block;margin-bottom:4px}
+.pay-ref-note{font-size:10px;color:rgba(255,255,255,.3);margin-top:3px}
+
 </style>
 </head>
 <body>
@@ -576,6 +650,229 @@ body{
     <span class="htag">8 loại hình BĐS</span>
   </div>
 </section>
+
+<!-- ══════════════════════════════════════
+     LIVE MARKET WIDGET + SUBMIT FORM
+     ══════════════════════════════════════ -->
+<div class="market-ticker-wrap">
+  <!-- TICKER SCROLL -->
+  <div class="market-ticker-bar">
+    <div class="mtb-label">📊 GIÁ BĐS REALTIME</div>
+    <div class="mtb-scroll">
+      <div class="mtb-inner" id="tickerInner">
+        <span class="tick-item"><strong>BT · Vinhomes CP</strong> 162 tr/m² <em class="up">▲2.1%</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>Q7 · Phú Mỹ Hưng</strong> 95 tr/m² <em class="flat">— ổn định</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>Q9 · Thủ Đức</strong> 52 tr/m² <em class="up">▲1.4%</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>HN · Cầu Giấy</strong> 65 tr/m² <em class="up">▲0.8%</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>BD · Dĩ An</strong> 38 tr/m² <em class="up">▲3.4%</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>ĐN · Hải Châu</strong> 62 tr/m² <em class="flat">— ổn định</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>Q1 · Nguyễn Huệ</strong> 195 tr/m² <em class="up">▲0.5%</em></span>
+        <span class="tick-sep">|</span>
+        <span class="tick-item"><strong>GV · Đề Thám</strong> 58 tr/m² <em class="dn">▼0.3%</em></span>
+        <span class="tick-sep">|</span>
+      </div>
+    </div>
+    <button class="mtb-submit-btn" onclick="document.getElementById('submitTxModal').style.display='flex'">
+      + Cập nhật giá của bạn
+    </button>
+  </div>
+
+  <!-- PRICE TABLE ROW (collapsible) -->
+  <div class="market-table-wrap" id="marketTableWrap">
+    <div class="mt-header">
+      <div class="mt-title">
+        <span class="live-dot"></span>
+        Bảng giá BĐS — Nhà Nước 2026 vs Thị Trường
+      </div>
+      <div class="mt-update">Cập nhật: hôm nay · 12 giao dịch xác nhận</div>
+      <button class="mt-toggle" onclick="toggleMarketTable()">▼ Thu gọn</button>
+    </div>
+    <div class="mt-table-wrap" id="mtTableInner">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th>Khu vực</th>
+            <th>Zone</th>
+            <th>Loại BĐS</th>
+            <th>Giá NN 2026</th>
+            <th>Giá TT (tr/m²)</th>
+            <th>Hệ số K</th>
+            <th>Xu hướng</th>
+            <th>Giao dịch</th>
+          </tr>
+        </thead>
+        <tbody id="marketTableBody">
+          <tr>
+            <td><strong>TP.HCM · Bình Thạnh (VCP)</strong></td>
+            <td><span class="zt inner">Inner</span></td>
+            <td>Căn hộ</td>
+            <td class="nn">38–55</td>
+            <td class="tt">150–175</td>
+            <td class="kk">3.6x</td>
+            <td class="up">▲ +0.9%</td>
+            <td>5 giao dịch</td>
+          </tr>
+          <tr>
+            <td><strong>TP.HCM · Q7 (Phú Mỹ Hưng)</strong></td>
+            <td><span class="zt inner">Inner</span></td>
+            <td>Căn hộ</td>
+            <td class="nn">28–42</td>
+            <td class="tt">85–110</td>
+            <td class="kk">3.0x</td>
+            <td class="flat">— Ổn định</td>
+            <td>3 giao dịch</td>
+          </tr>
+          <tr>
+            <td><strong>TP.HCM · Thủ Đức (Q9)</strong></td>
+            <td><span class="zt sub">Suburban</span></td>
+            <td>Đất nền</td>
+            <td class="nn">18–35</td>
+            <td class="tt">45–72</td>
+            <td class="kk">2.5x</td>
+            <td class="up">▲ +2.1%</td>
+            <td>2 giao dịch</td>
+          </tr>
+          <tr>
+            <td><strong>Hà Nội · Cầu Giấy</strong></td>
+            <td><span class="zt inner">Inner</span></td>
+            <td>Căn hộ</td>
+            <td class="nn">25–40</td>
+            <td class="tt">58–72</td>
+            <td class="kk">2.4x</td>
+            <td class="up">▲ +0.8%</td>
+            <td>2 giao dịch</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-footer">
+        Giá NN: Bảng giá đất UBND 2026 (Luật Đất đai 2024) · Giá TT: Giao dịch thực tế từ mạng lưới môi giới & người dùng · K = Giá TT / Giá NN
+        <span class="mt-share-link" onclick="document.getElementById('submitTxModal').style.display='flex'">
+          📤 Chia sẻ giao dịch của bạn → Nhận mã giảm giá
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SUBMIT GIAO DỊCH → NHẬN MÃ GIẢM GIÁ -->
+<div class="modal-overlay" id="submitTxModal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box stx-modal">
+    <button class="modal-close" onclick="document.getElementById('submitTxModal').style.display='none'">✕</button>
+    <div class="stx-header">
+      <div class="stx-icon">📊</div>
+      <div class="stx-title">Chia sẻ giao dịch BĐS</div>
+      <div class="stx-sub">Giúp định giá chính xác hơn → Nhận mã giảm giá ngay</div>
+    </div>
+
+    <div class="stx-incentive">
+      🎁 <strong>Submit 1 giao dịch</strong> → Nhận mã giảm <strong style="color:var(--amber)">33% ($5 USD)</strong> cho lần định giá tiếp theo
+    </div>
+
+    <div class="stx-body">
+      <!-- Role selector -->
+      <div class="stx-group">
+        <label class="stx-label">Bạn là <span class="req-star">*</span></label>
+        <div class="stx-chips" id="roleChips">
+          <span class="stx-chip active" data-val="broker" onclick="selectRole(this)">🤝 Môi giới</span>
+          <span class="stx-chip" data-val="seller" onclick="selectRole(this)">🏠 Người bán</span>
+          <span class="stx-chip" data-val="buyer" onclick="selectRole(this)">🔑 Người mua</span>
+        </div>
+      </div>
+
+      <div class="stx-row">
+        <div class="stx-group">
+          <label class="stx-label">SĐT Zalo / liên hệ <span class="req-star">*</span></label>
+          <input type="tel" class="stx-input" id="stxPhone" placeholder="0901 xxx xxx">
+        </div>
+        <div class="stx-group">
+          <label class="stx-label">Khu vực giao dịch <span class="req-star">*</span></label>
+          <input type="text" class="stx-input" id="stxLocation" placeholder="VD: Dĩ An, Bình Dương">
+        </div>
+      </div>
+
+      <div class="stx-row">
+        <div class="stx-group">
+          <label class="stx-label">Loại hình <span class="req-star">*</span></label>
+          <select class="stx-input" id="stxType">
+            <option value="">Chọn loại...</option>
+            <option value="apartment">Căn hộ chung cư</option>
+            <option value="landed">Nhà phố / Liền kề</option>
+            <option value="landplot">Đất nền</option>
+            <option value="villa">Biệt thự</option>
+            <option value="shophouse">Shophouse</option>
+          </select>
+        </div>
+        <div class="stx-group">
+          <label class="stx-label">Ngày giao dịch <span class="req-star">*</span></label>
+          <input type="date" class="stx-input" id="stxDate">
+        </div>
+      </div>
+
+      <div class="stx-row">
+        <div class="stx-group">
+          <label class="stx-label">Giá thực giao dịch (tỷ VNĐ) <span class="req-star">*</span></label>
+          <input type="number" class="stx-input" id="stxPrice" placeholder="VD: 12" step="0.1" min="0.1">
+        </div>
+        <div class="stx-group">
+          <label class="stx-label">Diện tích (m²) <span class="req-star">*</span></label>
+          <input type="number" class="stx-input" id="stxArea" placeholder="VD: 120" min="10">
+        </div>
+      </div>
+
+      <div class="stx-group">
+        <label class="stx-label">Loại đường / vị trí</label>
+        <div class="stx-chips" id="roadChips">
+          <span class="stx-chip" data-val="mt" onclick="selectChip(this,'roadChips')">Mặt tiền</span>
+          <span class="stx-chip" data-val="hem4" onclick="selectChip(this,'roadChips')">Hẻm 4m+</span>
+          <span class="stx-chip" data-val="hem2" onclick="selectChip(this,'roadChips')">Hẻm &lt;4m</span>
+          <span class="stx-chip" data-val="ngo" onclick="selectChip(this,'roadChips')">Trong ngõ</span>
+        </div>
+      </div>
+
+      <div class="stx-group">
+        <label class="stx-label">Pháp lý tài sản</label>
+        <div class="stx-chips" id="legalChips">
+          <span class="stx-chip" data-val="sohong" onclick="selectChip(this,'legalChips')">Sổ hồng</span>
+          <span class="stx-chip" data-val="sodo" onclick="selectChip(this,'legalChips')">Sổ đỏ</span>
+          <span class="stx-chip" data-val="spa" onclick="selectChip(this,'legalChips')">SPA (hợp đồng)</span>
+          <span class="stx-chip" data-val="chuaco" onclick="selectChip(this,'legalChips')">Chưa có sổ</span>
+        </div>
+      </div>
+
+      <button class="stx-submit-btn" onclick="submitTransaction()">
+        🚀 Gửi & Nhận mã giảm giá ngay
+      </button>
+
+      <div class="stx-note">
+        🔒 Dữ liệu cá nhân được ẩn danh hóa theo NĐ 13/2023/NĐ-CP · Không lưu tên người mua/bán
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: HIỂN THỊ MÃ GIẢM GIÁ SAU KHI SUBMIT -->
+<div class="modal-overlay" id="promoResultModal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box promo-result-box">
+    <div class="pr-icon">🎉</div>
+    <div class="pr-title">Cảm ơn bạn đã đóng góp!</div>
+    <div class="pr-sub">Dữ liệu của bạn đã được ghi nhận. Đây là mã ưu đãi của bạn:</div>
+    <div class="pr-code" id="promoCodeDisplay">GV-XXXXX</div>
+    <div class="pr-desc">Giảm <strong>$5 USD</strong> cho lần định giá tiếp theo<br>Có hiệu lực trong <strong>30 ngày</strong></div>
+    <div class="pr-referral">
+      <div class="pr-ref-title">💰 Thêm: Giới thiệu bạn bè — Nhận hoa hồng</div>
+      <div class="pr-ref-desc">Chia sẻ SĐT của bạn với người khác. Khi họ định giá và thanh toán, bạn nhận <strong>10%</strong> giá trị giao dịch (tích lũy, thanh toán khi đủ 100k VNĐ)</div>
+      <div class="pr-ref-phone" id="refPhoneDisplay">SĐT: 0901xxx → Dùng khi thanh toán</div>
+    </div>
+    <button class="pr-copy-btn" onclick="copyPromoCode()">📋 Copy mã giảm giá</button>
+    <button class="pr-close-btn" onclick="document.getElementById('promoResultModal').style.display='none';document.getElementById('submitTxModal').style.display='none'">Đóng & Tiếp tục định giá</button>
+  </div>
+</div>
 
 <div class="container">
 <div class="card">
@@ -690,7 +987,7 @@ body{
     <div class="form-group"><label class="form-label" data-i18n="lbl.project">Tên dự án / Chủ đầu tư</label><input type="text" class="form-input" id="apt-project" placeholder="VD: Vinhomes Central Park"></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="apt-province" onchange="updateDistricts('apt')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="apt-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="apt-district"><option value="">Chọn xã / phường...</option></select></div>
     </div>
   </div>
   <div class="form-section">
@@ -738,7 +1035,7 @@ body{
     <div class="form-group"><label class="form-label" data-i18n="lbl.building">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="pth-project" placeholder="VD: Landmark 81, The Metropole..."></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="pth-province" onchange="updateDistricts('pth')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="pth-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="pth-district"><option value="">Chọn xã / phường...</option></select></div>
     </div>
   </div>
   <div class="form-section">
@@ -787,7 +1084,7 @@ body{
     <div class="form-section-title" data-i18n="section.road">Vị trí & đường tiếp giáp</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="land-province" onchange="updateDistricts('land')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="land-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="land-district"><option value="">Chọn xã / phường...</option></select></div>
     </div>
     <div class="form-group"><label class="form-label" data-i18n="lbl.road_type">Loại đường tiếp giáp</label>
       <div class="toggle-group" id="land-road-type"><button class="toggle-btn active" onclick="setToggle('land-road-type',this,'mat-tien')" data-i18n="lbl.main_road" data-i18n="toggle.road.main">Mặt tiền đường lớn</button><button class="toggle-btn" onclick="setToggle('land-road-type',this,'hem-xe-ho')" data-i18n="lbl.car_lane" data-i18n="toggle.road.car">Hẻm xe hơi</button><button class="toggle-btn" onclick="setToggle('land-road-type',this,'hem-nho')" data-i18n="lbl.narrow_lane" data-i18n="toggle.road.small">Hẻm nhỏ</button></div></div>
@@ -844,7 +1141,7 @@ body{
       <div class="toggle-group" id="villa-type"><button class="toggle-btn active" onclick="setToggle('villa-type',this,'don-lap')" data-i18n="toggle.vtype.detached">Đơn lập</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'song-lap')" data-i18n="toggle.vtype.semi">Song lập</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'lien-ke')" data-i18n="toggle.vtype.linked">Liền kề cao cấp</button><button class="toggle-btn" onclick="setToggle('villa-type',this,'du-an')" data-i18n="toggle.vtype.project">Biệt thự dự án</button></div></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="villa-province" onchange="updateDistricts('villa')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="villa-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="villa-district"><option value="">Chọn xã / phường...</option></select></div>
     </div>
     <div class="form-group"><label class="form-label" data-i18n="lbl.proj_name">Tên dự án <span>(nếu là biệt thự dự án)</span></label><input type="text" class="form-input" id="villa-project" placeholder="VD: Vinhomes Riverside, Ecopark..."></div>
   </div>
@@ -893,7 +1190,26 @@ body{
     <div class="form-section-title" data-i18n="section.road">Vị trí & đường tiếp giáp</div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="lp-province" onchange="updateDistricts('lp')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="lp-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="lp-district"><option value="">Chọn xã / phường...</option></select></div>
+      <div class="form-group" id="lp-mdd-group">
+        <label class="form-label">Mục đích SDĐ <span style="color:var(--red-500)">*</span> <span style="font-size:10px;color:var(--amber-400)">(từ sổ hồng/đỏ)</span></label>
+        <select class="form-select" id="lp-mdddat" onchange="updateMDDNote('lp')">
+          <option value="ONT">🏠 ONT — Đất ở đô thị</option>
+          <option value="OLN">🏡 OLN — Đất ở nông thôn</option>
+          <option value="CLN">🌿 CLN — Đất trồng cây lâu năm</option>
+          <option value="LUC">🌾 LUC — Đất trồng lúa</option>
+          <option value="TMD">🏢 TMD — Đất TM - Dịch vụ</option>
+          <option value="SKC">🏭 SKC — Đất sản xuất CN</option>
+          <option value="DTS">🌴 DTS — Đất du lịch ST</option>
+          <option value="RSX">🌲 RSX — Đất rừng sản xuất</option>
+          <option value="other">📋 Khác (ghi thêm)</option>
+        </select>
+        <div id="lp-mdd-note" style="font-size:10px;margin-top:4px;color:rgba(255,255,255,0.35)"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Thửa số <span style="font-size:10px;color:rgba(255,255,255,0.3)">(tùy chọn)</span></label>
+        <input class="form-input" type="text" id="lp-thua-so" placeholder="VD: 86">
+      </div>
     </div>
     <div class="form-group"><label class="form-label" data-i18n="lbl.road_type">Loại đường tiếp giáp</label>
       <div class="toggle-group" id="lp-road-type"><button class="toggle-btn active" onclick="setToggle('lp-road-type',this,'mat-tien')" data-i18n="lbl.main_road" data-i18n="toggle.road.main">Mặt tiền đường lớn</button><button class="toggle-btn" onclick="setToggle('lp-road-type',this,'hem-xe-ho')" data-i18n="lbl.car_lane" data-i18n="toggle.road.car">Hẻm xe hơi</button><button class="toggle-btn" onclick="setToggle('lp-road-type',this,'hem-nho')" data-i18n="lbl.narrow_lane" data-i18n="toggle.road.small">Hẻm nhỏ</button></div></div>
@@ -947,7 +1263,7 @@ body{
     <div class="form-group"><label class="form-label" data-i18n="lbl.building">Tên tòa nhà / Dự án</label><input type="text" class="form-input" id="sh-project" placeholder="VD: Masteri Thảo Điền, Vinhomes..."></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="sh-province" onchange="updateDistricts('sh')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="sh-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="sh-district"><option value="">Chọn xã / phường...</option></select></div>
     </div>
   </div>
   <div class="form-section">
@@ -1034,7 +1350,7 @@ body{
       <div class="toggle-group" id="bld-type"><button class="toggle-btn active" onclick="setToggle('bld-type',this,'van-phong')" data-i18n="toggle.bld.office">Văn phòng</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'can-ho-dv')" data-i18n="toggle.bld.serviced">Căn hộ dịch vụ</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'mix-use')" data-i18n="toggle.bld.mix">Mix-use</button><button class="toggle-btn" onclick="setToggle('bld-type',this,'khach-san')" data-i18n="toggle.bld.hotel">Khách sạn</button></div></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label" data-i18n="lbl.province">Tỉnh / Thành phố</label><select class="form-select" id="bld-province" onchange="updateDistricts('bld')"><option value=''>Chọn tỉnh thành</option><option value='HCM'>TP. Hồ Chí Minh</option><option value='HN'>Hà Nội</option><option value='DN'>Đà Nẵng</option><option value='BD'>Bình Dương</option><option value='BRV'>Bà Rịa - Vũng Tàu</option><option value='other'>Tỉnh khác</option></select></div>
-      <div class="form-group"><label class="form-label" data-i18n="lbl.district">Quận / Huyện</label><select class="form-select" id="bld-district"><option value="">Chọn quận huyện</option></select></div>
+      <div class="form-group"><label class="form-label" data-i18n="lbl.ward">Xã / Phường / TT</label><select class="form-select" id="bld-district"><option value="">Chọn xã / phường...</option></select></div>
     </div>
   </div>
   <div class="form-section">
@@ -1309,6 +1625,12 @@ body{
         <div class="form-group" style="margin-bottom:12px;">
           <label class="form-label">Email nhận báo cáo <span>*</span></label>
           <input type="email" class="form-input" id="sepayEmail" placeholder="email@gmail.com">
+        </div>
+        <!-- Referral field -->
+        <div class="pay-referral-section">
+          <label class="pay-ref-label">💰 Mã giới thiệu (nếu có)</label>
+          <input type="tel" class="form-input" id="sepayReferral" placeholder="SĐT người giới thiệu bạn" style="margin-bottom:0">
+          <div class="pay-ref-note">Người giới thiệu nhận 10% hoa hồng · Bạn nhận thêm ưu đãi nếu có mã</div>
         </div>
 
         <!-- CK button -->
@@ -2155,16 +2477,106 @@ function generateAndDownloadPDF(propertyData,email){
 // --- CONSTANTS ------------------------------------------------
 var GSHEET_URL = 'https://script.google.com/macros/s/AKfycbzlt1HFGSQjpN0TseFO5alFZ7q0FNL5tTsDDlNLaCe4GiSPeFYppfMvdVyF_NvbROcqHA/exec';
 
-var PROVINCE_HTML = '<option value="">Chọn tỉnh thành</option><option value="HCM">TP. Hồ Chí Minh</option><option value="HN">Hà Nội</option><option value="DN">Đà Nẵng</option><option value="BD">Bình Dương</option><option value="BRV">Bà Rịa - Vũng Tàu</option><option value="other">Tỉnh khác</option>';
+// ═══════════════════════════════════════════════════════════
+// ĐỊA CHÍNH VIỆT NAM - 34 TỈNH SAU SÁP NHẬP 07/2025
+// Nguồn: provinces.open-api.vn/api/v2/ (Tổng cục Thống kê)
+// Mô hình 2 cấp: Tỉnh → Xã/Phường (bỏ cấp huyện từ 01/07/2025)
+// ═══════════════════════════════════════════════════════════
+
+// Cache tỉnh thành đã load
+var GV_PROVINCES_CACHE = null;
+var GV_WARDS_CACHE = {};  // { provinceCode: [wards] }
+
+// 34 tỉnh hardcode (fallback offline + load nhanh)
+var GV_34_PROVINCES = [
+  {code:'01',name:'Hà Nội'},{code:'02',name:'Tuyên Quang'},
+  {code:'04',name:'Cao Bằng'},{code:'06',name:'Bắc Kạn'},
+  {code:'08',name:'Lạng Sơn'},{code:'10',name:'Quảng Ninh'},
+  {code:'11',name:'Bắc Giang'},{code:'14',name:'Phú Thọ'},
+  {code:'20',name:'Thái Nguyên'},{code:'25',name:'Sơn La'},
+  {code:'27',name:'Điện Biên'},{code:'29',name:'Lai Châu'},
+  {code:'31',name:'Hải Phòng'},{code:'33',name:'Hưng Yên'},
+  {code:'35',name:'Thanh Hóa'},{code:'37',name:'Nghệ An'},
+  {code:'38',name:'Hà Tĩnh'},{code:'44',name:'Quảng Trị'},
+  {code:'46',name:'Huế'},{code:'48',name:'Đà Nẵng'},
+  {code:'49',name:'Quảng Ngãi'},{code:'52',name:'Bình Định - Gia Lai'},
+  {code:'54',name:'Phú Yên'},{code:'56',name:'Khánh Hòa'},
+  {code:'58',name:'Ninh Thuận'},{code:'60',name:'Bình Thuận'},
+  {code:'62',name:'Đắk Lắk'},{code:'64',name:'Lâm Đồng'},
+  {code:'70',name:'TP. Hồ Chí Minh'},{code:'72',name:'Bình Dương - Bình Phước'},
+  {code:'75',name:'Đồng Nai - Bà Rịa Vũng Tàu'},{code:'80',name:'Long An'},
+  {code:'82',name:'Tiền Giang - Bến Tre'},{code:'89',name:'Cần Thơ - Hậu Giang'}
+];
+
+// Map code → BM key (để định giá)
+var GV_PROVINCE_BM_MAP = {
+  '70':'HCM','01':'HN','48':'DN','11':'BD','75':'BRV',
+  '72':'BD','80':'LA','64':'LD'
+};
+
+// Build PROVINCE_HTML từ 34 tỉnh
+function buildProvinceHTML() {
+  var html = '<option value="">Chọn tỉnh / thành phố</option>';
+  GV_34_PROVINCES.forEach(function(p) {
+    html += '<option value="'+p.code+'">'+p.name+'</option>';
+  });
+  return html;
+}
+var PROVINCE_HTML = buildProvinceHTML();
+
+// Load xã/phường từ API (async, với fallback)
+function loadWards(provinceCode, wardSelectEl, callback) {
+  if (!wardSelectEl) return;
+  wardSelectEl.innerHTML = '<option value="">Đang tải...</option>';
+  wardSelectEl.disabled = true;
+
+  // Nếu đã cache
+  if (GV_WARDS_CACHE[provinceCode]) {
+    populateWards(wardSelectEl, GV_WARDS_CACHE[provinceCode]);
+    if (callback) callback(GV_WARDS_CACHE[provinceCode]);
+    return;
+  }
+
+  // Gọi API provinces.open-api.vn/api/v2/
+  var apiUrl = 'https://provinces.open-api.vn/api/v2/p/' + provinceCode + '?depth=2';
+  fetch(apiUrl, { signal: AbortSignal.timeout(5000) })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      var wards = data.wards || [];
+      GV_WARDS_CACHE[provinceCode] = wards;
+      populateWards(wardSelectEl, wards);
+      if (callback) callback(wards);
+    })
+    .catch(function() {
+      // Fallback: một số xã/phường mẫu
+      wardSelectEl.innerHTML = '<option value="">Nhập tên xã/phường</option>';
+      wardSelectEl.disabled = false;
+    });
+}
+
+function populateWards(selectEl, wards) {
+  var html = '<option value="">Chọn xã / phường</option>';
+  wards.forEach(function(w) {
+    html += '<option value="'+w.code+'">'+w.name+'</option>';
+  });
+  selectEl.innerHTML = html;
+  selectEl.disabled = false;
+}
 
 var DIRECTION_HTML = '<option value="nam" selected>Nam</option><option value="dong-nam">Đông Nam</option><option value="dong">Đông</option><option value="dong-bac">Đông Bắc</option><option value="bac">Bắc</option><option value="tay-bac">Tây Bắc</option><option value="tay">Tây</option><option value="tay-nam">Tây Nam</option>';
 
+// DISTRICTS kept for BM lookup compatibility
 var DISTRICTS = {
-  HCM:[{v:'Q1',l:'Quận 1'},{v:'Q2',l:'Quận 2 (Thủ Đức)'},{v:'Q3',l:'Quận 3'},{v:'Q4',l:'Quận 4'},{v:'Q7',l:'Quận 7'},{v:'Q9',l:'Quận 9 (Thủ Đức)'},{v:'Q10',l:'Quận 10'},{v:'Q11',l:'Quận 11'},{v:'Q12',l:'Quận 12'},{v:'BT',l:'Bình Thạnh'},{v:'GV',l:'Gò Vấp'},{v:'TD',l:'Thủ Đức'},{v:'HB',l:'Hóc Môn / Bình Chánh'}],
-  HN:[{v:'HK',l:'Hoàn Kiếm'},{v:'DD',l:'Đống Đa'},{v:'BD',l:'Ba Đình'},{v:'TH',l:'Tây Hồ'},{v:'CG',l:'Cầu Giấy'},{v:'TL',l:'Hà Đông / Thanh Xuân'}],
-  DN:[{v:'HC',l:'Hải Châu'},{v:'SH',l:'Sơn Trà'},{v:'NGH',l:'Ngũ Hành Sơn'}],
-  BD:[{v:'TDM',l:'Thủ Dầu Một'},{v:'TL',l:'Thuận An'},{v:'DAN',l:'Dĩ An'}],
-  BRV:[{v:'VT',l:'Vũng Tàu'},{v:'BR',l:'Bà Rịa'}],
+  '70':[{v:'BT',l:'Bình Thạnh'},{v:'Q1',l:'Quận 1'},{v:'Q3',l:'Quận 3'},{v:'Q7',l:'Quận 7'},{v:'TD',l:'Thủ Đức'},{v:'GV',l:'Gò Vấp'},{v:'Q12',l:'Quận 12'},{v:'BC',l:'Bình Chánh'}],
+  '01':[{v:'HK',l:'Hoàn Kiếm'},{v:'DD',l:'Đống Đa'},{v:'BD',l:'Ba Đình'},{v:'TH',l:'Tây Hồ'},{v:'CG',l:'Cầu Giấy'},{v:'HD',l:'Hà Đông'}],
+  '48':[{v:'HC',l:'Hải Châu'},{v:'ST',l:'Sơn Trà'},{v:'NGH',l:'Ngũ Hành Sơn'},{v:'LC',l:'Liên Chiểu'}],
+  '72':[{v:'TDM',l:'Thủ Dầu Một'},{v:'TLA',l:'Thuận An'},{v:'DAN',l:'Dĩ An'},{v:'BC',l:'Bến Cát'}],
+  '75':[{v:'BH',l:'Biên Hòa'},{v:'LK',l:'Long Khánh'},{v:'VT',l:'Vũng Tàu'},{v:'BR',l:'Bà Rịa'}],
+  HCM:[{v:'BT',l:'Bình Thạnh'},{v:'Q1',l:'Quận 1'},{v:'Q7',l:'Quận 7'},{v:'TD',l:'Thủ Đức'}],
+  HN:[{v:'HK',l:'Hoàn Kiếm'},{v:'CG',l:'Cầu Giấy'}],
+  DN:[{v:'HC',l:'Hải Châu'}],
+  BD:[{v:'DAN',l:'Dĩ An'}],
+  BRV:[{v:'VT',l:'Vũng Tàu'}],
   other:[{v:'other',l:'Trung tâm tỉnh'}]
 };
 
@@ -2458,15 +2870,86 @@ function goBack() {
   var prev={'screen-apartment':'screen-1','screen-penthouse':'screen-1','screen-landed':'screen-1','screen-villa':'screen-1','screen-landplot':'screen-1','screen-shophouse':'screen-1','screen-income':'screen-1','screen-building':'screen-1','screen-result':'screen-'+(STATE.type||'apartment'),'screen-payment':'screen-result'};
   goTo(prev[STATE.screen]||'screen-1');
 }
-function updateDistricts(prefix) {
-  var pEl=document.getElementById(prefix+'-province');
-  var dEl=document.getElementById(prefix+'-district');
-  if(!pEl||!dEl) return;
-  var dists=DISTRICTS[pEl.value]||[];
-  dEl.innerHTML='<option value="">Chọn quận huyện</option>';
-  dists.forEach(function(d){
-    var o=document.createElement('option');o.value=d.v;o.textContent=d.l;dEl.appendChild(o);
+// ═══ INIT PROVINCES API KHI LOAD TRANG ═══════════════════════
+(function initProvinces() {
+  // Load 34 tỉnh từ API, cập nhật tất cả province selects
+  fetch('https://provinces.open-api.vn/api/v2/', { signal: AbortSignal.timeout(5000) })
+    .then(function(r){ return r.json(); })
+    .then(function(provinces) {
+      GV_PROVINCES_CACHE = provinces;
+      // Build HTML options
+      var opts = '<option value="">Chọn tỉnh / thành phố</option>';
+      provinces.forEach(function(p) {
+        opts += '<option value="'+p.code+'">'+p.name+'</option>';
+      });
+      PROVINCE_HTML = opts;
+      // Update tất cả province selects trên trang
+      var prefixes = ['apt','pth','land','villa','lp','sh','inc','bld'];
+      prefixes.forEach(function(pf) {
+        var el = document.getElementById(pf+'-province');
+        if (el) {
+          var cur = el.value;
+          el.innerHTML = opts;
+          if (cur) el.value = cur;
+        }
+      });
+    })
+    .catch(function(e) {
+      // Fallback: dùng 34 tỉnh hardcode đã có
+      console.log('[GV] Province API fallback to hardcode');
+    });
+})();
+
+// MDD notes
+var MDD_NOTES = {
+  ONT: '🏠 Đất ở đô thị — Giá cao nhất. K = 1.00 (chuẩn)',
+  OLN: '🏡 Đất ở nông thôn — Thấp hơn ONT khoảng 15-20%. K = 0.80',
+  CLN: '🌿 Đất nông nghiệp — Giá THẤP HƠN đất ở 8-20 lần. K = 0.05-0.12',
+  LUC: '🌾 Đất lúa — Giá rất thấp. Chuyển đổi phức tạp. K = 0.03-0.08',
+  TMD: '🏢 Đất TM-DV — Cao hơn ONT 20-50%. Cần kiểm tra quy hoạch',
+  SKC: '🏭 Đất sản xuất CN — Giá theo KCN. Cần xác minh hạ tầng',
+  DTS: '🌴 Đất du lịch ST — Giá biến động lớn theo vị trí',
+  RSX: '🌲 Rừng sản xuất — Giá rất thấp. Bị hạn chế chuyển đổi',
+  other: '📋 Loại đất khác — Cần xác minh với cơ quan chức năng'
+};
+
+function updateMDDNote(prefix) {
+  var sel = document.getElementById(prefix+'-mdddat');
+  var note = document.getElementById(prefix+'-mdd-note');
+  if (sel && note) note.textContent = MDD_NOTES[sel.value] || '';
+}
+
+// Init MDD notes khi có field
+document.addEventListener('DOMContentLoaded', function() {
+  ['lp'].forEach(function(pf) {
+    var sel = document.getElementById(pf+'-mdddat');
+    if (sel) updateMDDNote(pf);
   });
+});
+
+function updateDistricts(prefix) {
+  var pEl = document.getElementById(prefix+'-province');
+  var dEl = document.getElementById(prefix+'-district');
+  if (!pEl) return;
+  var provCode = pEl.value;
+  if (!provCode) return;
+
+  // Update province name in STATE for display
+  var provName = pEl.options[pEl.selectedIndex] ? pEl.options[pEl.selectedIndex].text : provCode;
+
+  // Map province code to BM key
+  var bmKey = GV_PROVINCE_BM_MAP[provCode] || provCode;
+
+  // If district select exists → load wards from API (mô hình 2 cấp mới)
+  if (dEl) {
+    loadWards(provCode, dEl, function(wards) {
+      // After wards loaded, update ward label
+      var dLabel = dEl.previousElementSibling;
+      if (dLabel) dLabel.textContent = 'Xã / Phường / Thị trấn';
+      // Update placeholder
+      if (dEl.options[0]) dEl.options[0].text = 'Chọn xã / phường (' + (wards.length || '...') + ' đơn vị)';
+    });
+  }
 }
 function setToggle(gid,btn,val) {
   var g=document.getElementById(gid);
@@ -2531,6 +3014,11 @@ function trackLead() {
                document.getElementById('lp-province') ||
                document.getElementById('inc-province') ||
                document.getElementById('bld-province');
+  // Ward (Xã/Phường) - mô hình 2 cấp mới thay thế district
+  var wardEl = document.getElementById(t+'-district') ||
+               document.getElementById('lp-district') ||
+               document.getElementById('inc-district') ||
+               document.getElementById('bld-district');
   var distEl = document.getElementById(t+'-district') ||
                document.getElementById('lp-district');
   var areaEl = document.getElementById(t+'-area') ||
@@ -2538,7 +3026,11 @@ function trackLead() {
                document.getElementById('lp-area') ||
                document.getElementById('inc-area') ||
                document.getElementById('bld-gfa');
-  if(provEl) province = provEl.value || '';
+  if(provEl) province = provEl.options[provEl.selectedIndex] ? (provEl.options[provEl.selectedIndex].text || provEl.value) : '';
+  // Lấy tên xã/phường cho báo cáo và GIH lookup
+  var wardName = '';
+  if(wardEl && wardEl.options[wardEl.selectedIndex]) wardName = wardEl.options[wardEl.selectedIndex].text || '';
+  if(!district && wardName && wardName !== 'Chọn xã / phường...') district = wardName;
   if(distEl) district = distEl.value || '';
   if(areaEl) area = parseFloat(areaEl.value) || 0;
 
@@ -4226,6 +4718,138 @@ function showLivePriceBtn() {
 function generateAIReport(email) { generateReportPDF(); }
 
 // -- N8N Email Backup - g?i sau khi PDF download xong ----------
+// ════════════════════════════════════════════
+// MARKET WIDGET & SUBMIT TRANSACTION
+// ════════════════════════════════════════════
+
+var marketTableVisible = true;
+function toggleMarketTable() {
+  var inner = document.getElementById('mtTableInner');
+  var btn   = document.querySelector('.mt-toggle');
+  if (!inner || !btn) return;
+  marketTableVisible = !marketTableVisible;
+  inner.style.display = marketTableVisible ? '' : 'none';
+  btn.textContent = marketTableVisible ? '▼ Thu gọn' : '▶ Mở rộng';
+}
+
+var selectedRole = 'broker';
+function selectRole(el) {
+  document.querySelectorAll('#roleChips .stx-chip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  selectedRole = el.dataset.val;
+}
+
+function selectChip(el, groupId) {
+  document.querySelectorAll('#'+groupId+' .stx-chip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+function generatePromoCode(phone) {
+  var rand = Math.random().toString(36).slice(2,8).toUpperCase();
+  return 'GV-' + (phone || '').slice(-4) + '-' + rand;
+}
+
+function submitTransaction() {
+  var phone    = (document.getElementById('stxPhone')    || {}).value || '';
+  var location = (document.getElementById('stxLocation') || {}).value || '';
+  var type     = (document.getElementById('stxType')     || {}).value || '';
+  var date     = (document.getElementById('stxDate')     || {}).value || '';
+  var price    = parseFloat((document.getElementById('stxPrice') || {}).value || '0');
+  var area     = parseFloat((document.getElementById('stxArea')  || {}).value || '0');
+
+  // Validate required
+  if (!phone || phone.length < 9) { alert('Vui lòng nhập SĐT/Zalo hợp lệ'); return; }
+  if (!location)  { alert('Vui lòng nhập khu vực giao dịch'); return; }
+  if (!type)      { alert('Vui lòng chọn loại hình BĐS'); return; }
+  if (!price || price < 0.1) { alert('Vui lòng nhập giá giao dịch'); return; }
+  if (!area  || area  < 10)  { alert('Vui lòng nhập diện tích'); return; }
+
+  var roadVal  = '';
+  var activeRoad = document.querySelector('#roadChips .stx-chip.active');
+  if (activeRoad) roadVal = activeRoad.dataset.val;
+
+  var legalVal = '';
+  var activeLegal = document.querySelector('#legalChips .stx-chip.active');
+  if (activeLegal) legalVal = activeLegal.dataset.val;
+
+  var unitPrice = Math.round(price * 1e9 / (area * 1e6));
+  var promoCode = generatePromoCode(phone);
+
+  // Gửi lên GSheet/N8N
+  var payload = {
+    action:        'market_transaction',
+    role:          selectedRole,
+    phone:         phone,
+    location:      location,
+    type:          type,
+    price:         price,
+    area:          area,
+    unitPrice:     unitPrice,
+    date:          date || new Date().toISOString().slice(0,10),
+    road:          roadVal,
+    legal:         legalVal,
+    promoCode:     promoCode,
+    source:        'submit_form',
+    timestamp:     new Date().toISOString()
+  };
+
+  // Gửi Apps Script
+  if (GSHEET_URL) {
+    fetch(GSHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, action: 'market_transaction' })
+    }).catch(function(){});
+  }
+
+  // Gửi N8N notify
+  fetch('https://globalvaluate.sandboxstartup.vn/webhook/tg-notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      text: '📊 *Giao dịch mới từ người dùng*\n'
+        + '👤 ' + selectedRole + ' · ' + phone + '\n'
+        + '🏠 ' + type + ' · ' + location + '\n'
+        + '💰 ' + price + ' tỷ / ' + area + 'm² = ' + unitPrice + ' tr/m²\n'
+        + '📅 ' + (date || 'hôm nay') + '\n'
+        + '🎟️ Promo cấp: ' + promoCode
+    })
+  }).catch(function(){});
+
+  // Hiện kết quả
+  var codeEl = document.getElementById('promoCodeDisplay');
+  var phoneEl = document.getElementById('refPhoneDisplay');
+  if (codeEl) codeEl.textContent = promoCode;
+  if (phoneEl) phoneEl.textContent = 'SĐT của bạn: ' + phone + ' → Dùng làm mã giới thiệu';
+
+  document.getElementById('submitTxModal').style.display = 'none';
+  document.getElementById('promoResultModal').style.display = 'flex';
+
+  // Lưu promo code để tự động điền khi mua báo cáo
+  try { localStorage.setItem('gv_earned_promo', promoCode); } catch(e){}
+}
+
+function copyPromoCode() {
+  var code = (document.getElementById('promoCodeDisplay') || {}).textContent || '';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(function(){
+      var btn = document.querySelector('.pr-copy-btn');
+      if (btn) { btn.textContent = '✅ Đã copy!'; setTimeout(function(){ btn.textContent = '📋 Copy mã giảm giá'; }, 2000); }
+    }).catch(function(){});
+  }
+}
+
+// Tự động điền promo đã kiếm được vào ô promo code khi vào payment
+function autoFillEarnedPromo() {
+  try {
+    var earned = localStorage.getItem('gv_earned_promo');
+    if (earned) {
+      var promoInput = document.getElementById('promoInput') || document.querySelector('[placeholder*="mã"]');
+      if (promoInput && !promoInput.value) { promoInput.value = earned; }
+    }
+  } catch(e) {}
+}
+
 function sendReportToN8N(propertyData, email) {
   if (!email || !propertyData) return;
   var payload = {
