@@ -1294,8 +1294,19 @@ body{
           <div class="bank-row"><span class="bank-label">Nội dung</span><span class="bank-val highlight" id="sepayRef">Valuit15-000000 <button class="copy-btn" onclick="copyRef()">Copy</button></span></div>
         </div>
 
+        <!-- Contact fields - Lead capture -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;margin-bottom:10px">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Họ và tên</label>
+            <input type="text" class="form-input" id="contactName" placeholder="Nguyễn Văn A">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Số điện thoại</label>
+            <input type="tel" class="form-input" id="contactPhone" placeholder="0901234567">
+          </div>
+        </div>
         <!-- Email input -->
-        <div class="form-group" style="margin-top:14px;margin-bottom:12px;">
+        <div class="form-group" style="margin-bottom:12px;">
           <label class="form-label">Email nhận báo cáo <span>*</span></label>
           <input type="email" class="form-input" id="sepayEmail" placeholder="email@gmail.com">
         </div>
@@ -1403,6 +1414,21 @@ body{
 
       <!-- POLAR SECTION -->
       <div id="polarSec" style="margin-top:4px;">
+        <!-- Contact fields Polar -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Họ và tên</label>
+            <input type="text" class="form-input" id="polarName" placeholder="Nguyễn Văn A">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label">Số điện thoại</label>
+            <input type="tel" class="form-input" id="polarPhone" placeholder="0901234567">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label class="form-label">Email nhận báo cáo <span>*</span></label>
+          <input type="email" class="form-input" id="polarEmail" placeholder="email@gmail.com">
+        </div>
         <button class="btn btn-gold" onclick="goPolar()" id="btnPolar">💳 Thanh toán bằng thẻ quốc tế →</button>
         <div style="font-size:11px;color:var(--grey-600);text-align:center;margin-top:8px">Visa · Mastercard · Bảo mật bởi Polar & Stripe</div>
       </div>
@@ -3209,8 +3235,11 @@ function submitBill() {
 // -- POLAR CHECKOUT ----------------------------------------
 function goPolar() {
   var ref = STATE.paymentId || 'BDSV000';
-  var emailEl = document.getElementById('sepayEmail');
-  var em = emailEl ? emailEl.value.trim() : '';
+  // Ưu tiên polarEmail nếu user đã điền; fallback sepayEmail
+  var polarEmailEl = document.getElementById('polarEmail');
+  var sepayEmailEl = document.getElementById('sepayEmail');
+  var em = (polarEmailEl && polarEmailEl.value.trim()) || (sepayEmailEl && sepayEmailEl.value.trim()) || '';
+  if (polarEmailEl && !polarEmailEl.value.trim() && em) polarEmailEl.value = em;
 
   if(em) {
     saveLead(em, 'paid');
@@ -3225,10 +3254,13 @@ function goPolar() {
   // Luu STATE vao sessionStorage - dung khi Polar redirect ve
   if (STATE.result) {
     try {
+      var _pc = getContactInfo();
       sessionStorage.setItem('gv_polar_state', JSON.stringify({
         type:        STATE.type || '',
         paymentId:   ref,
         email:       em,
+        name:        _pc.name,
+        phone:       _pc.phone,
         result:      STATE.result,
         usdRate:     STATE.usdRate || 26000,
         lang:        LANG || 'vi',
@@ -3253,11 +3285,23 @@ function fmtVND(n) {
   return n.toLocaleString('vi-VN') + ' ₫';
 }
 // confirmPayment legacy - replaced by modal flow
-function saveLead(email, paymentStatus) {
-  if(!GSHEET_URL) return;
-  var t = STATE.type || '';
+// ── N8N Lead & Payment webhook ──────────────────────────
+var N8N_LEAD_URL = 'https://saigonmia.tino.page/webhook/gv-lead';
 
-  // Collect all form data based on property type
+function getContactInfo() {
+  // Thu thập name/phone từ cả 2 section (SePay hoặc Polar)
+  var name  = (document.getElementById('contactName')  || document.getElementById('polarName')  || {}).value || '';
+  var phone = (document.getElementById('contactPhone') || document.getElementById('polarPhone') || {}).value || '';
+  // Ưu tiên field nào đã điền
+  if (!name && document.getElementById('polarName'))   name  = document.getElementById('polarName').value  || '';
+  if (!phone && document.getElementById('polarPhone')) phone = document.getElementById('polarPhone').value || '';
+  return { name: name.trim(), phone: phone.trim() };
+}
+
+function saveLead(email, paymentStatus) {
+  var t = STATE.type || '';
+  var contact = getContactInfo();
+
   function getVal(id) { var el=document.getElementById(id); return el?el.value:''; }
   function getNum(id) { return parseFloat(getVal(id))||0; }
 
@@ -3274,18 +3318,24 @@ function saveLead(email, paymentStatus) {
     project: getVal(t+'-project') || getVal('bld-name') || ''
   };
 
+  var valueMid = STATE.result ? Math.round((STATE.result.mid||0)/1e9*100)/100 : 0;
+
   var payload = {
-    action: 'save_lead',
-    email: email || '',
-    propertyType: t,
-    paymentId: STATE.paymentId || '',
-    paymentStatus: paymentStatus || 'pending',
-    promoCode: PAY.promoCode || '',
-    promoAmount: PAY.promoAmount || 0,
-    prefix: STATE.currentPrefix || 'Valuit100',
-    formData: formData,
-    toggleValues: STATE.toggleValues,
-    timestamp: new Date().toISOString()
+    action:        'save_lead',
+    email:         email || '',
+    name:          contact.name,
+    phone:         contact.phone,
+    propertyType:  t,
+    paymentId:     STATE.paymentId || '',
+    paymentStatus: paymentStatus || 'unpaid',
+    promoCode:     PAY.promoCode || '',
+    promoAmount:   PAY.promoAmount || 0,
+    prefix:        STATE.currentPrefix || 'Valuit100',
+    formData:      formData,
+    toggleValues:  STATE.toggleValues,
+    valueMidBillion: valueMid,
+    source:        'globalvaluate',
+    timestamp:     new Date().toISOString()
   };
 
   if(STATE.result) {
@@ -3299,11 +3349,29 @@ function saveLead(email, paymentStatus) {
     };
   }
 
-  fetch(GSHEET_URL,{
+  // Ghi GSheet (cũ - giữ nguyên để backup)
+  if(GSHEET_URL) {
+    fetch(GSHEET_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    }).catch(function(){});
+  }
+
+  // Gửi N8N để xử lý automation (email reminder nếu chưa trả, hoặc report nếu đã trả)
+  fetch(N8N_LEAD_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify(payload)
   }).catch(function(){});
+}
+
+// Gọi khi user bấm nút "Mở khóa báo cáo" (chưa điền gì, chỉ intent)
+function captureLeadIntent() {
+  var contact = getContactInfo();
+  var email   = (document.getElementById('sepayEmail') || document.getElementById('polarEmail') || {}).value || '';
+  if (!email && !contact.name) return; // Không có gì để capture
+  saveLead(email, 'intent');
 }
 function resetApp(){
   STATE.type=null;STATE.result=null;STATE.paymentId=null;
