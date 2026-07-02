@@ -43,9 +43,7 @@
             <input type="file" id="file-input" style="display: none;" accept=".pdf,image/*">
         </div>
 
-        <div id="loading" class="loading">
-            🤖 AI Claude 3.5 Sonnet đang bảo mật thông tin cá nhân & tính toán mô hình địa lý...
-        </div>
+        <div id="loading" class="loading">🤖 AI Claude 3.5 Sonnet đang xử lý mô hình địa lý...</div>
 
         <div id="result" class="result-box">
             <div class="info-grid">
@@ -53,14 +51,13 @@
                 <div>📋 <span>Loại hình:</span> <strong id="res-loaihinh"></strong></div>
                 <div>📐 <span>Diện tích:</span> <strong id="res-dientich"></strong></div>
             </div>
-
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
                             <th>Tiêu chí</th>
-                            <th style="color: #f59e0b;">🌐 Giá Chợ (Rao Bán)</th>
-                            <th style="color: #10b981;">🤖 Giá Ước Tính (AI)</th>
+                            <th style="color: #f59e0b;">🌐 Giá Chợ</th>
+                            <th style="color: #10b981;">🤖 Giá AI</th>
                             <th>📜 Giá Nhà Nước</th>
                         </tr>
                     </thead>
@@ -86,10 +83,7 @@
                     </tbody>
                 </table>
             </div>
-
-            <p class="disclaimer">
-                ⚠️ *Lưu ý: Kết quả định giá bằng công nghệ AI chỉ mang tính chất THAM KHẢO phục vụ nghiên cứu thị trường. Hệ thống không chịu trách nhiệm pháp lý cho bất kỳ thiệt hại tài chính phát sinh từ giao dịch thực tế.*
-            </p>
+            <p class="disclaimer">⚠️ *Lưu ý: Kết quả định giá bằng công nghệ AI chỉ mang tính chất THAM KHẢO.*</p>
         </div>
     </div>
 
@@ -98,54 +92,48 @@
         const fileInput = document.getElementById('file-input');
         const loading = document.getElementById('loading');
         const result = document.getElementById('result');
-
-        // Khớp chuẩn đường dẫn Test URL của bạn trên hệ thống n8n Tino Page
-        const N8N_WEBHOOK_URL = 'https://tino.page';
+        const url = 'https://tino.page';
 
         dropZone.onclick = () => fileInput.click();
-        fileInput.onchange = (e) => handleUpload(e.target.files);
-        
+        fileInput.onchange = (e) => startUpload(e.target.files);
         dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#3b82f6'; };
         dropZone.ondragleave = () => { dropZone.style.borderColor = '#475569'; };
-        dropZone.ondrop = (e) => { e.preventDefault(); handleUpload(e.dataTransfer.files); };
+        dropZone.ondrop = (e) => { e.preventDefault(); startUpload(e.dataTransfer.files); };
 
-        async function handleUpload(files) {
+        async function startUpload(files) {
             if (!files || files.length === 0) return;
-            const file = files[0];
-            
             loading.style.display = 'block';
             result.style.display = 'none';
-
-            const formData = new FormData();
-            formData.append('file', file);
-
+            const fd = new FormData();
+            fd.append('file', files[0]);
             try {
-                const response = await fetch(N8N_WEBHOOK_URL, { method: 'POST', body: formData });
-                if (!response.ok) throw new Error('Network error');
+                const response = await fetch(url, { method: 'POST', body: fd, mode: 'cors' });
                 const res = await response.json();
-                
                 loading.style.display = 'none';
                 result.style.display = 'block';
                 
-                document.getElementById('res-vung').innerText = res.thong_tin_dat.vung_dinh_vi || "Chưa xác định";
-                document.getElementById('res-loaihinh').innerText = res.thong_tin_dat.loai_hinh || "Chưa xác định";
-                document.getElementById('res-dientich').innerText = res.thong_tin_dat.dien_tich || "0 m2";
+                document.getElementById('res-vung').innerText = res.thong_tin_dat.vung_dinh_vi || "N/A";
+                document.getElementById('res-loaihinh').innerText = res.thong_tin_dat.loai_hinh || "N/A";
+                document.getElementById('res-dientich').innerText = res.thong_tin_dat.dien_tich || "N/A";
 
-                document.getElementById('cell-market-unit').innerText = res.bang_so_sanh.gia_thi_truong.don_gia;
-                document.getElementById('cell-market-total').innerText = res.bang_so_sanh.gia_thi_truong.tong_tien;
-                document.getElementById('cell-market-src').innerText = res.bang_so_sanh.gia_thi_truong.nguon;
-
-                document.getElementById('cell-ai-unit').innerText = res.bang_so_sanh.gia_ai_platform.don_gia;
-                document.getElementById('cell-ai-total').innerText = res.bang_so_sanh.gia_ai_platform.tong_tien;
-                document.getElementById('cell-ai-src').innerText = res.bang_so_sanh.gia_ai_platform.nguon;
-
-                document.getElementById('cell-state-unit').innerText = res.bang_so_sanh.gia_nha_nuoc.don_gia;
-                document.getElementById('cell-state-total').innerText = res.bang_so_sanh.gia_nha_nuoc.tong_tien;
-                document.getElementById('cell-state-src').innerText = res.bang_so_sanh.gia_nha_nuoc.nguon;
-
-            } catch (error) {
-                console.error(error);
-                alert('Không thể kết nối đến Máy chủ AI. Hãy kiểm tra lại trạng thái hoạt động của n8n.');
+                const mapping = {
+                    'cell-market-unit': res.bang_so_sanh.gia_thi_truong.don_gia,
+                    'cell-market-total': res.bang_so_sanh.gia_thi_truong.tong_tien,
+                    'cell-market-src': res.bang_so_sanh.gia_thi_truong.nguon,
+                    'cell-ai-unit': res.bang_so_sanh.gia_ai_platform.don_gia,
+                    'cell-ai-total': res.bang_so_sanh.gia_ai_platform.tong_tien,
+                    'cell-ai-src': res.bang_so_sanh.gia_ai_platform.nguon,
+                    'cell-state-unit': res.bang_so_sanh.gia_nha_nuoc.don_gia,
+                    'cell-state-total': res.bang_so_sanh.gia_nha_nuoc.tong_tien,
+                    'cell-state-src': res.bang_so_sanh.gia_nha_nuoc.nguon
+                };
+                Object.keys(mapping).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = mapping[id] || "";
+                });
+            } catch (err) {
+                console.error(err);
+                alert('Không thể kết nối đến Máy chủ AI. Đảm bảo n8n đang ở trạng thái Listening.');
                 loading.style.display = 'none';
             }
         }
