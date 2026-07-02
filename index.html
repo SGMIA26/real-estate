@@ -4,76 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Real Estate Valuation Platform</title>
-    <script src="https://tailwindcss.com"></script>
+    <!-- Nhúng trực tiếp CSS để chống lỗi mất định dạng khi rớt mạng CDN -->
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0; padding: 20px; box-sizing: border-box; }
+        .container { background-color: #1e293b; padding: 30px; rounded-radius: 16px; border: 1px solid #334155; max-w: 800px; w: 100%; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; box-sizing: border-box; }
+        h1 { font-size: 24px; font-weight: 800; color: #38bdf8; margin-bottom: 5px; }
+        p.subtitle { color: #94a3b8; font-size: 14px; margin-top: 0; margin-bottom: 25px; }
+        .drop-zone { border: 2px dashed #475569; border-radius: 12px; padding: 30px; background-color: rgba(15,23,42,0.5); cursor: pointer; transition: 0.2s; }
+        .drop-zone:hover { border-color: #3b82f6; background-color: #0f172a; }
+        .cloud-icon { width: 50px; height: 50px; fill: #3b82f6; margin-bottom: 10px; }
+        .loading { display: none; margin: 20px 0; padding: 15px; background: rgba(30,58,138,0.4); border: 1px solid #1e40af; border-radius: 8px; color: #60a5fa; font-weight: bold; }
+        .result-box { display: none; text-align: left; margin-top: 25px; }
+        .info-grid { display: flex; gap: 20px; background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; font-size: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+        .info-grid span { color: #64748b; }
+        .info-grid strong { color: #38bdf8; }
+        .table-wrapper { overflow-x: auto; border: 1px solid #334155; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+        th { background: #0f172a; color: #94a3b8; padding: 12px; font-weight: 600; border-bottom: 1px solid #334155; }
+        td { padding: 12px; border-bottom: 1px solid #334155; }
+        tr:hover { background: rgba(51,65,85,0.3); }
+        .txt-market { color: #f59e0b; font-weight: bold; }
+        .txt-ai { color: #10b981; font-weight: bold; }
+        .txt-state { color: #94a3b8; font-weight: bold; }
+        .disclaimer { font-size: 11px; color: #475569; font-style: italic; margin-top: 20px; line-height: 1.5; border-t: 1px solid #334155; padding-top: 15px; }
+    </style>
 </head>
-<body class="bg-slate-900 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 text-slate-100">
+<body>
 
-    <div class="bg-slate-800 p-6 md:p-8 rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-700">
-        <h1 class="text-2xl md:text-3xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent mb-2">
-            HỆ THỐNG ĐỊNH GIÁ BẤT ĐỘNG SẢN THÔNG MINH
-        </h1>
-        <p class="text-slate-400 text-center text-sm mb-8">Hỗ trợ tự động bóc tách pháp lý và phân loại địa giới hành chính sáp nhập mới</p>
+    <div class="container">
+        <h1>HỆ THỐNG ĐỊNH GIÁ BẤT ĐỘNG SẢN THÔNG MINH</h1>
+        <p class="subtitle">Hỗ trợ tự động bóc tách pháp lý và phân loại địa giới hành chính sáp nhập mới</p>
         
-        <!-- Vùng kéo thả file -->
-        <div id="drop-zone" class="border-2 border-dashed border-slate-600 rounded-xl p-8 bg-slate-900/50 cursor-pointer hover:border-blue-500 hover:bg-slate-900 transition text-center mb-6">
-            <svg class="mx-auto h-12 w-12 text-blue-400 mb-3 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        <!-- Vùng kéo thả file cố định kích thước icon -->
+        <div id="drop-zone" class="drop-zone">
+            <svg class="cloud-icon" viewBox="0 0 24 24">
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
             </svg>
-            <p class="text-slate-300 font-medium">Kéo thả Sổ Đỏ / Bản vẽ tọa độ vào đây</p>
-            <p class="text-slate-500 text-xs mt-1">Hỗ trợ định dạng ảnh (JPG, PNG) hoặc file văn bản PDF</p>
-            <input type="file" id="file-input" class="hidden" accept=".pdf,image/*">
+            <p style="margin: 5px 0; font-weight: 500;">Kéo thả Sổ Đỏ / Bản vẽ tọa độ vào đây</p>
+            <p style="margin: 0; color: #475569; font-size: 12px;">Hỗ trợ định dạng ảnh (JPG, PNG) hoặc file PDF</p>
+            <input type="file" id="file-input" style="display: none;" accept=".pdf,image/*">
         </div>
 
-        <!-- Trạng thái xử lý -->
-        <div id="loading" class="hidden text-center my-6 p-4 bg-blue-950/40 border border-blue-800 rounded-xl text-blue-400 font-medium animate-pulse">
+        <div id="loading" class="loading">
             🤖 AI Claude 3.5 Sonnet đang bảo mật thông tin cá nhân & tính toán mô hình địa lý...
         </div>
 
-        <!-- Khối hiển thị kết quả Bảng 3 Cột -->
-        <div id="result" class="hidden space-y-6">
-            <!-- Thông tin sơ bộ thửa đất -->
-            <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 flex flex-wrap gap-6 text-sm text-slate-300">
-                <div>📍 <span class="text-slate-500">Định vị vùng:</span> <strong id="res-vung" class="text-blue-400"></strong></div>
-                <div>📋 <span class="text-slate-500">Phân khúc:</span> <strong id="res-loaihinh"></strong></div>
-                <div>📐 <span class="text-slate-500">Diện tích:</span> <strong id="res-dientich"></strong></div>
+        <!-- Khối kết quả -->
+        <div id="result" class="result-box">
+            <div class="info-grid">
+                <div>📍 <span>Vùng:</span> <strong id="res-vung"></strong></div>
+                <div>📋 <span>Loại hình:</span> <strong id="res-loaihinh"></strong></div>
+                <div>📐 <span>Diện tích:</span> <strong id="res-dientich"></strong></div>
             </div>
 
-            <!-- Bảng so sánh 3 trục cốt lõi -->
-            <div class="overflow-x-auto rounded-xl border border-slate-700">
-                <table class="min-w-full divide-y divide-slate-700 text-sm text-left">
-                    <thead class="bg-slate-900 text-slate-400 font-semibold">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
                         <tr>
-                            <th class="p-4">Tiêu chí định giá</th>
-                            <th class="p-4 text-amber-400">🌐 Giá Chợ (Rao Bán)</th>
-                            <th class="p-4 text-emerald-400">🤖 Giá Ước Tính (AI Platform)</th>
-                            <th class="p-4 text-slate-400">📜 Giá Quy Định Nhà Nước</th>
+                            <th>Tiêu chí</th>
+                            <th style="color: #f59e0b;">🌐 Giá Chợ (Rao Bán)</th>
+                            <th style="color: #10b981;">🤖 Giá Ước Tính (AI)</th>
+                            <th>📜 Giá Nhà Nước</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-700">
-                        <tr class="hover:bg-slate-700/30 transition">
-                            <td class="p-4 font-medium text-slate-400">Đơn giá / m²</td>
-                            <td id="cell-market-unit" class="p-4 font-bold text-amber-300"></td>
-                            <td id="cell-ai-unit" class="p-4 font-bold text-emerald-300"></td>
-                            <td id="cell-state-unit" class="p-4 font-bold text-slate-300"></td>
+                    <tbody>
+                        <tr>
+                            <td>Đơn giá / m²</td>
+                            <td id="cell-market-unit" class="txt-market"></td>
+                            <td id="cell-ai-unit" class="txt-ai"></td>
+                            <td id="cell-state-unit" class="txt-state"></td>
                         </tr>
-                        <tr class="hover:bg-slate-700/30 transition">
-                            <td class="p-4 font-medium text-slate-400">Tổng giá trị đất</td>
-                            <td id="cell-market-total" class="p-4 font-extrabold text-amber-400 text-base"></td>
-                            <td id="cell-ai-total" class="p-4 font-extrabold text-emerald-400 text-base"></td>
-                            <td id="cell-state-total" class="p-4 font-extrabold text-slate-300 text-base"></td>
+                        <tr>
+                            <td style="font-weight: bold;">Tổng giá trị</td>
+                            <td id="cell-market-total" class="txt-market" style="font-size: 16px;"></td>
+                            <td id="cell-ai-total" class="txt-ai" style="font-size: 16px;"></td>
+                            <td id="cell-state-total" class="txt-state" style="font-size: 16px;"></td>
                         </tr>
-                        <tr class="text-xs text-slate-500 bg-slate-900/20">
-                            <td class="p-4 font-medium">Cơ sở dữ liệu nguồn</td>
-                            <td id="cell-market-src" class="p-4 leading-relaxed"></td>
-                            <td id="cell-ai-src" class="p-4 leading-relaxed"></td>
-                            <td id="cell-state-src" class="p-4 leading-relaxed"></td>
+                        <tr style="font-size: 11px; color: #475569; background: rgba(0,0,0,0.1);">
+                            <td>Cơ sở dữ liệu</td>
+                            <td id="cell-market-src"></td>
+                            <td id="cell-ai-src"></td>
+                            <td id="cell-state-src"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Tuyên bố miễn trừ trách nhiệm -->
-            <p class="text-slate-500 text-xs italic text-center border-t border-slate-700 pt-4">
+            <p class="disclaimer">
                 ⚠️ *Lưu ý: Kết quả định giá bằng công nghệ AI chỉ mang tính chất THAM KHẢO phục vụ nghiên cứu thị trường. Hệ thống không chịu trách nhiệm pháp lý cho bất kỳ thiệt hại tài chính phát sinh từ giao dịch thực tế.*
             </p>
         </div>
@@ -85,20 +102,20 @@
         const loading = document.getElementById('loading');
         const result = document.getElementById('result');
 
-        // 🔴 BẮT BUỘC: DÁN URL WEBHOOK CỦA BẠN VÀO ĐÂY 🔴
-        const N8N_WEBHOOK_URL = 'DÁN_LINK_WEBHOOK_N8N_CỦA_BẠN_VÀO_ĐÂY';
+        // 🔴 BẮT BUỘC: DÁN ĐÚNG URL WEBHOOK N8N CỦA BẠN VÀO ĐÂY 🔴
+        const N8N_WEBHOOK_URL = 'https://tino.page';
 
         dropZone.onclick = () => fileInput.click();
         fileInput.onchange = (e) => handleUpload(e.target.files[0]);
         
-        dropZone.ondragover = (e) => { e.preventDefault(); dropZone.classList.add('border-blue-500', 'bg-slate-900'); };
-        dropZone.ondragleave = () => { dropZone.classList.remove('border-blue-500', 'bg-slate-900'); };
+        dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.borderColor = '#3b82f6'; };
+        dropZone.ondragleave = () => { dropZone.style.borderColor = '#475569'; };
         dropZone.ondrop = (e) => { e.preventDefault(); handleUpload(e.dataTransfer.files[0]); };
 
         async function handleUpload(file) {
             if (!file) return;
-            loading.classList.remove('hidden');
-            result.classList.add('hidden');
+            loading.style.display = 'block';
+            result.style.display = 'none';
 
             const formData = new FormData();
             formData.append('file', file);
@@ -107,32 +124,28 @@
                 const response = await fetch(N8N_WEBHOOK_URL, { method: 'POST', body: formData });
                 const res = await response.json();
                 
-                loading.classList.add('hidden');
-                result.classList.remove('hidden');
+                loading.style.display = 'none';
+                result.style.display = 'block';
                 
-                // Đổ dữ liệu thô vào Khối thông tin chung
                 document.getElementById('res-vung').innerText = res.thong_tin_dat.vung_dinh_vi;
                 document.getElementById('res-loaihinh').innerText = res.thong_tin_dat.loai_hinh;
                 document.getElementById('res-dientich').innerText = res.thong_tin_dat.dien_tich;
 
-                // Đổ dữ liệu vào cột Giá Chợ
                 document.getElementById('cell-market-unit').innerText = res.bang_so_sanh.gia_thi_truong.don_gia;
                 document.getElementById('cell-market-total').innerText = res.bang_so_sanh.gia_thi_truong.tong_tien;
                 document.getElementById('cell-market-src').innerText = res.bang_so_sanh.gia_thi_truong.nguon;
 
-                // Đổ dữ liệu vào cột Giá AI
                 document.getElementById('cell-ai-unit').innerText = res.bang_so_sanh.gia_ai_platform.don_gia;
                 document.getElementById('cell-ai-total').innerText = res.bang_so_sanh.gia_ai_platform.tong_tien;
                 document.getElementById('cell-ai-src').innerText = res.bang_so_sanh.gia_ai_platform.nguon;
 
-                // Đổ dữ liệu vào cột Giá Nhà Nước
                 document.getElementById('cell-state-unit').innerText = res.bang_so_sanh.gia_nha_nuoc.don_gia;
                 document.getElementById('cell-state-total').innerText = res.bang_so_sanh.gia_nha_nuoc.tong_tien;
                 document.getElementById('cell-state-src').innerText = res.bang_so_sanh.gia_nha_nuoc.nguon;
 
             } catch (error) {
                 alert('Không thể kết nối đến Máy chủ AI. Hãy kiểm tra lại trạng thái hoạt động của n8n.');
-                loading.classList.add('hidden');
+                loading.style.display = 'none';
             }
         }
     </script>
