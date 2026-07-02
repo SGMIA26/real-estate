@@ -99,7 +99,7 @@
         const loading = document.getElementById('loading');
         const result = document.getElementById('result');
 
-        // 🔴 BẮT BUỘC: THAY ĐƯỜNG LINK WEBHOOK CHUẨN TỪ N8N VÀO ĐÂY 🔴
+        // Khớp hoàn toàn link Test URL từ ảnh n8n trước đó của bạn
         const N8N_WEBHOOK_URL = 'https://saigonmia.tino.page/webhook-test/valuation';
 
         dropZone.onclick = () => fileInput.click();
@@ -119,6 +119,7 @@
 
             try {
                 const response = await fetch(N8N_WEBHOOK_URL, { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Network error');
                 const res = await response.json();
                 
                 loading.style.display = 'none';
@@ -141,6 +142,7 @@
                 document.getElementById('cell-state-src').innerText = res.bang_so_sanh.gia_nha_nuoc.nguon;
 
             } catch (error) {
+                console.error(error);
                 alert('Không thể kết nối đến Máy chủ AI. Hãy kiểm tra lại trạng thái hoạt động của n8n.');
                 loading.style.display = 'none';
             }
