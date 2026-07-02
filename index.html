@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Real Estate Valuation Platform</title>
-    <!-- Nhúng trực tiếp CSS để chống lỗi mất định dạng khi rớt mạng CDN -->
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0; padding: 20px; box-sizing: border-box; }
-        .container { background-color: #1e293b; padding: 30px; rounded-radius: 16px; border: 1px solid #334155; max-w: 800px; w: 100%; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; box-sizing: border-box; }
-        h1 { font-size: 24px; font-weight: 800; color: #38bdf8; margin-bottom: 5px; }
+        .container { background-color: #1e293b; padding: 30px; border: 1px solid #334155; max-width: 800px; width: 100%; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; box-sizing: border-box; }
+        h1 { font-size: 24px; font-weight: 800; color: #38bdf8; margin-bottom: 5px; margin-top: 0; }
         p.subtitle { color: #94a3b8; font-size: 14px; margin-top: 0; margin-bottom: 25px; }
         .drop-zone { border: 2px dashed #475569; border-radius: 12px; padding: 30px; background-color: rgba(15,23,42,0.5); cursor: pointer; transition: 0.2s; }
         .drop-zone:hover { border-color: #3b82f6; background-color: #0f172a; }
@@ -26,7 +25,7 @@
         .txt-market { color: #f59e0b; font-weight: bold; }
         .txt-ai { color: #10b981; font-weight: bold; }
         .txt-state { color: #94a3b8; font-weight: bold; }
-        .disclaimer { font-size: 11px; color: #475569; font-style: italic; margin-top: 20px; line-height: 1.5; border-t: 1px solid #334155; padding-top: 15px; }
+        .disclaimer { font-size: 11px; color: #475569; font-style: italic; margin-top: 20px; line-height: 1.5; border-top: 1px solid #334155; padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -35,7 +34,6 @@
         <h1>HỆ THỐNG ĐỊNH GIÁ BẤT ĐỘNG SẢN THÔNG MINH</h1>
         <p class="subtitle">Hỗ trợ tự động bóc tách pháp lý và phân loại địa giới hành chính sáp nhập mới</p>
         
-        <!-- Vùng kéo thả file cố định kích thước icon -->
         <div id="drop-zone" class="drop-zone">
             <svg class="cloud-icon" viewBox="0 0 24 24">
                 <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
@@ -49,7 +47,6 @@
             🤖 AI Claude 3.5 Sonnet đang bảo mật thông tin cá nhân & tính toán mô hình địa lý...
         </div>
 
-        <!-- Khối kết quả -->
         <div id="result" class="result-box">
             <div class="info-grid">
                 <div>📍 <span>Vùng:</span> <strong id="res-vung"></strong></div>
@@ -102,8 +99,8 @@
         const loading = document.getElementById('loading');
         const result = document.getElementById('result');
 
-        // 🔴 BẮT BUỘC: DÁN ĐÚNG URL WEBHOOK N8N CỦA BẠN VÀO ĐÂY 🔴
-        const N8N_WEBHOOK_URL = 'https://tino.page';
+        // 🔴 BẮT BUỘC: THAY ĐƯỜNG LINK WEBHOOK CHUẨN TỪ N8N VÀO ĐÂY 🔴
+        const N8N_WEBHOOK_URL = 'https://saigonmia.tino.page/webhook/valuation';
 
         dropZone.onclick = () => fileInput.click();
         fileInput.onchange = (e) => handleUpload(e.target.files[0]);
